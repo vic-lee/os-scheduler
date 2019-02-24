@@ -2,6 +2,7 @@
 #include <fstream>
 #include <queue> 
 #include <locale>
+#include <tuple>
 #include <string>
 
 using namespace std;
@@ -22,6 +23,11 @@ void print_process(process p) {
 }
 
 
+void print_process_arr(process* p) {
+    
+}
+
+
 process* generate_process_arr(int size) {
     process* p = (process*) malloc(size * sizeof(process));
     if (p) {
@@ -33,7 +39,7 @@ process* generate_process_arr(int size) {
 }
 
 
-process* read_file(string fname) {
+tuple<process*, int> read_file(string fname) {
 
 	ifstream input_file(fname);
 
@@ -45,7 +51,6 @@ process* read_file(string fname) {
         process* parr = generate_process_arr(pcount);
         int ctr = 0;
         int p_added = 0;
-
 		while (input_file >> val) {
 			if (isalpha(val[0]) || input_file.eof()) break;
             
@@ -66,11 +71,11 @@ process* read_file(string fname) {
             else ctr = 0;
 		}
 	    input_file.close();        
-        return parr;
+        return make_tuple(parr, pcount);
 
 	} else {
 		cout << "File " << fname << " could not be opened." << endl;
-        return nullptr;
+        return make_tuple(nullptr, -1);
 	}
 }
 
@@ -82,7 +87,10 @@ void fifo_scheduler() {
 
 int main(int argc, char** argv) {
 	string fname = argv[1];
-	process* parr = read_file(fname);
+    process* parr; 
+    int pcount;
+	tie(parr, pcount) = read_file(fname);
     if (parr) cout << "Process array ptr:\t" << parr << endl;
+    cout << "Process array len:\t" << pcount << endl;
 	return 0;
 }
