@@ -5,8 +5,6 @@
 
 using namespace std;
 
-#define RAND_NUM_FILE_SIZE 100000
-
 tuple<process*, int> read_file(string fname) {
 
     ifstream input_file(fname);
