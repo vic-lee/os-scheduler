@@ -39,10 +39,11 @@ int main(int argc, char** argv) {
     process* parr;
     int pcount;
     tie(parr, pcount) = read_file(fname);
-    cout << "Array before sorting" << endl;
-    print_process_arr(parr, pcount);
+    // cout << "Array before sorting" << endl;
+    // print_process_arr(parr, pcount);
     process* sparr = sort_parr_by_arrival(parr, pcount);
     cout << "Array after sorting" << endl;
     print_process_arr(sparr, pcount);
+    cout << randomOS(3) << endl;
     return 0;
 }

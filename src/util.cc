@@ -24,6 +24,7 @@ tuple<process*, int> read_file(string fname) {
         process* parr = generate_process_arr(pcount);
         int ctr = 0;
         int p_added = 0;
+
         while (input_file >> val) {
             if (isalpha(val[0]) || input_file.eof()) break;
 
@@ -62,7 +63,7 @@ int randomOS(int u) {
             i++;
         }
         file_rand_num.close();
-        return stoi(line) + u;
+        return 1 + (stoi(line) % u);
     } else {
         cout << "Could not open random-numbers.txt. Terminating..." << endl;
         return -1;
@@ -104,6 +105,7 @@ process* merge(process* l, int left_size, process* r, int right_size) {
     int left_index = 0;
     int right_index = 0;
     int parr_index = 0;
+
     while (left_index < left_size and right_index < right_size) {
         int l_arrival_time = (l + left_index) -> arrival_time;
         int r_arrival_time = (r + right_index) -> arrival_time;
@@ -116,14 +118,17 @@ process* merge(process* l, int left_size, process* r, int right_size) {
         }
         parr_index ++;
     }
+
     while (left_index < left_size) {
         sorted_parr[parr_index] = *(l + left_index);
         left_index++; parr_index++;
     }
+
     while (right_index < right_size) {
         sorted_parr[parr_index] = *(r + right_index);
         right_index++; parr_index++;
     }
+    
     return sorted_parr;
 }
 
