@@ -29,13 +29,18 @@ tuple<process*, int> read_file(string fname) {
             if (isalpha(val[0]) || input_file.eof()) break;
 
             switch (ctr) {
-                case 0: temp_process.arrival_time = stoi(val);
-                case 1: temp_process.interval = stoi(val);
-                case 2: temp_process.cpu_time = stoi(val);
-                case 3: temp_process.io_time = stoi(val);
+                case 0: 
+                    temp_process.arrival_time = stoi(val);
+                case 1: 
+                    temp_process.init_interval = stoi(val);
+                case 2: 
+                    temp_process.cpu_time = stoi(val);
+                case 3: 
+                    temp_process.io_time = stoi(val);
+                    temp_process.state = UNSTARTED;
             }
 
-            if (ctr == 3) {
+            if (ctr == EOPROCESS) {
                 parr[p_added] = temp_process;
                 p_added++;
             }
@@ -73,15 +78,16 @@ int randomOS(int u) {
 
 void print_process(process p) {
     cout << "Process arrival time: \t" << p.arrival_time << "\n"
-        << "Process interval: \t" << p.interval << "\n"
+        << "Process init interval: \t" << p.init_interval << "\n"
         << "Process CPU time: \t" << p.cpu_time << "\n"
-        << "Process I/O time: \t" << p.io_time << "\n" << endl;
+        << "Process I/O time: \t" << p.io_time << "\n" 
+        << "Process state: \t" << p.state << endl;
 }
 
 
 void print_process_arr(process* p, int size) {
     for (int i = 0; i < size; i++) {
-        cout << "Process " << (i + 1) << endl;
+        cout << "Process " << i << endl;
         print_process(*(p + i));
     }
 }

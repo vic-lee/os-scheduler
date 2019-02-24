@@ -3,13 +3,20 @@
 
 #define EOPROCESS 3
 #define RAND_NUM_FILE_SIZE 100000
+#define UNSTARTED "unstarted"
+#define READY "ready"
+#define RUNNING "running"
+#define BLOCKED "blocked"
+#define TERMINATED "terminated"
 
 struct process {
     int arrival_time;
-    int interval;
+    int init_interval;
     int cpu_time;
     int io_time;
+    std::string state;
 };
+
 std::tuple<process*, int> read_file(std::string fname);
 int randomOS(int u);
 void print_process(process p);

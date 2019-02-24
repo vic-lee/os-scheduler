@@ -20,12 +20,9 @@ void fcfs_scheduler(process* parr, int size) {
      *              Blocked processes, when ready, join the end of the queue. 
      */
     queue<process> q;
-    for (int i = 0; i < size; i++) {
-        q.push(*(parr + i));
-    }
-    while (!q.empty()) {
-
-    }
+    int cycle = 0;
+    int first_arrival_time = parr -> arrival_time;
+    cycle = first_arrival_time;
 }
 
 void rr_scheduler() { }
@@ -40,10 +37,10 @@ int main(int argc, char** argv) {
     int pcount;
     tie(parr, pcount) = read_file(fname);
     // cout << "Array before sorting" << endl;
-    // print_process_arr(parr, pcount);
-    process* sparr = sort_parr_by_arrival(parr, pcount);
-    cout << "Array after sorting" << endl;
-    print_process_arr(sparr, pcount);
-    cout << randomOS(3) << endl;
+    print_process_arr(parr, pcount);
+    // process* sparr = sort_parr_by_arrival(parr, pcount);
+    // cout << "Array after sorting" << endl;
+    // print_process_arr(sparr, pcount);
+    // cout << randomOS(1) << endl;
     return 0;
 }
