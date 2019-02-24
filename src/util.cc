@@ -6,9 +6,16 @@
 using namespace std;
 
 tuple<process*, int> read_file(string fname) {
-
+    /**
+     * This function reads an formatted input file and stores processes 
+     * specified in the file in an array. The array is of type struct process. 
+     * Struct process is defined in `header.h`.
+     * Input:   A string of file name
+     * Output:  A tuple, containing:
+     *              a pointer to the process array
+     *              an int of the array's size
+     */
     ifstream input_file(fname);
-
     if (input_file.is_open()) {
         string val;
         input_file >> val;
