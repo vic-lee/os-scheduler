@@ -104,10 +104,24 @@ int randomOS(int u) {
 }
 
 
-void fifo_scheduler() {
-
+void fcfs_scheduler(process* parr, int size) {
+    /**
+     * Input:   pointer to process array, array size, flag(s)
+     * Output:  print on screen. 
+     * Algorithm: 
+     *      1. Enqueue processes by their entry time, given a process array
+     *      2. While the queue is not empty:
+     *          Alternate between CPU and I/O bursts (blocked).
+     *          Blocked processes, when ready, join the end of the queue. 
+     */
 }
 
+
+void rr_scheduler() { }
+
+void uniprogrammed_scheduler() { }
+
+void sjf_scheduler() { }
 
 int main(int argc, char** argv) {
     string fname = argv[1];
@@ -116,7 +130,7 @@ int main(int argc, char** argv) {
     tie(parr, pcount) = read_file(fname);
     if (parr) cout << "Process array ptr:\t" << parr << endl;
     cout << "Process array len:\t" << pcount << endl;
-    // print_process_arr(parr, pcount);
+    print_process_arr(parr, pcount);
     int rand_num = randomOS(3);
     cout << rand_num << endl;
     return 0;
