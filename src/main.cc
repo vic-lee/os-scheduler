@@ -22,6 +22,17 @@ void print_process(process p) {
 }
 
 
+process* generate_process_arr(int size) {
+    process* p = (process*) malloc(size * sizeof(process));
+    if (p) {
+        return p;
+    } else {
+        cout << "Could not assign memory to process array. Terminating..." << endl;
+        return nullptr;
+    }
+}
+
+
 process* read_file(string fname) {
 
 	ifstream input_file(fname);
@@ -31,11 +42,7 @@ process* read_file(string fname) {
         input_file >> val;
         int pcount = stoi(val);
         process temp_process;        
-        process* parr = (process*)malloc(pcount * sizeof(process));
-        if (!parr) {
-            cout << "Could not assign memory to process array. Terminating..." << endl;
-            return nullptr;
-        }
+        process* parr = generate_process_arr(pcount);
         int ctr = 0;
         int p_added = 0;
 
