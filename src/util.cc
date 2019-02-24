@@ -54,6 +54,7 @@ process* generate_process_arr(int size) {
 
 
 process* merge(process* l, int left_size, process* r, int right_size) {
+    /* An implementation of merge sort */
     process* sorted_parr = (process*) 
         malloc((left_size + right_size) * sizeof(process));
     int left_index = 0;
@@ -84,7 +85,15 @@ process* merge(process* l, int left_size, process* r, int right_size) {
 
 
 process* sort_parr_by_arrival(process* parr, int size) {
-    /* Implements merge sort */
+    /**
+     * Implements sort by arrival time with merge sort, 
+     * in conjunction with process* merge().
+     * Note that if two processes have the same arrival time, 
+     * the one listed earliest in the input has highest priority. 
+     * 
+     * Input:   pointer to process array, size of process array
+     * Output:  pointer to process array, sorted by arrival time. 
+     */
     if (size <= 1) return parr;
     int left_size = size / 2;
     int right_size = size - left_size;
