@@ -4,6 +4,10 @@
 #include <locale>
 #include <tuple>
 #include <string>
+#include <chrono> 
+
+#define EOPROCESS 3
+#define RAND_NUM_FILE_SIZE 100000
 
 using namespace std;
 
@@ -68,7 +72,7 @@ tuple<process*, int> read_file(string fname) {
                 parr[p_added] = temp_process;
                 p_added++;
             }
-            if (ctr < 3) ctr++;
+            if (ctr < EOPROCESS) ctr++;
             else ctr = 0;
         }
         input_file.close();
@@ -77,6 +81,25 @@ tuple<process*, int> read_file(string fname) {
     } else {
         cout << "File " << fname << " could not be opened." << endl;
         return make_tuple(nullptr, -1);
+    }
+}
+
+
+int randomOS(int u) {
+    ifstream file_rand_num("random-numbers.txt");
+    if (file_rand_num) {
+        int rand_line_num = rand() % RAND_NUM_FILE_SIZE + 1;
+        int i = 0;
+        string line; 
+        while (i < rand_line_num) {
+            getline(file_rand_num, line);
+            i++;
+        }
+        file_rand_num.close();
+        return stoi(line) + u;
+    } else {
+        cout << "Could not open random-numbers.txt. Terminating..." << endl;
+        return -1;
     }
 }
 
@@ -93,7 +116,8 @@ int main(int argc, char** argv) {
     tie(parr, pcount) = read_file(fname);
     if (parr) cout << "Process array ptr:\t" << parr << endl;
     cout << "Process array len:\t" << pcount << endl;
-    print_process_arr(parr, pcount);
-
+    // print_process_arr(parr, pcount);
+    int rand_num = randomOS(3);
+    cout << rand_num << endl;
     return 0;
 }
