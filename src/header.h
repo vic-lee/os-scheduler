@@ -10,7 +10,7 @@ struct process {
     int cpu_time;
     int io_time;
 };
-
+std::tuple<process*, int> read_file(std::string fname);
 int randomOS(int u);
 void print_process(process p);
 void print_process_arr(process* p, int size);
