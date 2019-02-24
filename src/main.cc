@@ -59,6 +59,12 @@ void fcfs_scheduler(process* parr, int size) {
      *              Blocked processes, when ready, join the end of the queue. 
      */
     queue<process> q;
+    for (int i = 0; i < size; i++) {
+        q.push(*(parr + i));
+    }
+    while (!q.empty()) {
+        
+    }
 }
 
 
