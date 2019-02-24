@@ -5,6 +5,7 @@
 #include <tuple>
 #include <string>
 #include <chrono> 
+#include "header.h"
 
 #define EOPROCESS 3
 #define RAND_NUM_FILE_SIZE 100000
@@ -85,35 +86,23 @@ tuple<process*, int> read_file(string fname) {
 }
 
 
-int randomOS(int u) {
-    ifstream file_rand_num("random-numbers.txt");
-    if (file_rand_num) {
-        int rand_line_num = rand() % RAND_NUM_FILE_SIZE + 1;
-        int i = 0;
-        string line; 
-        while (i < rand_line_num) {
-            getline(file_rand_num, line);
-            i++;
-        }
-        file_rand_num.close();
-        return stoi(line) + u;
-    } else {
-        cout << "Could not open random-numbers.txt. Terminating..." << endl;
-        return -1;
-    }
-}
+// process* sort_parr_by_arrival(process* parr, int size) {
+//     process* sorted_parr;
+//     return sorted_parr;
+// }
 
 
 void fcfs_scheduler(process* parr, int size) {
     /**
-     * Input:   pointer to process array, array size, flag(s)
+     * Input:   pointer to sorted process array, array size, flag(s)
      * Output:  print on screen. 
      * Algorithm: 
      *      1. Enqueue processes by their entry time, given a process array
      *      2. While the queue is not empty:
-     *          Alternate between CPU and I/O bursts (blocked).
-     *          Blocked processes, when ready, join the end of the queue. 
+     *              Alternate between CPU and I/O bursts (blocked).
+     *              Blocked processes, when ready, join the end of the queue. 
      */
+    queue<process> q;
 }
 
 
