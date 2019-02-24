@@ -73,10 +73,10 @@ int main(int argc, char** argv) {
     process* parr;
     int pcount;
     tie(parr, pcount) = read_file(fname);
-    if (parr) cout << "Process array ptr:\t" << parr << endl;
-    cout << "Process array len:\t" << pcount << endl;
+    cout << "Array before sorting" << endl;
     print_process_arr(parr, pcount);
-    int rand_num = randomOS(3);
-    cout << rand_num << endl;
+    process* sparr = sort_parr_by_arrival(parr, pcount);
+    cout << "Array after sorting" << endl;
+    print_process_arr(sparr, pcount);
     return 0;
 }
