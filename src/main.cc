@@ -23,8 +23,11 @@ void print_process(process p) {
 }
 
 
-void print_process_arr(process* p) {
-    
+void print_process_arr(process* p, int size) {
+    for (int i = 0; i < size; i++) {
+        cout << "Process " << (i + 1) << endl;
+        print_process(*(p + i));
+    }
 }
 
 
@@ -63,8 +66,6 @@ tuple<process*, int> read_file(string fname) {
 
             if (ctr == 3) {
                 parr[p_added] = temp_process;
-                cout << "Process " << (p_added + 1) << endl;
-                print_process(temp_process);
                 p_added++;
             }
             if (ctr < 3) ctr++;
@@ -92,5 +93,6 @@ int main(int argc, char** argv) {
 	tie(parr, pcount) = read_file(fname);
     if (parr) cout << "Process array ptr:\t" << parr << endl;
     cout << "Process array len:\t" << pcount << endl;
+    print_process_arr(parr, pcount);
 	return 0;
 }
