@@ -51,10 +51,11 @@ process* read_file(string fname) {
 
             if (ctr == 3) {
                 parr[p_added] = temp_process;
+                cout << "Process " << (p_added + 1) << endl;
                 print_process(temp_process);
                 p_added++;
             }
-            if (ctr < 4) ctr++;
+            if (ctr < 3) ctr++;
             else ctr = 0;
 		}
 	    input_file.close();        
@@ -75,6 +76,6 @@ void fifo_scheduler() {
 int main(int argc, char** argv) {
 	string fname = argv[1];
 	process* parr = read_file(fname);
-    cout << parr << endl;
+    if (parr) cout << "Process array ptr:\t" << parr << endl;
 	return 0;
 }
