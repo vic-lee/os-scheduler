@@ -22,11 +22,15 @@ void fcfs_scheduler(process* parr, int size) {
      */
     queue<process> q;
     int cycle = 0;
+
     int first_arrival_time = parr -> arrival_time;
     cout << "Fist arrival time is: " << first_arrival_time << endl;
-    for (; cycle < 1; cycle++) {
-        print_cycle_info(parr, size, cycle);
+
+    for (; cycle < first_arrival_time; cycle++) { 
+        print_cycle_info(parr, size, cycle); 
     }
+    
+
 }
 
 void rr_scheduler() { }
