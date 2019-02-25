@@ -5,6 +5,7 @@
 #include <tuple>
 #include <string>
 #include <chrono> 
+#include <iomanip>
 #include "header.h"
 
 using namespace std;
@@ -19,12 +20,13 @@ void fcfs_scheduler(process* parr, int size) {
      *              Alternate between CPU and I/O bursts (blocked).
      *              Blocked processes, when ready, join the end of the queue. 
      */
-    // queue<process> q;
-    // int cycle = 0;
-    // int first_arrival_time = parr -> arrival_time;
-    // for (cycle; cycle < first_arrival_time; cycle++) {
-    //     print_cycle_info(parr, size, cycle);
-    // }
+    queue<process> q;
+    int cycle = 0;
+    int first_arrival_time = parr -> arrival_time;
+    cout << "Fist arrival time is: " << first_arrival_time << endl;
+    for (; cycle < 1; cycle++) {
+        print_cycle_info(parr, size, cycle);
+    }
 }
 
 void rr_scheduler() { }
@@ -39,10 +41,11 @@ int main(int argc, char** argv) {
     int pcount;
     tie(parr, pcount) = read_file(fname);
     // cout << "Array before sorting" << endl;
-    print_process_arr(parr, pcount);
-    // process* sparr = sort_parr_by_arrival(parr, pcount);
+    // print_process_arr(parr, pcount);
+    process* sparr = sort_parr_by_arrival(parr, pcount);
     // cout << "Array after sorting" << endl;
     // print_process_arr(sparr, pcount);
     // cout << randomOS(1) << endl;
+    fcfs_scheduler(sparr, pcount);
     return 0;
 }

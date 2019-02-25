@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <iomanip>
 #include "header.h"
 
 using namespace std;
@@ -109,10 +110,12 @@ process* generate_process_arr(int size) {
 
 
 void print_cycle_info(process* p, int size, int cycle_num) {
-    // cout << "Before cycle\t" << cycle_num;
-    // for (int i = 0; i < size; i++) {
-    //     cout << 
-    // }
+    cout << "Before cycle\t" << cycle_num << ":\t";
+    for (int i = 0; i < size; i++) {
+        cout << setw(11) << (p + i) -> state 
+            << setw(3) << (p + i) -> remaining_burst;
+    }
+    cout << endl;
 }
 
 
