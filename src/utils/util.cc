@@ -24,14 +24,11 @@ tuple<process*, int> read_file(string fname) {
         process temp_process;
         temp_process.state = UNSTARTED;
         temp_process.remaining_burst = 0;
-
         process* parr = generate_process_arr(pcount);
         int ctr = 0;
         int p_added = 0;
-
         while (input_file >> val) {
             if (isalpha(val[0]) || input_file.eof()) break;
-
             switch (ctr) {
                 case 0: temp_process.arrival_time = stoi(val); break;
                 case 1: temp_process.init_interval = stoi(val); break;
@@ -39,7 +36,6 @@ tuple<process*, int> read_file(string fname) {
                 case 3: temp_process.io_time = stoi(val); break;
                 default: cout << "Error in parsing process." << endl; break;
             }
-
             if (ctr == EOPROCESS) {
                 parr[p_added] = temp_process;
                 p_added++;
