@@ -19,10 +19,12 @@ void fcfs_scheduler(process* parr, int size) {
      *              Alternate between CPU and I/O bursts (blocked).
      *              Blocked processes, when ready, join the end of the queue. 
      */
-    queue<process> q;
-    int cycle = 0;
-    int first_arrival_time = parr -> arrival_time;
-    cycle = first_arrival_time;
+    // queue<process> q;
+    // int cycle = 0;
+    // int first_arrival_time = parr -> arrival_time;
+    // for (cycle; cycle < first_arrival_time; cycle++) {
+    //     print_cycle_info(parr, size, cycle);
+    // }
 }
 
 void rr_scheduler() { }

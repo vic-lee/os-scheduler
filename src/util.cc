@@ -21,6 +21,9 @@ tuple<process*, int> read_file(string fname) {
         input_file >> val;
         int pcount = stoi(val);
         process temp_process;
+        temp_process.state = UNSTARTED;
+        temp_process.remaining_burst = 0;
+
         process* parr = generate_process_arr(pcount);
         int ctr = 0;
         int p_added = 0;
@@ -37,7 +40,6 @@ tuple<process*, int> read_file(string fname) {
                     temp_process.cpu_time = stoi(val);
                 case 3: 
                     temp_process.io_time = stoi(val);
-                    temp_process.state = UNSTARTED;
             }
 
             if (ctr == EOPROCESS) {
@@ -81,7 +83,9 @@ void print_process(process p) {
         << "Process init interval: \t" << p.init_interval << "\n"
         << "Process CPU time: \t" << p.cpu_time << "\n"
         << "Process I/O time: \t" << p.io_time << "\n" 
-        << "Process state: \t" << p.state << endl;
+        << "Process state: \t" << p.state << "\n"
+        // << "Process remaining burst: \t" << p.remaining_burst << "\n"
+        << endl;
 }
 
 
@@ -101,6 +105,14 @@ process* generate_process_arr(int size) {
         cout << "Could not assign memory to process array. Terminating..." << endl;
         return nullptr;
     }
+}
+
+
+void print_cycle_info(process* p, int size, int cycle_num) {
+    // cout << "Before cycle\t" << cycle_num;
+    // for (int i = 0; i < size; i++) {
+    //     cout << 
+    // }
 }
 
 
