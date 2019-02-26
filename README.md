@@ -9,7 +9,7 @@
 
 ```
 g++ -Wall -std=c++11 main.cc utils/*
-./a.out
+./a.out ../test/in/input-x
 ```
 
 ## Notes on lab2 
