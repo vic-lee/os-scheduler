@@ -5,6 +5,12 @@
 3. Uniprogrammed 
 4. Shortest Job First (SJF) 
 
+## Setup
+
+```
+g++ -Wall -std=c++11 main.cc utils/*
+./a.out
+```
 
 ## Notes on lab2 
 - Altering b/t CPU bursts and IO bursts
