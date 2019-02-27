@@ -18,17 +18,21 @@ struct process {
     int remaining_burst;
 };
 
-/*      utils/printer.cc        */
-void print_process(process p);
-void print_process_arr(process* p, int size);
-void print_cycle_info(process* p, int size, int cycle_num);
+namespace scheduler {
 
-/*      utils/util.cc        */
-std::tuple<process*, int> read_file(std::string fname);
-int randomOS(int u);
-process* generate_process_arr(int size);
+    /*      utils/printer.cc        */
+    void print_process(process p);
+    void print_process_arr(process* p, int size);
+    void print_cycle_info(process* p, int size, int cycle_num);
 
-/*      utils/sort.cc        */
-process* sort_parr_by_arrival(process* parr, int size);
+    /*      utils/util.cc        */
+    std::tuple<process*, int> read_file(std::string fname);
+    int randomOS(int u);
+    process* generate_process_arr(int size);
+
+    /*      utils/sort.cc        */
+    process* sort_parr_by_arrival(process* parr, int size);
+
+}
 
 #endif
