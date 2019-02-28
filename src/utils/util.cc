@@ -64,7 +64,7 @@ namespace scheduler {
                 i++;
             }
             file_rand_num.close();
-            std::cout << "Randum Number:\t" << line << " Ret:\t" << stoi(line) % u << std::endl;
+            std::cout << "Randum Number: " << line << "\tRet: " << (1 + stoi(line) % u) << std::endl;
             return 1 + (stoi(line) % u);
         } else {
             std::cout << "Could not open random-numbers.txt. Terminating..." << std::endl;

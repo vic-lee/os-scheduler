@@ -12,7 +12,37 @@ namespace s = scheduler;
 
 namespace scheduler {
 
-    void fcfs(process* parr, int size) {
+    class RandNumAccessor {
+        public:
+            int cur_line = 1;
+            
+            int randomOS(int u) {
+                std::ifstream file_rand_num("random-numbers.txt");
+                if (file_rand_num) {
+                    int i = 0;
+                    std::string line; 
+                    while (i < cur_line) {
+                        getline(file_rand_num, line);
+                        i++;
+                    }
+                    file_rand_num.close();
+                    std::cout 
+                        << "Randum Number: " << line 
+                        << "\tRet: " << (1 + stoi(line) % u) 
+                        << std::endl;
+                    cur_line++;
+                    return 1 + (stoi(line) % u);
+                } else {
+                    std::cout 
+                        << "Could not open random-numbers.txt. Terminating..." 
+                        << std::endl;
+                    return -1;
+                }
+            }
+    };
+
+
+    void fcfs(process* parr, int size, RandNumAccessor rnum) {
         /**
          * Input:   pointer to sorted process array, array size, flag(s)
          * Output:  print on screen. 
@@ -33,7 +63,6 @@ namespace scheduler {
             s::print_cycle_info(parr, size, cycle); 
         }
         int ctr = 0;
-        int ln = 1;
         do {
             while ((parr_cur < size) && (parr + parr_cur) -> arrival_time == cycle) {
                 (parr + parr_cur) -> state = READY;
@@ -41,14 +70,11 @@ namespace scheduler {
                 d.push_back(*(parr + parr_cur));
                 parr_cur++;
             }
-            std::cout << "Finish pushing onto deque" << std::endl;
             while (d.at(dcur).state != READY) dcur++;
             process curproc = d.at(dcur);
-            int burst = s::randomOS(curproc.interval, ln);
-            ln++;
+            int burst = rnum.randomOS(curproc.interval);
             if (burst > curproc.cpu_time) burst = curproc.cpu_time;
             curproc.interval = burst;
-            std::cout << burst << std::endl;
             ctr++;
         } while (!d.empty() && ctr < 10);
 
@@ -79,7 +105,8 @@ int main(int argc, char** argv) {
     process* sparr = s::sort_parr_by_arrival(parr, pcount);
     std::cout << "Array after sorting" << std::endl;
     // s::print_process_arr(sparr, pcount);
-    s::fcfs(sparr, pcount);
+    s::RandNumAccessor rnum;
+    s::fcfs(sparr, pcount, rnum);
     free(parr);
     free(sparr);
     return 0;
