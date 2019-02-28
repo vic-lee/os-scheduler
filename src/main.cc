@@ -126,7 +126,6 @@ int main(int argc, char** argv) {
     for (int i = 0; i < procvect.size(); i++) {
         s::print_process(procvect[i]);
     }
-    // parr = s::sort_parr_by_arrival(parr, pcount);
     // s::RandNumAccessor rnum;
     // std::cout << "parr: " << parr << std::endl;
 

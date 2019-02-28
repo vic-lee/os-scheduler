@@ -32,9 +32,6 @@ namespace scheduler {
     process* parrcpy(process* parr, int size);
     bool is_procs_terminated(process* parr, int size);
 
-    /*      utils/sort.cc        */
-    process* sort_parr_by_arrival(process* parr, int size);
-
 }
 
 #endif
