@@ -54,25 +54,6 @@ namespace scheduler {
     }
 
 
-    int randomOS(int u, int ln) {
-        std::ifstream file_rand_num("random-numbers.txt");
-        if (file_rand_num) {
-            int i = 0;
-            std::string line; 
-            while (i < ln) {
-                getline(file_rand_num, line);
-                i++;
-            }
-            file_rand_num.close();
-            std::cout << "Randum Number: " << line << "\tRet: " << (1 + stoi(line) % u) << std::endl;
-            return 1 + (stoi(line) % u);
-        } else {
-            std::cout << "Could not open random-numbers.txt. Terminating..." << std::endl;
-            return -1;
-        }
-    }
-
-
     process* generate_process_arr(int size) {
         process* p = (process*) malloc(size * sizeof(process));
         if (p) {
