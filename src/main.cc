@@ -15,7 +15,7 @@ namespace scheduler {
     class RandNumAccessor {
         public:
             int cur_line = 1;
-            
+
             int randomOS(int u) {
                 std::ifstream file_rand_num("random-numbers.txt");
                 if (file_rand_num) {
@@ -71,10 +71,14 @@ namespace scheduler {
                 parr_cur++;
             }
             while (d.at(dcur).state != READY) dcur++;
-            process curproc = d.at(dcur);
-            int burst = rnum.randomOS(curproc.interval);
-            if (burst > curproc.cpu_time) burst = curproc.cpu_time;
-            curproc.interval = burst;
+
+            process* cp = &d.at(dcur);
+            int burst = rnum.randomOS(cp -> interval);
+
+            if (burst > cp -> cpu_time) burst = cp -> cpu_time;
+            cp -> cpu_time -= burst;
+
+            cp -> interval = burst;
             ctr++;
         } while (!d.empty() && ctr < 10);
 
