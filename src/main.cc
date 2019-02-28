@@ -42,7 +42,7 @@ namespace scheduler {
     };
 
 
-    void fcfs(process* parr, int size, RandNumAccessor rnum) {
+    void fcfs(process* p, int size, RandNumAccessor rnum) {
         /**
          * Input:   pointer to sorted process array, array size, flag(s)
          * Output:  print on screen. 
@@ -53,6 +53,7 @@ namespace scheduler {
          *              Blocked processes, when ready, join the end of the queue. 
          */
         std::deque<process> d;
+        process* parr = s::parrcpy(p, size);
         int cycle = 0;
         int parr_cur = 0;   // consider making sorted parr a queue
         int dcur = 0;
@@ -62,7 +63,7 @@ namespace scheduler {
         for (; cycle < first_arrival_time; cycle++) { 
             s::print_cycle_info(parr, size, cycle); 
         }
-        int ctr = 0;
+
         do {
             while ((parr_cur < size) && (parr + parr_cur) -> arrival_time == cycle) {
                 (parr + parr_cur) -> state = READY;
@@ -77,10 +78,13 @@ namespace scheduler {
 
             if (burst > cp -> cpu_time) burst = cp -> cpu_time;
             cp -> cpu_time -= burst;
-
             cp -> interval = burst;
-            ctr++;
-        } while (!d.empty() && ctr < 10);
+
+            if (cp -> cpu_time == 0) {
+                cp -> state = TERMINATED;
+            }
+
+        } while (!d.empty());
 
     }
 

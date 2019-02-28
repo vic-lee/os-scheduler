@@ -64,4 +64,12 @@ namespace scheduler {
         }
     }
 
+    process* parrcpy(process* parr, int size) {
+        process* newparr = (process*) malloc(size * sizeof(process));
+        for (int i = 0; i < size; i++) {
+            *(newparr + i) = *(parr + i);
+        }
+        return newparr;
+    }
+
 }

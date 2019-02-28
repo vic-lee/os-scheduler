@@ -28,6 +28,7 @@ namespace scheduler {
     /*      utils/util.cc        */
     std::tuple<process*, int> read_file(std::string fname);
     process* generate_process_arr(int size);
+    process* parrcpy(process* parr, int size);
 
     /*      utils/sort.cc        */
     process* sort_parr_by_arrival(process* parr, int size);
