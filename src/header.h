@@ -10,11 +10,12 @@
 #define TERMINATED "terminated"
 
 struct process {
+    std::string state;
+    int pid;
     int arrival_time;
     int interval;
     int cpu_time;
     int io_time;
-    std::string state;
     int remaining_burst;
 };
 

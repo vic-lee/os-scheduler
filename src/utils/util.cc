@@ -24,6 +24,7 @@ namespace scheduler {
             std::string val;
             input_file >> val;
             // int pcount = stoi(val);
+            int pctr = 0;
             process temp_process;
             temp_process.state = UNSTARTED;
             temp_process.remaining_burst = 0;
@@ -38,6 +39,8 @@ namespace scheduler {
                     default: std::cout << "Error in parsing process." << std::endl; break;
                 }
                 if (ctr == EOPROCESS) {
+                    temp_process.pid = pctr;
+                    pctr++;
                     procvect.push_back(temp_process);
                 }
                 if (ctr < EOPROCESS) ctr++;

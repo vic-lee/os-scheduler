@@ -99,6 +99,12 @@ namespace scheduler {
 
     void sjf_scheduler() { }
 
+    bool comp_proc(process a, process b) {
+        if (a.arrival_time < b.arrival_time) return true;
+        if (a.arrival_time == b.arrival_time) return a.pid < b.pid;
+        return false;
+    }
+
 }
 
 
@@ -112,6 +118,11 @@ int main(int argc, char** argv) {
     }
     std::vector<process> procvect = s::read_file(fname);
     // int pcount = procvect.size();
+    for (int i = 0; i < procvect.size(); i++) {
+        s::print_process(procvect[i]);
+    }
+    std::sort(procvect.begin(), procvect.end(), s::comp_proc);
+    std::cout << "After `sorting" << std::endl;
     for (int i = 0; i < procvect.size(); i++) {
         s::print_process(procvect[i]);
     }

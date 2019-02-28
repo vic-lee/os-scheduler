@@ -7,7 +7,9 @@
 namespace scheduler {
 
     void print_process(process p) {
-        std::cout << "Process arrival time: \t" << p.arrival_time << "\n"
+        std::cout 
+            << "Process ID: \t\t" << p.pid << "\n"
+            << "Process arrival time: \t" << p.arrival_time << "\n"
             << "Process init interval: \t" << p.interval << "\n"
             << "Process CPU time: \t" << p.cpu_time << "\n"
             << "Process I/O time: \t" << p.io_time << "\n" 
