@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <iomanip>
+#include <vector>
 #include "../header.h"
 
 namespace scheduler {
@@ -24,6 +25,10 @@ namespace scheduler {
             std::cout << "Process " << i << std::endl;
             print_process(*(p + i));
         }
+    }
+
+    void print_process_vect(std::vector<process> const &v) {
+        for (process p : v) { print_process(p); }
     }
 
 

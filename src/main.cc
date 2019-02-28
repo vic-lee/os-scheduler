@@ -118,14 +118,11 @@ int main(int argc, char** argv) {
     }
     std::vector<process> procvect = s::read_file(fname);
     // int pcount = procvect.size();
-    for (int i = 0; i < procvect.size(); i++) {
-        s::print_process(procvect[i]);
-    }
+    s::print_process_vect(procvect);
     std::sort(procvect.begin(), procvect.end(), s::comp_proc);
     std::cout << "After `sorting" << std::endl;
-    for (int i = 0; i < procvect.size(); i++) {
-        s::print_process(procvect[i]);
-    }
+    s::print_process_vect(procvect);
+
     // s::RandNumAccessor rnum;
     // std::cout << "parr: " << parr << std::endl;
 
