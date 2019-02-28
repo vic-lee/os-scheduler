@@ -11,7 +11,7 @@
 
 struct process {
     int arrival_time;
-    int init_interval;
+    int interval;
     int cpu_time;
     int io_time;
     std::string state;

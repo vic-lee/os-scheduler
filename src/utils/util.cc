@@ -32,7 +32,7 @@ namespace scheduler {
                 if (isalpha(val[0]) || input_file.eof()) break;
                 switch (ctr) {
                     case 0: temp_process.arrival_time = stoi(val); break;
-                    case 1: temp_process.init_interval = stoi(val); break;
+                    case 1: temp_process.interval = stoi(val); break;
                     case 2: temp_process.cpu_time = stoi(val); break;
                     case 3: temp_process.io_time = stoi(val); break;
                     default: std::cout << "Error in parsing process." << std::endl; break;

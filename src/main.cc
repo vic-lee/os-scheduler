@@ -8,7 +8,7 @@
 #include <iomanip>
 #include "header.h"
 
-// using namespace std;
+namespace s = scheduler;
 
 namespace scheduler {
 
@@ -22,15 +22,31 @@ namespace scheduler {
          *              Alternate between CPU and I/O bursts (blocked).
          *              Blocked processes, when ready, join the end of the queue. 
          */
-        std::queue<process> q;
+        std::deque<process> d;
         int cycle = 0;
-
+        int parr_cur = 0;   // consider making sorted parr a queue
+        int dcur = 0;
         int first_arrival_time = parr -> arrival_time;
-        std::cout << "Fist arrival time is: " << first_arrival_time << std::endl;
+        std::cout << "First arrival time is: " << first_arrival_time << std::endl;
 
         for (; cycle < first_arrival_time; cycle++) { 
-            print_cycle_info(parr, size, cycle); 
+            s::print_cycle_info(parr, size, cycle); 
         }
+
+        do {
+            while ((parr + parr_cur) -> arrival_time == cycle) {
+                (parr + parr_cur) -> state = READY;
+                d.push_back(*(parr + parr_cur));
+                parr_cur++;
+            }
+            while (d.at(dcur).state != READY) dcur++;
+            process curproc = d.at(dcur);
+            int burst = s::randomOS(curproc.interval);
+            if (burst > curproc.cpu_time) burst = curproc.cpu_time;
+            curproc.interval = burst;
+            std::cout << burst << std::endl;
+
+        } while (!d.empty());
 
     }
 
@@ -44,7 +60,6 @@ namespace scheduler {
 
 
 int main(int argc, char** argv) {
-    namespace s = scheduler;
     std::string fname;
     try {
         fname = argv[1];
@@ -62,5 +77,7 @@ int main(int argc, char** argv) {
     s::print_process_arr(sparr, pcount);
     std::cout << s::randomOS(1) << std::endl;
     s::fcfs(sparr, pcount);
+    free(parr);
+    free(sparr);
     return 0;
 }
