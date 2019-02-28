@@ -58,9 +58,9 @@ int main(int argc, char** argv) {
     std::cout << "Array before sorting" << std::endl;
     s::print_process_arr(parr, pcount);
     process* sparr = s::sort_parr_by_arrival(parr, pcount);
-    // std::cout << "Array after sorting" << std::endl;
-    // print_process_arr(sparr, pcount);
-    // std::cout << randomOS(1) << std::endl;
+    std::cout << "Array after sorting" << std::endl;
+    s::print_process_arr(sparr, pcount);
+    std::cout << s::randomOS(1) << std::endl;
     s::fcfs(sparr, pcount);
     return 0;
 }

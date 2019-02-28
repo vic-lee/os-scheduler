@@ -5,9 +5,10 @@
 3. Uniprogrammed 
 4. Shortest Job First (SJF) 
 
-## Setup
+## Getting started
 
 ```
+cd src
 g++ -Wall -std=c++11 main.cc utils/*
 ./a.out ../test/in/input-x
 ```
