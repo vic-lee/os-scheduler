@@ -43,7 +43,7 @@ namespace scheduler {
     };
 
 
-    void fcfs(process* p, int size, RandNumAccessor rnum) {
+    void fcfs(std::vector<process> pv, RandNumAccessor rnum) {
         /**
          * Input:   pointer to sorted process array, array size, flag(s)
          * Output:  print on screen. 
@@ -53,31 +53,23 @@ namespace scheduler {
          *              Alternate between CPU and I/O bursts (blocked).
          *              Blocked processes, when ready, join the end of the queue. 
          */
-        process* parr = s::parrcpy(p, size);
-        if (!parr) {
-            std::cout << "BAD PARR" << std::endl;
-            return;
-        }
-        std::cout << "new parr: " << parr << std::endl;
+
         int cycle = 0;
+        int size = pv.size();
         int parr_cur = 0;   // consider making sorted parr a queue
-        int first_arrival_time = parr -> arrival_time;
+        int first_arrival_time = pv[0].arrival_time;
         std::cout << "First arrival time is: " << first_arrival_time << std::endl;
-
-        for (; cycle < first_arrival_time; cycle++) { 
-            s::print_cycle_info(parr, size, cycle); 
-        }
-
         do {
-            while ((parr_cur < size) && (parr + parr_cur) -> arrival_time == cycle) {
-                (parr + parr_cur) -> state = READY;
-                s::print_process(*(parr + parr_cur));
+            while ((parr_cur < size) && pv[parr_cur].arrival_time == cycle) {
+                pv[parr_cur].state = READY;
+                s::print_process(pv[parr_cur]);
                 parr_cur++;
             }
-            int active_cur = 0;
-            while ((parr + active_cur) -> state != READY) active_cur++;
 
-            process* cp = parr + active_cur;
+            int active_cur = 0;
+            while (pv[active_cur].state != READY) active_cur++;
+
+            process* cp = &pv[active_cur]; 
             int burst = rnum.randomOS(cp -> interval);
 
             if (burst > cp -> cpu_time) burst = cp -> cpu_time;
@@ -86,10 +78,10 @@ namespace scheduler {
 
             if (cp -> cpu_time == 0) {
                 cp -> state = TERMINATED;
+                print_process(*cp);
             }
 
-        } while (! s::is_procs_terminated(parr, size));
-        delete [] parr;
+        } while (! s::is_procs_terminated(pv));
 
     }
 
@@ -120,13 +112,12 @@ int main(int argc, char** argv) {
     // int pcount = procvect.size();
     s::print_process_vect(procvect);
     std::sort(procvect.begin(), procvect.end(), s::comp_proc);
-    std::cout << "After `sorting" << std::endl;
+    std::cout << "After sorting" << std::endl;
     s::print_process_vect(procvect);
 
-    // s::RandNumAccessor rnum;
-    // std::cout << "parr: " << parr << std::endl;
+    s::RandNumAccessor rnum;
 
-    // s::fcfs(parr, pcount, rnum);
+    s::fcfs(procvect, rnum);
 
     return 0;
 }

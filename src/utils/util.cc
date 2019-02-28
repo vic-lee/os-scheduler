@@ -51,29 +51,9 @@ namespace scheduler {
         return procvect;
     }
 
-
-    // std::vector<process> generate_process_arr(int size) {
-    //     if (p) {
-    //         return p;
-    //     } else {
-    //         std::cout << "Could not assign memory to process array. Terminating..." << std::endl;
-    //         return nullptr;
-    //     }
-    // }
-
-    process* parrcpy(process* parr, int size) {
-        std::cout << "Attempting malloc" << std::endl;
-        process* newparr = (process*) malloc(size * sizeof(process));
-        std::cout << "end malloc" << std::endl;
-        memcpy(newparr, parr, size);
-        print_process_arr(parr, size);
-        print_process_arr(newparr, size);
-        return newparr;
-    }
-
-    bool is_procs_terminated(process* parr, int size) {
-        for (int i = 0; i < size; i++) {
-            if ((parr + i) -> state != TERMINATED) return false;
+    bool is_procs_terminated(std::vector<process> const &vect) {
+        for (int i = 0; i < vect.size(); i++) {
+            if (vect[i].state != TERMINATED) return false;
         }
         return true;
     }

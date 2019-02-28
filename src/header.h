@@ -30,7 +30,7 @@ namespace scheduler {
     std::vector<process> read_file(std::string fname);
     // process* generate_process_arr(int size);
     process* parrcpy(process* parr, int size);
-    bool is_procs_terminated(process* parr, int size);
+    bool is_procs_terminated(std::vector<process> const &vect);
 
 }
 
