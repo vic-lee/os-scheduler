@@ -13,6 +13,15 @@ namespace s = scheduler;
 
 namespace scheduler {
 
+    int get_first_proc_by_state(std::vector<Process> const &v, std::string state) {
+        for (int i = 0; i < v.size(); i++) {
+            if (v[i].io_time >= 0 and v[i].state == state) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     void fcfs(std::vector<Process> pv, RandNumAccessor rnum) {
         /**
          * Input:   pointer to sorted process array, array size, flag(s)
@@ -38,46 +47,59 @@ namespace scheduler {
                 pvcur++;
             }
 
-            int active_cur = 0;
-            while (pv[active_cur].cpu_time <= 0 || pv[active_cur].state != READY) active_cur++;
+            int blocked_cur = get_first_proc_by_state(pv, BLOCKED);
+            int running_cur = get_first_proc_by_state(pv, RUNNING);
+            int ready_cur = -1;
+            if (running_cur == -1)
+                ready_cur = get_first_proc_by_state(pv, READY);
 
-            Process* cp = &pv[active_cur]; 
-            if (cp -> remaining_cpu_burst == 0) {
-                int burst = rnum.randomOS(cp -> interval);
-                if (burst > cp -> cpu_time) burst = cp -> cpu_time;
-                cp -> interval = burst;
-                cp -> remaining_cpu_burst = burst;
-                print_process(*cp);
-            } 
-            cp -> remaining_cpu_burst -= 1;
-            cp -> cpu_time -= 1;
-            
-            if (cp -> remaining_cpu_burst == 0) cp -> state = BLOCKED;
-
-
-            int blocked_cur = 0;
-            while (pv[blocked_cur].io_time <= 0 || pv[blocked_cur].state != BLOCKED) blocked_cur++;
-            Process* bp = &pv[blocked_cur];
-
-            
-            if (bp -> remaining_io_burst == 0) {
-                int burst = rnum.randomOS(bp -> interval);
-                if (burst > bp -> io_time) burst = bp -> io_time;
-                bp -> interval = burst;
-                bp -> remaining_io_burst = burst;
+            if (running_cur != -1) {
+                Process* ap = &pv[running_cur];
+                ap -> remaining_cpu_burst --;
+                ap -> cpu_time --;
+                if (ap -> remaining_cpu_burst == 0) ap -> state = BLOCKED;
             }
-            bp -> remaining_io_burst -= 1;
-            cp -> io_time -= 1;
 
-            if (bp -> remaining_io_burst == 0) bp -> state = READY;
+            if (ready_cur != -1) {
 
-
-            if (cp -> cpu_time == 0 && cp -> io_time == 0) {
-                cp -> state = TERMINATED;
-                print_process(*cp);
+                Process* cp = &pv[ready_cur]; 
+                
+                if (cp -> remaining_cpu_burst == 0) {
+                    int burst = rnum.randomOS(cp -> interval);
+                    if (burst > cp -> cpu_time) burst = cp -> cpu_time;
+                    cp -> interval = burst;
+                    cp -> remaining_cpu_burst = burst;
+                    cp -> state = RUNNING;
+                } 
+                
+                if (cp -> remaining_cpu_burst == 0) cp -> state = BLOCKED;
             }
+
+            
+            if (blocked_cur != -1) {
+
+                Process* bp = &pv[blocked_cur];
+
+                if (bp -> remaining_io_burst == 0) {
+                    int burst = rnum.randomOS(bp -> interval);
+                    if (burst > bp -> io_time) burst = bp -> io_time;
+                    bp -> interval = burst;
+                    bp -> remaining_io_burst = burst;
+                }
+                bp -> remaining_io_burst -= 1;
+                bp -> io_time -= 1;
+
+                if (bp -> remaining_io_burst == 0) bp -> state = READY;
+
+            }
+
+
+            // if (cp -> cpu_time == 0 && cp -> io_time == 0) {
+            //     cp -> state = TERMINATED;
+            //     print_process(*cp);
+            // }
             std::cout << "ctr is " << ctr << std::endl;
-            print_process(*cp);
+            print_process_vect(pv);
             ctr++;
         } while (! s::is_procs_terminated(pv) && ctr < 10);
 
