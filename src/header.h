@@ -22,6 +22,8 @@ namespace scheduler {
             int remaining_cpu_burst;
             int remaining_io_burst;
             void set_state();
+            void decr_cpu_burst();
+            void decr_io_burst();
     };
 
     class RandNumAccessor {

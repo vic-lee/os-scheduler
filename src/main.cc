@@ -94,17 +94,13 @@ namespace scheduler {
             blocked_cur = get_first_proc_by_state(pv, BLOCKED);
 
             if (running_cur != -1) {
-                Process* ap = &pv[running_cur];
-                ap -> remaining_cpu_burst --;
-                ap -> cpu_time --;
-                if (ap -> remaining_cpu_burst == 0) ap -> state = BLOCKED;
+                // Process* ap = &pv[running_cur];
+                // pv[running_cur].decr_cpu_burst();
             }
 
             if (blocked_cur != -1) {
-                Process* bp = &pv[blocked_cur];
-                bp -> remaining_cpu_burst --;
-                bp -> io_time --;
-                if (bp -> remaining_io_burst == 0) bp -> state = READY;
+                // Process* bp = &pv[blocked_cur];
+                // pv[blocked_cur].decr_io_burst();
             }
             
 
