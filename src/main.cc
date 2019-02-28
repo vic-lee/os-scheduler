@@ -13,7 +13,7 @@ namespace s = scheduler;
 
 namespace scheduler {
 
-    void fcfs(std::vector<process> pv, RandNumAccessor rnum) {
+    void fcfs(std::vector<Process> pv, RandNumAccessor rnum) {
         /**
          * Input:   pointer to sorted process array, array size, flag(s)
          * Output:  print on screen. 
@@ -41,7 +41,7 @@ namespace scheduler {
             int active_cur = 0;
             while (pv[active_cur].cpu_time <= 0 || pv[active_cur].state != READY) active_cur++;
 
-            process* cp = &pv[active_cur]; 
+            Process* cp = &pv[active_cur]; 
             if (cp -> remaining_cpu_burst == 0) {
                 int burst = rnum.randomOS(cp -> interval);
                 if (burst > cp -> cpu_time) burst = cp -> cpu_time;
@@ -57,7 +57,7 @@ namespace scheduler {
 
             int blocked_cur = 0;
             while (pv[blocked_cur].io_time <= 0 || pv[blocked_cur].state != BLOCKED) blocked_cur++;
-            process* bp = &pv[blocked_cur];
+            Process* bp = &pv[blocked_cur];
 
             
             if (bp -> remaining_io_burst == 0) {
@@ -89,7 +89,7 @@ namespace scheduler {
 
     void sjf_scheduler() { }
 
-    bool comp_proc(process a, process b) {
+    bool comp_proc(Process a, Process b) {
         if (a.arrival_time < b.arrival_time) return true;
         if (a.arrival_time == b.arrival_time) return a.pid < b.pid;
         return false;
@@ -106,7 +106,7 @@ int main(int argc, char** argv) {
         std::cout << "Please provide a filename as an argument." << std::endl;
         return 0;
     }
-    std::vector<process> procvect = s::read_file(fname);
+    std::vector<s::Process> procvect = s::read_file(fname);
     // int pcount = procvect.size();
     s::print_process_vect(procvect);
     std::sort(procvect.begin(), procvect.end(), s::comp_proc);

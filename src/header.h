@@ -9,18 +9,20 @@
 #define BLOCKED "blocked"
 #define TERMINATED "terminated"
 
-struct process {
-    std::string state;
-    int pid;
-    int arrival_time;
-    int interval;
-    int cpu_time;
-    int io_time;
-    int remaining_cpu_burst;
-    int remaining_io_burst;
-};
-
 namespace scheduler {
+
+    class Process {
+        public: 
+            std::string state;
+            int pid;
+            int arrival_time;
+            int interval;
+            int cpu_time;
+            int io_time;
+            int remaining_cpu_burst;
+            int remaining_io_burst;
+            void set_state();
+    };
 
     class RandNumAccessor {
         public: 
@@ -29,15 +31,14 @@ namespace scheduler {
     };
 
     /*      utils/printer.cc        */
-    void print_process(process p);
-    void print_process_vect(std::vector<process> const &v);
-    void print_cycle_info(process* p, int size, int cycle_num);
+    void print_process(Process p);
+    void print_process_vect(std::vector<Process> const &v);
+    void print_cycle_info(Process* p, int size, int cycle_num);
 
     /*      utils/util.cc        */
-    std::vector<process> read_file(std::string fname);
+    std::vector<Process> read_file(std::string fname);
     // process* generate_process_arr(int size);
-    process* parrcpy(process* parr, int size);
-    bool is_procs_terminated(std::vector<process> const &vect);
+    bool is_procs_terminated(std::vector<Process> const &vect);
 
 }
 

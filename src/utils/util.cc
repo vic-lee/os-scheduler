@@ -8,7 +8,7 @@
 namespace scheduler {
 
 
-    std::vector<process> read_file(std::string fname) {
+    std::vector<Process> read_file(std::string fname) {
         /**
          * This function reads an formatted input file and stores processes 
          * specified in the file in an array. The array is of type struct process. 
@@ -18,14 +18,14 @@ namespace scheduler {
          *              a pointer to the process array
          *              an int of the array's size
          */
-        std::vector<process> procvect; 
+        std::vector<Process> procvect; 
         std::ifstream input_file(fname);
         if (input_file.is_open()) {
             std::string val;
             input_file >> val;
             // int pcount = stoi(val);
             int pctr = 0;
-            process temp_process;
+            Process temp_process;
             temp_process.state = UNSTARTED;
             temp_process.remaining_io_burst = 0;
             temp_process.remaining_cpu_burst = 0;
@@ -52,7 +52,7 @@ namespace scheduler {
         return procvect;
     }
 
-    bool is_procs_terminated(std::vector<process> const &vect) {
+    bool is_procs_terminated(std::vector<Process> const &vect) {
         for (int i = 0; i < vect.size(); i++) {
             if (vect[i].state != TERMINATED) return false;
         }

@@ -7,7 +7,7 @@
 
 namespace scheduler {
 
-    void print_process(process p) {
+    void print_process(Process p) {
         std::cout 
             << "Process ID: \t\t" << p.pid << "\n"
             << "Process arrival time: \t" << p.arrival_time << "\n"
@@ -21,12 +21,12 @@ namespace scheduler {
     }
 
 
-    void print_process_vect(std::vector<process> const &v) {
-        for (process p : v) { print_process(p); }
+    void print_process_vect(std::vector<Process> const &v) {
+        for (Process p : v) { print_process(p); }
     }
 
 
-    void print_cycle_info(process* p, int size, int cycle_num) {
+    void print_cycle_info(Process* p, int size, int cycle_num) {
         std::cout << "Before cycle\t" << cycle_num << ":\t";
         for (int i = 0; i < size; i++) {
             std::cout << std::setw(11) << (p + i) -> state 
