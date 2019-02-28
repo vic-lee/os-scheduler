@@ -22,6 +22,12 @@ struct process {
 
 namespace scheduler {
 
+    class RandNumAccessor {
+        public: 
+            int cur_line = 1;
+            int randomOS(int u);
+    };
+
     /*      utils/printer.cc        */
     void print_process(process p);
     void print_process_vect(std::vector<process> const &v);

@@ -13,36 +13,6 @@ namespace s = scheduler;
 
 namespace scheduler {
 
-    class RandNumAccessor {
-        public:
-            int cur_line = 1;
-
-            int randomOS(int u) {
-                std::ifstream file_rand_num("random-numbers.txt");
-                if (file_rand_num) {
-                    int i = 0;
-                    std::string line; 
-                    while (i < cur_line) {
-                        getline(file_rand_num, line);
-                        i++;
-                    }
-                    file_rand_num.close();
-                    std::cout 
-                        << "Randum Number: " << line 
-                        << "\tRet: " << (1 + stoi(line) % u) 
-                        << std::endl;
-                    cur_line++;
-                    return 1 + (stoi(line) % u);
-                } else {
-                    std::cout 
-                        << "Could not open random-numbers.txt. Terminating..." 
-                        << std::endl;
-                    return -1;
-                }
-            }
-    };
-
-
     void fcfs(std::vector<process> pv, RandNumAccessor rnum) {
         /**
          * Input:   pointer to sorted process array, array size, flag(s)
@@ -56,32 +26,60 @@ namespace scheduler {
 
         int cycle = 0;
         int size = pv.size();
-        int parr_cur = 0;   // consider making sorted parr a queue
+        int pvcur = 0;   // consider making sorted parr a queue
         int first_arrival_time = pv[0].arrival_time;
         std::cout << "First arrival time is: " << first_arrival_time << std::endl;
+        int ctr = 0;
         do {
-            while ((parr_cur < size) && pv[parr_cur].arrival_time == cycle) {
-                pv[parr_cur].state = READY;
-                s::print_process(pv[parr_cur]);
-                parr_cur++;
+            while ((pvcur < size) && pv[pvcur].arrival_time == cycle) {
+                pv[pvcur].state = READY;
+                std::cout << "Adding process " << pv[pvcur].pid << std::endl;
+                s::print_process(pv[pvcur]);
+                pvcur++;
             }
 
             int active_cur = 0;
-            while (pv[active_cur].state != READY) active_cur++;
+            while (pv[active_cur].cpu_time <= 0 || pv[active_cur].state != READY) active_cur++;
 
             process* cp = &pv[active_cur]; 
-            int burst = rnum.randomOS(cp -> interval);
+            if (cp -> remaining_cpu_burst == 0) {
+                int burst = rnum.randomOS(cp -> interval);
+                if (burst > cp -> cpu_time) burst = cp -> cpu_time;
+                cp -> interval = burst;
+                cp -> remaining_cpu_burst = burst;
+                print_process(*cp);
+            } 
+            cp -> remaining_cpu_burst -= 1;
+            cp -> cpu_time -= 1;
+            
+            if (cp -> remaining_cpu_burst == 0) cp -> state = BLOCKED;
 
-            if (burst > cp -> cpu_time) burst = cp -> cpu_time;
-            cp -> cpu_time -= burst;
-            cp -> interval = burst;
 
-            if (cp -> cpu_time == 0) {
+            int blocked_cur = 0;
+            while (pv[blocked_cur].io_time <= 0 || pv[blocked_cur].state != BLOCKED) blocked_cur++;
+            process* bp = &pv[blocked_cur];
+
+            
+            if (bp -> remaining_io_burst == 0) {
+                int burst = rnum.randomOS(bp -> interval);
+                if (burst > bp -> io_time) burst = bp -> io_time;
+                bp -> interval = burst;
+                bp -> remaining_io_burst = burst;
+            }
+            bp -> remaining_io_burst -= 1;
+            cp -> io_time -= 1;
+
+            if (bp -> remaining_io_burst == 0) bp -> state = READY;
+
+
+            if (cp -> cpu_time == 0 && cp -> io_time == 0) {
                 cp -> state = TERMINATED;
                 print_process(*cp);
             }
-
-        } while (! s::is_procs_terminated(pv));
+            std::cout << "ctr is " << ctr << std::endl;
+            print_process(*cp);
+            ctr++;
+        } while (! s::is_procs_terminated(pv) && ctr < 10);
 
     }
 

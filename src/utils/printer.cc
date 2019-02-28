@@ -15,7 +15,8 @@ namespace scheduler {
             << "Process CPU time: \t" << p.cpu_time << "\n"
             << "Process I/O time: \t" << p.io_time << "\n" 
             << "Process state: \t" << p.state << "\n"
-            // << "Process remaining burst: \t" << p.remaining_burst << "\n"
+            << "Process remaining CPU burst: \t" << p.remaining_cpu_burst << "\n"
+            << "Process remaining IO burst: \t" << p.remaining_io_burst << "\n"
             << std::endl;
     }
 
@@ -29,7 +30,7 @@ namespace scheduler {
         std::cout << "Before cycle\t" << cycle_num << ":\t";
         for (int i = 0; i < size; i++) {
             std::cout << std::setw(11) << (p + i) -> state 
-                << std::setw(3) << (p + i) -> remaining_burst;
+                << std::setw(3) << (p + i) -> remaining_cpu_burst;
         }
         std::cout << std::endl;
     }

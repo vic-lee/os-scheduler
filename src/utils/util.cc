@@ -27,7 +27,8 @@ namespace scheduler {
             int pctr = 0;
             process temp_process;
             temp_process.state = UNSTARTED;
-            temp_process.remaining_burst = 0;
+            temp_process.remaining_io_burst = 0;
+            temp_process.remaining_cpu_burst = 0;
             int ctr = 0;
             while (input_file >> val) {
                 if (isalpha(val[0]) || input_file.eof()) break;
