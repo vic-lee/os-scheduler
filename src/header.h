@@ -16,7 +16,8 @@ struct process {
     int interval;
     int cpu_time;
     int io_time;
-    int remaining_burst;
+    int remaining_cpu_burst;
+    int remaining_io_burst;
 };
 
 namespace scheduler {
