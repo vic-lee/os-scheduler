@@ -36,14 +36,15 @@ namespace scheduler {
         int cycle = 0;
         int size = pv.size();
         int pvcur = 0;   // consider making sorted parr a queue
-        int first_arrival_time = pv[0].arrival_time;
-        std::cout << "First arrival time is: " << first_arrival_time << std::endl;
+        // int first_arrival_time = pv[0].arrival_time;
+        // std::cout << "First arrival time is: " << first_arrival_time << std::endl;
+        std::cout << "STARTING FCFS" << std::endl;
         int ctr = 0;
         do {
             while ((pvcur < size) && pv[pvcur].arrival_time == cycle) {
                 pv[pvcur].state = READY;
                 std::cout << "Adding process " << pv[pvcur].pid << std::endl;
-                s::print_process(pv[pvcur]);
+                // s::print_process(pv[pvcur]);
                 pvcur++;
             }
 
@@ -52,13 +53,6 @@ namespace scheduler {
             int ready_cur = -1;
             if (running_cur == -1)
                 ready_cur = get_first_proc_by_state(pv, READY);
-
-            if (running_cur != -1) {
-                Process* ap = &pv[running_cur];
-                ap -> remaining_cpu_burst --;
-                ap -> cpu_time --;
-                if (ap -> remaining_cpu_burst == 0) ap -> state = BLOCKED;
-            }
 
             if (ready_cur != -1) {
 
@@ -75,7 +69,6 @@ namespace scheduler {
                 if (cp -> remaining_cpu_burst == 0) cp -> state = BLOCKED;
             }
 
-            
             if (blocked_cur != -1) {
 
                 Process* bp = &pv[blocked_cur];
@@ -85,21 +78,43 @@ namespace scheduler {
                     if (burst > bp -> io_time) burst = bp -> io_time;
                     bp -> interval = burst;
                     bp -> remaining_io_burst = burst;
+                } else {
+                    bp -> remaining_io_burst --;
+                    bp -> io_time --;                   
                 }
-                bp -> remaining_io_burst -= 1;
-                bp -> io_time -= 1;
 
                 if (bp -> remaining_io_burst == 0) bp -> state = READY;
 
             }
 
+            std::cout << "Before cycle " << ctr << std::endl;
+            print_process_vect(pv);
+            
+            running_cur = get_first_proc_by_state(pv, RUNNING);
+            blocked_cur = get_first_proc_by_state(pv, BLOCKED);
+
+            if (running_cur != -1) {
+                Process* ap = &pv[running_cur];
+                ap -> remaining_cpu_burst --;
+                ap -> cpu_time --;
+                if (ap -> remaining_cpu_burst == 0) ap -> state = BLOCKED;
+            }
+
+            if (blocked_cur != -1) {
+                Process* bp = &pv[blocked_cur];
+                bp -> remaining_cpu_burst --;
+                bp -> io_time --;
+                if (bp -> remaining_io_burst == 0) bp -> state = READY;
+            }
+            
+
+        
 
             // if (cp -> cpu_time == 0 && cp -> io_time == 0) {
             //     cp -> state = TERMINATED;
             //     print_process(*cp);
             // }
-            std::cout << "ctr is " << ctr << std::endl;
-            print_process_vect(pv);
+            
             ctr++;
         } while (! s::is_procs_terminated(pv) && ctr < 10);
 
