@@ -36,7 +36,8 @@ namespace scheduler{
             sorted_parr[parr_index] = *(r + right_index);
             right_index++; parr_index++;
         }
-        
+        delete [] l;
+        delete [] r;
         return sorted_parr;
     }
 

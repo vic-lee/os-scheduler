@@ -26,9 +26,10 @@ namespace scheduler {
     void print_cycle_info(process* p, int size, int cycle_num);
 
     /*      utils/util.cc        */
-    std::tuple<process*, int> read_file(std::string fname);
-    process* generate_process_arr(int size);
+    std::vector<process> read_file(std::string fname);
+    // process* generate_process_arr(int size);
     process* parrcpy(process* parr, int size);
+    bool is_procs_terminated(process* parr, int size);
 
     /*      utils/sort.cc        */
     process* sort_parr_by_arrival(process* parr, int size);

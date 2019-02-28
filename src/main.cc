@@ -6,6 +6,7 @@
 #include <string>
 #include <chrono> 
 #include <iomanip>
+#include <vector>
 #include "header.h"
 
 namespace s = scheduler;
@@ -52,11 +53,14 @@ namespace scheduler {
          *              Alternate between CPU and I/O bursts (blocked).
          *              Blocked processes, when ready, join the end of the queue. 
          */
-        std::deque<process> d;
         process* parr = s::parrcpy(p, size);
+        if (!parr) {
+            std::cout << "BAD PARR" << std::endl;
+            return;
+        }
+        std::cout << "new parr: " << parr << std::endl;
         int cycle = 0;
         int parr_cur = 0;   // consider making sorted parr a queue
-        int dcur = 0;
         int first_arrival_time = parr -> arrival_time;
         std::cout << "First arrival time is: " << first_arrival_time << std::endl;
 
@@ -68,12 +72,12 @@ namespace scheduler {
             while ((parr_cur < size) && (parr + parr_cur) -> arrival_time == cycle) {
                 (parr + parr_cur) -> state = READY;
                 s::print_process(*(parr + parr_cur));
-                d.push_back(*(parr + parr_cur));
                 parr_cur++;
             }
-            while (d.at(dcur).state != READY) dcur++;
+            int active_cur = 0;
+            while ((parr + active_cur) -> state != READY) active_cur++;
 
-            process* cp = &d.at(dcur);
+            process* cp = parr + active_cur;
             int burst = rnum.randomOS(cp -> interval);
 
             if (burst > cp -> cpu_time) burst = cp -> cpu_time;
@@ -84,7 +88,8 @@ namespace scheduler {
                 cp -> state = TERMINATED;
             }
 
-        } while (!d.empty());
+        } while (! s::is_procs_terminated(parr, size));
+        delete [] parr;
 
     }
 
@@ -105,17 +110,16 @@ int main(int argc, char** argv) {
         std::cout << "Please provide a filename as an argument." << std::endl;
         return 0;
     }
-    process* parr;
-    int pcount;
-    std::tie(parr, pcount) = s::read_file(fname);
-    std::cout << "Array before sorting" << std::endl;
-    // s::print_process_arr(parr, pcount);
-    process* sparr = s::sort_parr_by_arrival(parr, pcount);
-    std::cout << "Array after sorting" << std::endl;
-    // s::print_process_arr(sparr, pcount);
-    s::RandNumAccessor rnum;
-    s::fcfs(sparr, pcount, rnum);
-    free(parr);
-    free(sparr);
+    std::vector<process> procvect = s::read_file(fname);
+    // int pcount = procvect.size();
+    for (int i = 0; i < procvect.size(); i++) {
+        s::print_process(procvect[i]);
+    }
+    // parr = s::sort_parr_by_arrival(parr, pcount);
+    // s::RandNumAccessor rnum;
+    // std::cout << "parr: " << parr << std::endl;
+
+    // s::fcfs(parr, pcount, rnum);
+
     return 0;
 }
