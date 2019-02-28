@@ -23,7 +23,6 @@ namespace scheduler {
 
     /*      utils/printer.cc        */
     void print_process(process p);
-    void print_process_arr(process* p, int size);
     void print_process_vect(std::vector<process> const &v);
     void print_cycle_info(process* p, int size, int cycle_num);
 

@@ -20,13 +20,6 @@ namespace scheduler {
     }
 
 
-    void print_process_arr(process* p, int size) {
-        for (int i = 0; i < size; i++) {
-            std::cout << "Process " << i << std::endl;
-            print_process(*(p + i));
-        }
-    }
-
     void print_process_vect(std::vector<process> const &v) {
         for (process p : v) { print_process(p); }
     }
