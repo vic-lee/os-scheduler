@@ -32,21 +32,25 @@ namespace scheduler {
         for (; cycle < first_arrival_time; cycle++) { 
             s::print_cycle_info(parr, size, cycle); 
         }
-
+        int ctr = 0;
+        int ln = 1;
         do {
-            while ((parr + parr_cur) -> arrival_time == cycle) {
+            while ((parr_cur < size) && (parr + parr_cur) -> arrival_time == cycle) {
                 (parr + parr_cur) -> state = READY;
+                s::print_process(*(parr + parr_cur));
                 d.push_back(*(parr + parr_cur));
                 parr_cur++;
             }
+            std::cout << "Finish pushing onto deque" << std::endl;
             while (d.at(dcur).state != READY) dcur++;
             process curproc = d.at(dcur);
-            int burst = s::randomOS(curproc.interval);
+            int burst = s::randomOS(curproc.interval, ln);
+            ln++;
             if (burst > curproc.cpu_time) burst = curproc.cpu_time;
             curproc.interval = burst;
             std::cout << burst << std::endl;
-
-        } while (!d.empty());
+            ctr++;
+        } while (!d.empty() && ctr < 10);
 
     }
 
@@ -71,11 +75,10 @@ int main(int argc, char** argv) {
     int pcount;
     std::tie(parr, pcount) = s::read_file(fname);
     std::cout << "Array before sorting" << std::endl;
-    s::print_process_arr(parr, pcount);
+    // s::print_process_arr(parr, pcount);
     process* sparr = s::sort_parr_by_arrival(parr, pcount);
     std::cout << "Array after sorting" << std::endl;
-    s::print_process_arr(sparr, pcount);
-    std::cout << s::randomOS(1) << std::endl;
+    // s::print_process_arr(sparr, pcount);
     s::fcfs(sparr, pcount);
     free(parr);
     free(sparr);

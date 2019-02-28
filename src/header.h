@@ -27,7 +27,7 @@ namespace scheduler {
 
     /*      utils/util.cc        */
     std::tuple<process*, int> read_file(std::string fname);
-    int randomOS(int u);
+    int randomOS(int u, int ln);
     process* generate_process_arr(int size);
 
     /*      utils/sort.cc        */
