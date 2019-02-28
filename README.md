@@ -9,7 +9,7 @@
 
 ```
 cd src
-g++ -Wall -std=c++11 main.cc utils/*
+g++ -Wall -std=c++11 *.cc utils/*
 ./a.out ../test/in/input-x
 ```
 
@@ -30,3 +30,5 @@ while (!all process terminated) {
 
 Thoughts: 
 - Implement a data structure similar to a process table? (Is there a better way to implement this table other than an array?)
+- Multiple blocked process allowed. 
+- Implement a running_process queue, a pool of blocked processes
