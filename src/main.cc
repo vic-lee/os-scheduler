@@ -76,13 +76,36 @@ namespace scheduler {
 
     }
 
+    void set_queue_first_to_running(std::queue<Process*> &q) {
+        if (q.size() == 0) {
+            return;
+        } else {
+            if (q.front() -> state == READY) {
+                q.front() -> state = RUNNING;
+            }
+        }
+    }
+
+    void do_arrival_process(std::vector<Process> &pv, std::queue<Process*> &q, int cycle) {
+        for (int i = 0; i < pv.size(); i++) {
+            if (pv[i].arrival_time == cycle) {
+                pv[i].state = READY;
+                q.push(&pv[i]);
+            }
+        }
+    }
+
     void fcfs(std::vector<Process> pv, RandNumAccessor rnum) {
         std::queue<Process*> running_queue;
         std::vector<Process*> blocked_vect;
         int cycle = 0;
         std::cout << "---------- FCFS ----------\n" << std::endl;
         while (!is_procs_terminated(pv) && cycle < 10) {
+
             print_process_vect_simp(pv, cycle);
+
+            do_arrival_process(pv, running_queue, cycle);
+            set_queue_first_to_running(running_queue);
             cycle++;
         }
     }
