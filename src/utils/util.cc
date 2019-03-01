@@ -63,8 +63,17 @@ namespace scheduler {
         for (int i = 0; i < vect.size(); i++) {
             total_wait += vect[i].waiting_time;
         }
-        float avg_wait_time = (float) total_wait / (float) vect.size();
-        return avg_wait_time;
+        float avg = (float) total_wait / (float) vect.size();
+        return avg;
+    }
+
+    float avg_turnaround_time(std::vector<Process> const &vect) {
+        int total_turn = 0;
+        for (int i = 0; i < vect.size(); i++) {
+            total_turn += vect[i].turnaround_time;
+        }
+        float avg = (float) total_turn / (float) vect.size();
+        return avg;
     }
 
 }

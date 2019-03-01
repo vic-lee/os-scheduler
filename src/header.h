@@ -28,6 +28,7 @@ namespace scheduler {
             int remaining_cpu_burst;
             int remaining_io_burst;
             int terminated_time = 0;
+            int turnaround_time; 
             int blocked_time = 0;   // time in the blocked state
             int waiting_time = 0;   // time in the ready state
             void set_state();
