@@ -54,6 +54,9 @@ namespace scheduler {
     std::vector<Process> read_file(std::string fname);
     // process* generate_process_arr(int size);
     bool is_procs_terminated(std::vector<Process> const &vect);
+    float avg_waiting_time(std::vector<Process> const &vect);
+    float avg_turnaround_time(std::vector<Process> const &vect);
+    float scheduler_throughput(std::vector<Process> const &vect, int cycle);
 
 }
 

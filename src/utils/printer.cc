@@ -59,13 +59,13 @@ namespace scheduler {
     }
 
     void print_summary_data(std::vector<Process> const &v, int cycle) {
-        // std::cout << "Summary Data:" 
-        //     << "\tFinishing time: " << cycle 
+        std::cout << "Summary Data:" 
+            << "\tFinishing time: " << cycle 
         //     << "\tCPU Utilization: " << ...
         //     << "\tI/O Utilization: " << ...
         //     << "\tThroughput: " << ... << "processes per hundred cycles"
-        //     << "\tAverage turnaround time: " << ...
-        //     << "\tAverage waiting time: " << ...
+            << "\tAverage turnaround time: " << 
+            << "\tAverage waiting time: " << ...
     }
 
     void print_cycle_info(Process* p, int size, int cycle_num) {

@@ -76,4 +76,9 @@ namespace scheduler {
         return avg;
     }
 
+    float scheduler_throughput(std::vector<Process> const &vect, int cycle) {
+        float throughput = (float) vect.size() / ((float) cycle / (float) 100);
+        return throughput;
+    }
+
 }
