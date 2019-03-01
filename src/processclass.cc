@@ -18,23 +18,18 @@ namespace scheduler {
         remaining_io_burst = burst;
     }
 
+    void Process::blocked_to_ready() {
+        state = READY;
+    }
+
     void Process::decr_cpu_burst() {
         if (remaining_cpu_burst >= 1) remaining_cpu_burst--;
         if (cpu_time >= 1) cpu_time--;
-        // if (remaining_cpu_burst == 0) {
-        //     state = BLOCKED;
-        //     int burst = rnum.randomOS(interval);
-        //     interval = burst;
-        //     remaining_io_burst = burst;
-        // }
     }
 
-    void Process::decr_io_burst(RandNumAccessor rnum) {
+    void Process::decr_io_burst() {
         remaining_io_burst--;
         io_time--;
-        if (remaining_io_burst == 0) {
-            state = READY;
-        }
     }
 
 }

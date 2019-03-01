@@ -60,6 +60,24 @@ namespace scheduler {
     }
 
 
+    void do_blocked_process(std::vector<Process*> v) {
+        for (int i = 0; i < v.size(); i++) {
+            v[i] -> decr_io_burst();
+        }
+    }
+
+
+    void finished_blocked_process_to_ready(std::queue<Process*> q, std::vector<Process*> v) {
+        for (int i = 0; i < v.size(); i++) {
+            if (v[i] -> remaining_io_burst == 0) {
+                v[i] -> blocked_to_ready();
+                q.push(v[i]);
+                v.erase(v.begin() + i);
+            }
+        }
+    }
+
+
     void fcfs(std::vector<Process> pv, RandNumAccessor rnum) {
         std::queue<Process*> running_queue;
         std::vector<Process*> blocked_vect;
@@ -68,7 +86,10 @@ namespace scheduler {
         while (!is_procs_terminated(pv) && cycle < 10) {
 
             print_process_vect_simp(pv, cycle);
-            
+
+            do_blocked_process(blocked_vect);
+            finished_blocked_process_to_ready(running_queue, blocked_vect);
+
             do_running_process(running_queue);
             finished_running_process_to_blocked(running_queue, blocked_vect, rnum);            
 
