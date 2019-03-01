@@ -48,6 +48,8 @@ namespace scheduler {
 
     void Process::terminate_process(int cycle) {
         state = TERMINATED;
+        remaining_cpu_burst = 0;
+        remaining_io_burst = 0;
         terminated_time = cycle;
     }
 

@@ -29,7 +29,9 @@ namespace scheduler {
         if (q.size() == 0) {
             return;
         } else {
-            if (q.front() -> state == READY) {
+            // print_process_one_line(*q.front());
+            if (q.front() -> state == TERMINATED) q.pop();
+            if (q.size() > 0 && q.front() -> state == READY) {
                 q.front() -> ready_to_run(rnum);
             }
         }
@@ -102,8 +104,10 @@ namespace scheduler {
 
     void terminate_finished_processes(std::vector<Process> &pv, int cycle) {
         for (int i = 0; i < pv.size(); i++) {
-            if (pv[i].state != TERMINATED && pv[i].is_finished()) 
+            if (pv[i].state != TERMINATED && pv[i].is_finished()) {
+                // print_process_one_line(pv[i]); 
                 pv[i].terminate_process(cycle);
+            }
         }
     }
 
@@ -128,23 +132,13 @@ namespace scheduler {
             do_running_process(running_queue);
 
             finished_blocked_process_to_ready(running_queue, blocked_vect);
-            // if (blocked_vect.size() != 0)
-            //     std::cout << "After removing finished blocked processes" << std::endl;
-            // for (int i = 0; i < blocked_vect.size(); i++) {
-            //     print_process_one_line(*blocked_vect[i]);
-            // }
             finished_running_process_to_blocked(running_queue, blocked_vect, rnum);            
-            // if (blocked_vect.size() != 0)
-            //     std::cout << "After popping running queue" << std::endl;
-            // for (int i = 0; i < blocked_vect.size(); i++) {
-            //     print_process_one_line(*blocked_vect[i]);
-            // }
 
             do_arrival_process(pv, running_queue, cycle);
+            // terminating before setting queue allows terminating processes within queues 
+            terminate_finished_processes(pv, cycle); 
             set_queue_first_to_running(running_queue, rnum);
             update_queue_waiting_time(pv);
-            
-            terminate_finished_processes(pv, cycle);
 
             cycle++;
         }
