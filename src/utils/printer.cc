@@ -7,6 +7,17 @@
 
 namespace scheduler {
 
+    void print_process_out(Process p) {
+        std::cout << "Process " << p.pid  << ":" << std::endl;
+        std::printf("\t(A,B,C,IO) = (%d,%d,%d,%d)\n", 
+            p.arrival_time, p.cpu_interval, p.cpu_time, p.io_interval);
+        std::cout 
+            << "\tFinishing time: " << p.terminated_time << "\n"
+            << "\tTurnaround time: " << (p.terminated_time - p.arrival_time) << "\n"
+            << "\tI/O time: " << p.blocked_time << "\n"
+            << "\tWaiting time: " << p.waiting_time << "\n"
+            << std::endl;
+    }
 
     void print_process_one_line(Process p) {
         std::cout 
@@ -29,6 +40,10 @@ namespace scheduler {
         for (Process p : v) { print_process_one_line(p); }
     }
 
+    void print_process_vect_out(std::vector<Process> const &v) {
+        for (Process p : v) { print_process_out(p); } 
+    }
+
     void print_process_vect_simp(std::vector<Process> const &v, int cycle) {
         std::cout << "Before cycle " << std::setw(4) << cycle << ":";
         for (Process p : v) {
@@ -43,6 +58,15 @@ namespace scheduler {
         std::cout << "." << std::endl;
     }
 
+    void print_summary_data(std::vector<Process> const &v, int cycle) {
+        // std::cout << "Summary Data:" 
+        //     << "\tFinishing time: " << cycle 
+        //     << "\tCPU Utilization: " << ...
+        //     << "\tI/O Utilization: " << ...
+        //     << "\tThroughput: " << ... << "processes per hundred cycles"
+        //     << "\tAverage turnaround time: " << ...
+        //     << "\tAverage waiting time: " << ...
+    }
 
     void print_cycle_info(Process* p, int size, int cycle_num) {
         std::cout << "Before cycle\t" << cycle_num << ":\t";

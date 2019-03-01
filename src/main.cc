@@ -124,7 +124,7 @@ namespace scheduler {
         std::vector<Process*> blocked_vect;
         int cycle = 0;
         std::cout << "---------- FCFS ----------\n" << std::endl;
-        while (!is_procs_terminated(pv) && cycle < 100) {
+        while (!is_procs_terminated(pv)) {
 
             print_process_vect_simp(pv, cycle);
 
@@ -145,7 +145,8 @@ namespace scheduler {
         std::cout 
             << "The scheduling algorithm used was First Come First Served" 
             << std::endl;
-        print_process_vect(pv);
+        std::sort(pv.begin(), pv.end(), comp_proc);
+        print_process_vect_out(pv);
     }
 
 

@@ -7,7 +7,6 @@
 
 namespace scheduler {
 
-
     std::vector<Process> read_file(std::string fname) {
         /**
          * This function reads an formatted input file and stores processes 
@@ -57,6 +56,15 @@ namespace scheduler {
             if (vect[i].state != TERMINATED) return false;
         }
         return true;
+    }
+
+    float avg_waiting_time(std::vector<Process> const &vect) {
+        int total_wait = 0;
+        for (int i = 0; i < vect.size(); i++) {
+            total_wait += vect[i].waiting_time;
+        }
+        float avg_wait_time = (float) total_wait / (float) vect.size();
+        return avg_wait_time;
     }
 
 }
