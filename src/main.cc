@@ -58,7 +58,6 @@ namespace scheduler {
                 v.push_back(q.front());
             }
             q.pop();
-            // std::cout << "queue len: " << q.size() << std::endl;
         }
     }
 
@@ -72,7 +71,6 @@ namespace scheduler {
 
     void finished_blocked_process_to_ready(std::queue<Process*> &q, std::vector<Process*> &v) {
         for (int i = 0; i < v.size(); i++) {
-            // std::cout << "io in arr: " << v[i] -> remaining_io_burst << std::endl;
             if (v[i] -> remaining_io_burst == 0) {
                 if (! v[i] -> is_finished()) {
                     v[i] -> blocked_to_ready();
@@ -99,13 +97,8 @@ namespace scheduler {
         while (!is_procs_terminated(pv) && cycle < 15) {
 
             print_process_vect_simp(pv, cycle);
-            // std::cout << "Before cycle:\t" << cycle << "\t\t";
-            // print_process_vect(pv);
-
 
             do_blocked_process(blocked_vect);
-            // std::cout << "After processing blocked, blocked arr size is: " << blocked_vect.size() << std::endl;
-
             do_running_process(running_queue);
 
             finished_blocked_process_to_ready(running_queue, blocked_vect);
