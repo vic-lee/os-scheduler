@@ -52,28 +52,41 @@ namespace scheduler {
 
     void finished_running_process_to_blocked(std::queue<Process*> &q, std::vector<Process*> &v, RandNumAccessor rnum) {
         if (q.size() == 0) return;
-        if (q.front() -> remaining_cpu_burst == 0) {
-            q.front() -> running_to_blocked(rnum);
-            v.push_back(q.front());
+        if (q.front() -> state == RUNNING && q.front() -> remaining_cpu_burst == 0) {
+            if (!q.front() -> is_finished()) {
+                q.front() -> running_to_blocked(rnum);
+                v.push_back(q.front());
+            }
             q.pop();
+            // std::cout << "queue len: " << q.size() << std::endl;
         }
     }
 
 
-    void do_blocked_process(std::vector<Process*> v) {
+    void do_blocked_process(std::vector<Process*> &v) {
         for (int i = 0; i < v.size(); i++) {
             v[i] -> decr_io_burst();
         }
     }
 
 
-    void finished_blocked_process_to_ready(std::queue<Process*> q, std::vector<Process*> v) {
+    void finished_blocked_process_to_ready(std::queue<Process*> &q, std::vector<Process*> &v) {
         for (int i = 0; i < v.size(); i++) {
+            // std::cout << "io in arr: " << v[i] -> remaining_io_burst << std::endl;
             if (v[i] -> remaining_io_burst == 0) {
-                v[i] -> blocked_to_ready();
-                q.push(v[i]);
+                if (! v[i] -> is_finished()) {
+                    v[i] -> blocked_to_ready();
+                    q.push(v[i]);
+                }
                 v.erase(v.begin() + i);
             }
+        }
+    }
+
+
+    void terminate_finished_processes(std::vector<Process> &pv) {
+        for (int i = 0; i < pv.size(); i++) {
+            if (pv[i].is_finished()) pv[i].state = TERMINATED;
         }
     }
 
@@ -83,18 +96,26 @@ namespace scheduler {
         std::vector<Process*> blocked_vect;
         int cycle = 0;
         std::cout << "---------- FCFS ----------\n" << std::endl;
-        while (!is_procs_terminated(pv) && cycle < 10) {
+        while (!is_procs_terminated(pv) && cycle < 15) {
 
             print_process_vect_simp(pv, cycle);
+            // std::cout << "Before cycle:\t" << cycle << "\t\t";
+            // print_process_vect(pv);
+
 
             do_blocked_process(blocked_vect);
-            finished_blocked_process_to_ready(running_queue, blocked_vect);
+            // std::cout << "After processing blocked, blocked arr size is: " << blocked_vect.size() << std::endl;
 
             do_running_process(running_queue);
+
+            finished_blocked_process_to_ready(running_queue, blocked_vect);
             finished_running_process_to_blocked(running_queue, blocked_vect, rnum);            
 
             do_arrival_process(pv, running_queue, cycle);
             set_queue_first_to_running(running_queue, rnum);
+            
+            
+            terminate_finished_processes(pv);
 
             cycle++;
         }

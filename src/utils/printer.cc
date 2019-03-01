@@ -21,8 +21,22 @@ namespace scheduler {
     }
 
 
+    void print_process_one_line(Process p) {
+        std::cout 
+            << "ID: " << p.pid << '\t' 
+            << "Arrival time: " << p.arrival_time << '\t' 
+            << "Interval: " << p.interval << '\t'
+            << "CPU Time: " << p.cpu_time << "\t"
+            << "I/O Time: " << p.io_time << "\t"
+            << "State: " << p.state << "  \t"
+            << "R IO Burst: " << p.remaining_io_burst << "\t"
+            << "R CPU Burst: " << p.remaining_cpu_burst << "\t"
+            << std::endl;
+    }
+
+
     void print_process_vect(std::vector<Process> const &v) {
-        for (Process p : v) { print_process(p); }
+        for (Process p : v) { print_process_one_line(p); }
     }
 
     void print_process_vect_simp(std::vector<Process> const &v, int cycle) {
