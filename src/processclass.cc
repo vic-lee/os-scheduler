@@ -4,6 +4,13 @@
 
 namespace scheduler {
 
+    void Process::ready_to_run(RandNumAccessor rnum) {
+        state = RUNNING;
+        int burst = rnum.randomOS(interval);
+        interval = burst;
+        remaining_cpu_burst = burst;
+    }
+
     void Process::decr_cpu_burst(RandNumAccessor rnum) {
         remaining_cpu_burst--;
         cpu_time--;

@@ -22,7 +22,7 @@ namespace scheduler {
         return -1;
     }
 
-    void fcfs(std::vector<Process> pv, RandNumAccessor rnum) {
+    void fcfs_old(std::vector<Process> pv, RandNumAccessor rnum) {
         /**
          * Input:   pointer to sorted process array, array size, flag(s)
          * Output:  print on screen. 
@@ -35,76 +35,36 @@ namespace scheduler {
 
         int cycle = 0;
         int size = pv.size();
-        int pvcur = 0;   // consider making sorted parr a queue
-        // int first_arrival_time = pv[0].arrival_time;
-        // std::cout << "First arrival time is: " << first_arrival_time << std::endl;
-        std::cout << "STARTING FCFS" << std::endl;
+        int pvcur = 0;
+        std::queue<Process*> running_queue;  
+        std::vector<Process*> blocked_vect; 
+        std::cout << "------ STARTING FCFS ------" << std::endl;
         int ctr = 0;
         do {
             while ((pvcur < size) && pv[pvcur].arrival_time == cycle) {
                 pv[pvcur].state = READY;
-                std::cout << "Adding process " << pv[pvcur].pid << std::endl;
-                // s::print_process(pv[pvcur]);
+                running_queue.push(&pv[pvcur]);
                 pvcur++;
-            }
-
-            int blocked_cur = get_first_proc_by_state(pv, BLOCKED);
-            int running_cur = get_first_proc_by_state(pv, RUNNING);
-            int ready_cur = -1;
-            if (running_cur == -1)
-                ready_cur = get_first_proc_by_state(pv, READY);
-
-            if (ready_cur != -1) {
-
-                Process* cp = &pv[ready_cur]; 
-                
-                if (cp -> remaining_cpu_burst == 0) {
-                    int burst = rnum.randomOS(cp -> interval);
-                    if (burst > cp -> cpu_time) burst = cp -> cpu_time;
-                    cp -> interval = burst;
-                    cp -> remaining_cpu_burst = burst;
-                    cp -> state = RUNNING;
-                } 
-                
-                if (cp -> remaining_cpu_burst == 0) cp -> state = BLOCKED;
-            }
-
-            if (blocked_cur != -1) {
-
-                Process* bp = &pv[blocked_cur];
-
-                if (bp -> remaining_io_burst == 0) {
-                    int burst = rnum.randomOS(bp -> interval);
-                    if (burst > bp -> io_time) burst = bp -> io_time;
-                    bp -> interval = burst;
-                    bp -> remaining_io_burst = burst;
-                } else {
-                    bp -> remaining_io_burst --;
-                    bp -> io_time --;                   
-                }
-
-                if (bp -> remaining_io_burst == 0) bp -> state = READY;
-
             }
 
             std::cout << "Before cycle " << ctr << std::endl;
             print_process_vect(pv);
-            
-            running_cur = get_first_proc_by_state(pv, RUNNING);
-            blocked_cur = get_first_proc_by_state(pv, BLOCKED);
 
-            if (running_cur != -1) {
-                // Process* ap = &pv[running_cur];
-                // pv[running_cur].decr_cpu_burst();
-            }
-
-            if (blocked_cur != -1) {
-                // Process* bp = &pv[blocked_cur];
-                // pv[blocked_cur].decr_io_burst();
+            if (running_queue.front() -> state == READY) 
+                running_queue.front() -> ready_to_run(rnum);
+            running_queue.front() -> decr_cpu_burst(rnum);
+            if (running_queue.front() -> state == BLOCKED) {
+                blocked_vect.push_back(running_queue.front());
+                running_queue.pop();
             }
             
-
-        
+            for (int i = 0; i < blocked_vect.size(); i++) {
+                blocked_vect[i] -> decr_io_burst(rnum);
+                if (blocked_vect[i] -> state == READY) {
+                    running_queue.push(blocked_vect[i]);
+                    blocked_vect.erase(blocked_vect.begin() + i);
+                }
+            }
 
             // if (cp -> cpu_time == 0 && cp -> io_time == 0) {
             //     cp -> state = TERMINATED;
@@ -114,6 +74,17 @@ namespace scheduler {
             ctr++;
         } while (! s::is_procs_terminated(pv) && ctr < 10);
 
+    }
+
+    void fcfs(std::vector<Process> pv, RandNumAccessor rnum) {
+        std::queue<Process*> running_queue;
+        std::vector<Process*> blocked_vect;
+        int cycle = 0;
+        std::cout << "---------- FCFS ----------\n" << std::endl;
+        while (!is_procs_terminated(pv) && cycle < 10) {
+            print_process_vect_simp(pv, cycle);
+            cycle++;
+        }
     }
 
     void rr_scheduler() { }

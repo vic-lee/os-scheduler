@@ -11,6 +11,12 @@
 
 namespace scheduler {
 
+    class RandNumAccessor {
+        public: 
+            int cur_line = 1;
+            int randomOS(int u);
+    };
+
     class Process {
         public: 
             std::string state;
@@ -22,19 +28,16 @@ namespace scheduler {
             int remaining_cpu_burst;
             int remaining_io_burst;
             void set_state();
-            void decr_cpu_burst();
-            void decr_io_burst();
+            void ready_to_run(RandNumAccessor rnum);
+            void decr_cpu_burst(RandNumAccessor rnum);
+            void decr_io_burst(RandNumAccessor rnum);
     };
 
-    class RandNumAccessor {
-        public: 
-            int cur_line = 1;
-            int randomOS(int u);
-    };
 
     /*      utils/printer.cc        */
     void print_process(Process p);
     void print_process_vect(std::vector<Process> const &v);
+    void print_process_vect_simp(std::vector<Process> const &v, int cycle);
     void print_cycle_info(Process* p, int size, int cycle_num);
 
     /*      utils/util.cc        */

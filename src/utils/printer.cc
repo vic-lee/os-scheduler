@@ -25,6 +25,20 @@ namespace scheduler {
         for (Process p : v) { print_process(p); }
     }
 
+    void print_process_vect_simp(std::vector<Process> const &v, int cycle) {
+        std::cout << "Before cycle " << std::setw(4) << cycle << ":";
+        for (Process p : v) {
+            std::cout << std::setw(12) << p.state;
+            if (p.state == BLOCKED) {
+                std::cout << std::setw(3) << p.remaining_io_burst << std::flush;
+            }
+            else {
+                std::cout << std::setw(3) << p.remaining_cpu_burst << std::flush;
+            }
+        }
+        std::cout << "." << std::endl;
+    }
+
 
     void print_cycle_info(Process* p, int size, int cycle_num) {
         std::cout << "Before cycle\t" << cycle_num << ":\t";
