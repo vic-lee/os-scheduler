@@ -7,27 +7,14 @@
 
 namespace scheduler {
 
-    void print_process(Process p) {
-        std::cout 
-            << "Process ID: \t\t" << p.pid << "\n"
-            << "Process arrival time: \t" << p.arrival_time << "\n"
-            << "Process init interval: \t" << p.interval << "\n"
-            << "Process CPU time: \t" << p.cpu_time << "\n"
-            << "Process I/O time: \t" << p.io_time << "\n" 
-            << "Process state: \t" << p.state << "\n"
-            << "Remaining CPU burst: \t" << p.remaining_cpu_burst << "\n"
-            << "Remaining IO burst: \t" << p.remaining_io_burst << "\n"
-            << std::endl;
-    }
-
 
     void print_process_one_line(Process p) {
         std::cout 
             << "ID: " << p.pid << '\t' 
             << "Arrival time: " << p.arrival_time << '\t' 
-            << "Interval: " << p.interval << '\t'
+            << "CPU Interval: " << p.cpu_interval << '\t'
             << "CPU Time: " << p.cpu_time << "\t"
-            << "I/O Time: " << p.io_time << "\t"
+            << "I/O Interval: " << p.io_interval << "\t"
             << "State: " << p.state << "  \t"
             << "R IO Burst: " << p.remaining_io_burst << "\t"
             << "R CPU Burst: " << p.remaining_cpu_burst << "\t"

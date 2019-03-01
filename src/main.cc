@@ -13,15 +13,17 @@ namespace s = scheduler;
 
 namespace scheduler {
 
-    int get_first_proc_by_state(std::vector<Process> const &v, std::string state) {
-        for (int i = 0; i < v.size(); i++) {
-            if (v[i].io_time >= 0 and v[i].state == state) {
-                return i;
-            }
-        }
-        return -1;
+    bool comp_proc(Process a, Process b) {
+        if (a.arrival_time < b.arrival_time) return true;
+        if (a.arrival_time == b.arrival_time) return a.pid < b.pid;
+        return false;
     }
 
+    bool comp_proc_ptr(Process* a, Process* b) {
+        if (a -> arrival_time < b -> arrival_time) return true;
+        if (a -> arrival_time == b -> arrival_time) return a -> pid < b -> pid;
+        return false;
+    }
 
     void set_queue_first_to_running(std::queue<Process*> &q, RandNumAccessor &rnum) {
         if (q.size() == 0) {
@@ -68,6 +70,7 @@ namespace scheduler {
                 v.push_back(q.front());
             }
             q.pop();
+            std::sort(v.begin(), v.end(), comp_proc_ptr);
         }
     }
 
@@ -84,12 +87,14 @@ namespace scheduler {
         std::vector<Process*> &v
     ) {
         for (int i = 0; i < v.size(); i++) {
+            // print_process_one_line(*v[i]);
             if (v[i] -> remaining_io_burst == 0) {
                 if (! v[i] -> is_finished()) {
                     v[i] -> blocked_to_ready();
                     q.push(v[i]);
                 }
                 v.erase(v.begin() + i);
+                i--;
             }
         }
     }
@@ -115,7 +120,7 @@ namespace scheduler {
         std::vector<Process*> blocked_vect;
         int cycle = 0;
         std::cout << "---------- FCFS ----------\n" << std::endl;
-        while (!is_procs_terminated(pv)) {
+        while (!is_procs_terminated(pv) && cycle < 100) {
 
             print_process_vect_simp(pv, cycle);
 
@@ -123,7 +128,17 @@ namespace scheduler {
             do_running_process(running_queue);
 
             finished_blocked_process_to_ready(running_queue, blocked_vect);
+            // if (blocked_vect.size() != 0)
+            //     std::cout << "After removing finished blocked processes" << std::endl;
+            // for (int i = 0; i < blocked_vect.size(); i++) {
+            //     print_process_one_line(*blocked_vect[i]);
+            // }
             finished_running_process_to_blocked(running_queue, blocked_vect, rnum);            
+            // if (blocked_vect.size() != 0)
+            //     std::cout << "After popping running queue" << std::endl;
+            // for (int i = 0; i < blocked_vect.size(); i++) {
+            //     print_process_one_line(*blocked_vect[i]);
+            // }
 
             do_arrival_process(pv, running_queue, cycle);
             set_queue_first_to_running(running_queue, rnum);
@@ -146,11 +161,6 @@ namespace scheduler {
 
     void sjf_scheduler() { }
 
-    bool comp_proc(Process a, Process b) {
-        if (a.arrival_time < b.arrival_time) return true;
-        if (a.arrival_time == b.arrival_time) return a.pid < b.pid;
-        return false;
-    }
 
 }
 

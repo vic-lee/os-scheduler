@@ -22,12 +22,12 @@ namespace scheduler {
             std::string state;
             int pid;
             int arrival_time;
-            int interval;
+            int cpu_interval;
             int cpu_time;
-            int io_time;
+            int io_interval;
             int remaining_cpu_burst;
             int remaining_io_burst;
-            int terminated_time;
+            int terminated_time = 0;
             int blocked_time = 0;   // time in the blocked state
             int waiting_time = 0;   // time in the ready state
             void set_state();
@@ -42,7 +42,6 @@ namespace scheduler {
 
 
     /*      utils/printer.cc        */
-    void print_process(Process p);
     void print_process_one_line(Process p);
     void print_process_vect(std::vector<Process> const &v);
     void print_process_vect_simp(std::vector<Process> const &v, int cycle);
