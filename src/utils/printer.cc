@@ -62,7 +62,12 @@ namespace scheduler {
     }
 
 
-    void print_summary_data(std::vector<Process> const &v, int cycle, int cpu_used_time, int io_used_time) {
+    void print_summary_data(
+        std::vector<Process> const &v, 
+        int cycle, 
+        int cpu_used_time, 
+        int io_used_time
+    ) {
         std::cout << "Summary Data:" << "\n"
             << "\tFinishing time: " << cycle << "\n"
             << "\tCPU Utilization: " << calc_cpu_util(cpu_used_time, cycle) << "\n"
@@ -74,7 +79,7 @@ namespace scheduler {
             << "\tAverage waiting time: " << calc_avg_wait_time(v) << "\n"
             << std::endl;
     }
-    
+
 
     void print_cycle_info(Process* p, int size, int cycle_num) {
         std::cout << "Before cycle\t" << cycle_num << ":\t";
