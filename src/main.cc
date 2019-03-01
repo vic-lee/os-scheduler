@@ -34,7 +34,11 @@ namespace scheduler {
     }
 
 
-    void do_arrival_process(std::vector<Process> &pv, std::queue<Process*> &q, int cycle) {
+    void do_arrival_process(
+        std::vector<Process> &pv, 
+        std::queue<Process*> &q, 
+        int cycle
+    ) {
         for (int i = 0; i < pv.size(); i++) {
             if (pv[i].arrival_time == cycle) {
                 pv[i].state = READY;
@@ -50,9 +54,15 @@ namespace scheduler {
     }
 
 
-    void finished_running_process_to_blocked(std::queue<Process*> &q, std::vector<Process*> &v, RandNumAccessor rnum) {
+    void finished_running_process_to_blocked(
+        std::queue<Process*> &q, 
+        std::vector<Process*> &v, 
+        RandNumAccessor rnum
+    ) {
         if (q.size() == 0) return;
-        if (q.front() -> state == RUNNING && q.front() -> remaining_cpu_burst == 0) {
+        if (q.front() -> state == RUNNING 
+            && q.front() -> remaining_cpu_burst == 0
+        ) {
             if (!q.front() -> is_finished()) {
                 q.front() -> running_to_blocked(rnum);
                 v.push_back(q.front());
@@ -69,7 +79,10 @@ namespace scheduler {
     }
 
 
-    void finished_blocked_process_to_ready(std::queue<Process*> &q, std::vector<Process*> &v) {
+    void finished_blocked_process_to_ready(
+        std::queue<Process*> &q, 
+        std::vector<Process*> &v
+    ) {
         for (int i = 0; i < v.size(); i++) {
             if (v[i] -> remaining_io_burst == 0) {
                 if (! v[i] -> is_finished()) {
