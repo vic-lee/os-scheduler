@@ -119,7 +119,8 @@ namespace scheduler {
     }
 
 
-    void fcfs(std::vector<Process> pv, RandNumAccessor &rnum) {
+    void fcfs(std::vector<Process> pv) {
+        RandNumAccessor rnum;
         std::queue<Process*> running_queue;
         std::vector<Process*> blocked_vect;
         int cycle = 0;
@@ -182,8 +183,7 @@ int main(int argc, char** argv) {
     std::cout << "After sorting" << std::endl;
     s::print_process_vect(procvect);
 
-    s::RandNumAccessor rnum;
-    s::fcfs(procvect, rnum);
+    s::fcfs(procvect);
 
     return 0;
 }
