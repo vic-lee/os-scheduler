@@ -147,6 +147,7 @@ namespace scheduler {
             << std::endl;
         std::sort(pv.begin(), pv.end(), comp_proc);
         print_process_vect_out(pv);
+        print_summary_data(pv, cycle);
     }
 
 

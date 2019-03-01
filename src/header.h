@@ -48,13 +48,14 @@ namespace scheduler {
     void print_process_vect(std::vector<Process> const &v);
     void print_process_vect_out(std::vector<Process> const &v);
     void print_process_vect_simp(std::vector<Process> const &v, int cycle);
+    void print_summary_data(std::vector<Process> const &v, int cycle);
     void print_cycle_info(Process* p, int size, int cycle_num);
 
     /*      utils/util.cc        */
     std::vector<Process> read_file(std::string fname);
     // process* generate_process_arr(int size);
     bool is_procs_terminated(std::vector<Process> const &vect);
-    float avg_waiting_time(std::vector<Process> const &vect);
+    float avg_wait_time(std::vector<Process> const &vect);
     float avg_turnaround_time(std::vector<Process> const &vect);
     float scheduler_throughput(std::vector<Process> const &vect, int cycle);
 

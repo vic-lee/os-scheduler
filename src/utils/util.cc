@@ -58,7 +58,7 @@ namespace scheduler {
         return true;
     }
 
-    float avg_waiting_time(std::vector<Process> const &vect) {
+    float avg_wait_time(std::vector<Process> const &vect) {
         int total_wait = 0;
         for (int i = 0; i < vect.size(); i++) {
             total_wait += vect[i].waiting_time;
