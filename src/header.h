@@ -29,7 +29,7 @@ namespace scheduler {
             int remaining_io_burst;
             void set_state();
             void ready_to_run(RandNumAccessor rnum);
-            void decr_cpu_burst(RandNumAccessor rnum);
+            void decr_cpu_burst();
             void decr_io_burst(RandNumAccessor rnum);
     };
 

@@ -95,6 +95,11 @@ namespace scheduler {
         }
     }
 
+    void do_running_process(std::queue<Process*> &q) {
+        if (q.size() == 0) return;
+        q.front() -> decr_cpu_burst();
+    }
+
     void fcfs(std::vector<Process> pv, RandNumAccessor rnum) {
         std::queue<Process*> running_queue;
         std::vector<Process*> blocked_vect;
@@ -107,6 +112,7 @@ namespace scheduler {
             do_arrival_process(pv, running_queue, cycle);
             set_queue_first_to_running(running_queue, rnum);
 
+            do_running_process(running_queue)
 
             cycle++;
         }
