@@ -19,6 +19,7 @@ namespace scheduler {
             std::cout << std::setw(18)
                 << "Random Number: " << line 
                 << "\tRet: " << (1 + stoi(line) % u) 
+                << "\tCur line: " << cur_line 
                 << std::endl;
             cur_line++;
             return 1 + (stoi(line) % u);

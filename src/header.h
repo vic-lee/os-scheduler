@@ -28,8 +28,8 @@ namespace scheduler {
             int remaining_cpu_burst;
             int remaining_io_burst;
             void set_state();
-            void ready_to_run(RandNumAccessor rnum);
-            void running_to_blocked(RandNumAccessor rnum);
+            void ready_to_run(RandNumAccessor &rnum);
+            void running_to_blocked(RandNumAccessor &rnum);
             void blocked_to_ready();
             void decr_cpu_burst();
             void decr_io_burst();

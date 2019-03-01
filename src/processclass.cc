@@ -5,14 +5,14 @@
 
 namespace scheduler {
 
-    void Process::ready_to_run(RandNumAccessor rnum) {
+    void Process::ready_to_run(RandNumAccessor &rnum) {
         state = RUNNING;
         int burst = rnum.randomOS(interval);
         interval = burst;
         remaining_cpu_burst = burst;
     }
 
-    void Process::running_to_blocked(RandNumAccessor rnum) {
+    void Process::running_to_blocked(RandNumAccessor &rnum) {
         state = BLOCKED;
         int burst = rnum.randomOS(interval);
         interval = burst;

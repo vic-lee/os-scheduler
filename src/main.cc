@@ -23,7 +23,7 @@ namespace scheduler {
     }
 
 
-    void set_queue_first_to_running(std::queue<Process*> &q, RandNumAccessor rnum) {
+    void set_queue_first_to_running(std::queue<Process*> &q, RandNumAccessor &rnum) {
         if (q.size() == 0) {
             return;
         } else {
@@ -57,7 +57,7 @@ namespace scheduler {
     void finished_running_process_to_blocked(
         std::queue<Process*> &q, 
         std::vector<Process*> &v, 
-        RandNumAccessor rnum
+        RandNumAccessor &rnum
     ) {
         if (q.size() == 0) return;
         if (q.front() -> state == RUNNING 
@@ -102,7 +102,7 @@ namespace scheduler {
     }
 
 
-    void fcfs(std::vector<Process> pv, RandNumAccessor rnum) {
+    void fcfs(std::vector<Process> pv, RandNumAccessor &rnum) {
         std::queue<Process*> running_queue;
         std::vector<Process*> blocked_vect;
         int cycle = 0;
@@ -152,14 +152,13 @@ int main(int argc, char** argv) {
         return 0;
     }
     std::vector<s::Process> procvect = s::read_file(fname);
-    // int pcount = procvect.size();
+
     s::print_process_vect(procvect);
     std::sort(procvect.begin(), procvect.end(), s::comp_proc);
     std::cout << "After sorting" << std::endl;
     s::print_process_vect(procvect);
 
     s::RandNumAccessor rnum;
-
     s::fcfs(procvect, rnum);
 
     return 0;
