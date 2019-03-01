@@ -39,6 +39,7 @@ namespace scheduler {
             void decr_io_burst();
             bool is_finished();
             void terminate_process(int cycle);
+            void calc_turnaround_time();
     };
 
 

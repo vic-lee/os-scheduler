@@ -53,4 +53,8 @@ namespace scheduler {
         terminated_time = cycle;
     }
 
+    void Process::calc_turnaround_time() {
+        turnaround_time = terminated_time - arrival_time;
+    }
+
 }

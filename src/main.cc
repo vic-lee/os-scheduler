@@ -105,8 +105,8 @@ namespace scheduler {
     void terminate_finished_processes(std::vector<Process> &pv, int cycle) {
         for (int i = 0; i < pv.size(); i++) {
             if (pv[i].state != TERMINATED && pv[i].is_finished()) {
-                // print_process_one_line(pv[i]); 
                 pv[i].terminate_process(cycle);
+                pv[i].calc_turnaround_time();
             }
         }
     }
