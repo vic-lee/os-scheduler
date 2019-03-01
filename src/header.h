@@ -14,7 +14,7 @@ namespace scheduler {
     class RandNumAccessor {
         public: 
             int cur_line = 1;
-            int randomOS(int u);
+            std::tuple<int, int> randomOS(int u);
     };
 
     class Process {
@@ -27,6 +27,9 @@ namespace scheduler {
             int io_time;
             int remaining_cpu_burst;
             int remaining_io_burst;
+            int terminated_time;
+            int blocked_time = 0;   // time in the blocked state
+            int waiting_time = 0;   // time in the ready state
             void set_state();
             void ready_to_run(RandNumAccessor &rnum);
             void running_to_blocked(RandNumAccessor &rnum);
@@ -34,6 +37,7 @@ namespace scheduler {
             void decr_cpu_burst();
             void decr_io_burst();
             bool is_finished();
+            void terminate_process(int cycle);
     };
 
 

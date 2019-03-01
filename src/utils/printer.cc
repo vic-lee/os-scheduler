@@ -31,6 +31,9 @@ namespace scheduler {
             << "State: " << p.state << "  \t"
             << "R IO Burst: " << p.remaining_io_burst << "\t"
             << "R CPU Burst: " << p.remaining_cpu_burst << "\t"
+            << "Finishing time: " << p.terminated_time << "\t"
+            << "I/O time (blocked): " << p.blocked_time << "\t"
+            << "Waiting time: " << p.waiting_time << "\t"
             << std::endl;
     }
 

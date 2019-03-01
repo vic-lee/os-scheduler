@@ -95,9 +95,17 @@ namespace scheduler {
     }
 
 
-    void terminate_finished_processes(std::vector<Process> &pv) {
+    void terminate_finished_processes(std::vector<Process> &pv, int cycle) {
         for (int i = 0; i < pv.size(); i++) {
-            if (pv[i].is_finished()) pv[i].state = TERMINATED;
+            if (pv[i].state != TERMINATED && pv[i].is_finished()) 
+                pv[i].terminate_process(cycle);
+        }
+    }
+
+
+    void update_queue_waiting_time(std::vector<Process> &pv) {
+        for (int i = 0; i < pv.size(); i++) {
+            if (pv[i].state == READY) pv[i].waiting_time++;
         }
     }
 
@@ -107,7 +115,7 @@ namespace scheduler {
         std::vector<Process*> blocked_vect;
         int cycle = 0;
         std::cout << "---------- FCFS ----------\n" << std::endl;
-        while (!is_procs_terminated(pv) && cycle < 15) {
+        while (!is_procs_terminated(pv)) {
 
             print_process_vect_simp(pv, cycle);
 
@@ -119,12 +127,16 @@ namespace scheduler {
 
             do_arrival_process(pv, running_queue, cycle);
             set_queue_first_to_running(running_queue, rnum);
+            update_queue_waiting_time(pv);
             
-            
-            terminate_finished_processes(pv);
+            terminate_finished_processes(pv, cycle);
 
             cycle++;
         }
+        std::cout 
+            << "The scheduling algorithm used was First Come First Served" 
+            << std::endl;
+        print_process_vect(pv);
     }
 
 
