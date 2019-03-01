@@ -48,7 +48,7 @@ namespace scheduler {
     void print_process_vect(std::vector<Process> const &v);
     void print_process_vect_out(std::vector<Process> const &v);
     void print_process_vect_simp(std::vector<Process> const &v, int cycle);
-    void print_summary_data(std::vector<Process> const &v, int cycle);
+    void print_summary_data(std::vector<Process> const &v, int cycle, int cpu_used_time, int io_used_time);
     void print_cycle_info(Process* p, int size, int cycle_num);
 
     /*      utils/util.cc        */
@@ -58,6 +58,8 @@ namespace scheduler {
     float avg_wait_time(std::vector<Process> const &vect);
     float avg_turnaround_time(std::vector<Process> const &vect);
     float scheduler_throughput(std::vector<Process> const &vect, int cycle);
+    float calc_cpu_utilization(int cpu_used_time, int cycle);
+    float calc_io_utilization(int io_used_time, int cycle);
 
 }
 

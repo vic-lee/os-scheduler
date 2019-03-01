@@ -58,11 +58,11 @@ namespace scheduler {
         std::cout << "." << std::endl;
     }
 
-    void print_summary_data(std::vector<Process> const &v, int cycle) {
+    void print_summary_data(std::vector<Process> const &v, int cycle, int cpu_used_time, int io_used_time) {
         std::cout << "Summary Data:" << "\n"
             << "\tFinishing time: " << cycle << "\n"
-        //     << "\tCPU Utilization: " << ...
-        //     << "\tI/O Utilization: " << ...
+            << "\tCPU Utilization: " << calc_cpu_utilization(cpu_used_time, cycle) << "\n"
+            << "\tI/O Utilization: " << calc_io_utilization(io_used_time, cycle) << "\n"
             << "\tThroughput: " 
                 << scheduler_throughput(v, cycle) 
                 << " processes per hundred cycles" << "\n"

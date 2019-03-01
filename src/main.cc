@@ -123,6 +123,8 @@ namespace scheduler {
         std::queue<Process*> running_queue;
         std::vector<Process*> blocked_vect;
         int cycle = 0;
+        int io_used_time = 0;
+        int cpu_used_time = 0;
         std::cout << "---------- FCFS ----------\n" << std::endl;
         while (!is_procs_terminated(pv)) {
 
@@ -139,15 +141,19 @@ namespace scheduler {
             terminate_finished_processes(pv, cycle); 
             set_queue_first_to_running(running_queue, rnum);
             update_queue_waiting_time(pv);
+            
+            if (running_queue.size() > 0) cpu_used_time++;
+            if (blocked_vect.size() > 0) io_used_time++;
 
             cycle++;
         }
+        cycle--;
         std::cout 
             << "The scheduling algorithm used was First Come First Served" 
             << std::endl;
         std::sort(pv.begin(), pv.end(), comp_proc);
         print_process_vect_out(pv);
-        print_summary_data(pv, cycle);
+        print_summary_data(pv, cycle, cpu_used_time, io_used_time);
     }
 
 

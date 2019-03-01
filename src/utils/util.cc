@@ -3,6 +3,7 @@
 #include <string>
 #include <iomanip>
 #include <vector>
+# include<cmath>
 #include "../header.h"
 
 namespace scheduler {
@@ -79,6 +80,16 @@ namespace scheduler {
     float scheduler_throughput(std::vector<Process> const &vect, int cycle) {
         float throughput = (float) vect.size() / ((float) cycle / (float) 100);
         return throughput;
+    }
+
+    float calc_cpu_utilization(int cpu_used_time, int cycle) {
+        float u = (float) cpu_used_time / (float) cycle;
+        return u;
+    }
+
+    float calc_io_utilization(int io_used_time, int cycle) {
+        float u = (float) io_used_time / (float) cycle;
+        return u;
     }
 
 }
