@@ -59,10 +59,11 @@ namespace scheduler {
     }
 
 
-    void finished_running_process_to_blocked(
+    void running_process_to_blocked(
         std::queue<Process*> &q, 
         std::vector<Process*> &v, 
-        RandNumAccessor &rnum
+        RandNumAccessor &rnum,
+        bool should_preempt
     ) {
         if (q.size() == 0) return;
         if (q.front() -> state == RUNNING 
@@ -119,14 +120,14 @@ namespace scheduler {
     }
 
 
-    void fcfs(std::vector<Process> pv) {
+    void first_come_first_serve(std::vector<Process> pv) {
         RandNumAccessor rnum;
         std::queue<Process*> running_queue;
         std::vector<Process*> blocked_vect;
         int cycle = 0;
         int io_used_time = 0;
         int cpu_used_time = 0;
-        std::cout << "---------- FCFS ----------\n" << std::endl;
+        std::cout << "--------------- FCFS ---------------\n" << std::endl;
         while (!is_procs_terminated(pv)) {
 
             print_process_vect_simp(pv, cycle);
@@ -135,7 +136,7 @@ namespace scheduler {
             do_running_process(running_queue);
 
             finished_blocked_process_to_ready(running_queue, blocked_vect);
-            finished_running_process_to_blocked(running_queue, blocked_vect, rnum);            
+            running_process_to_blocked(running_queue, blocked_vect, rnum, false);
 
             do_arrival_process(pv, running_queue, cycle);
             // terminating before setting queue allows terminating processes within queues 
@@ -158,11 +159,25 @@ namespace scheduler {
     }
 
 
-    void rr_scheduler() { }
+    void roundrobin(std::vector<Process> pv) {
+        RandNumAccessor rnum;
+        std::queue<Process*> running_queue;
+        std::vector<Process*> blocked_vect;
+        int cycle = 0;
+        int cpu_used_time = 0;
+        int io_used_time = 0;
+        std::cout << "--------------- RR ---------------\n" << std::endl;
+        while (!is_procs_terminated(pv)) {
+            
+            if (running_queue.size() > 0) cpu_used_time++;
+            if (blocked_vect.size() > 0) io_used_time++;
+            cycle++;
+        }
+    }
 
-    void uniprogrammed_scheduler() { }
+    void uniprogrammed() { }
 
-    void sjf_scheduler() { }
+    void shortest_job_first() { }
 
 
 }
@@ -183,7 +198,11 @@ int main(int argc, char** argv) {
     std::cout << "After sorting" << std::endl;
     s::print_process_vect(procvect);
 
-    s::fcfs(procvect);
+    s::first_come_first_serve(procvect);
+    s::roundrobin(procvect);
+    s::uniprogrammed();
+    s::shortest_job_first();
+
 
     return 0;
 }
