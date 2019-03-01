@@ -76,12 +76,12 @@ namespace scheduler {
 
     }
 
-    void set_queue_first_to_running(std::queue<Process*> &q) {
+    void set_queue_first_to_running(std::queue<Process*> &q, RandNumAccessor rnum) {
         if (q.size() == 0) {
             return;
         } else {
             if (q.front() -> state == READY) {
-                q.front() -> state = RUNNING;
+                q.front() -> ready_to_run(rnum);
             }
         }
     }
@@ -105,7 +105,9 @@ namespace scheduler {
             print_process_vect_simp(pv, cycle);
 
             do_arrival_process(pv, running_queue, cycle);
-            set_queue_first_to_running(running_queue);
+            set_queue_first_to_running(running_queue, rnum);
+
+
             cycle++;
         }
     }

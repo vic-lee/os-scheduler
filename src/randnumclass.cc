@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include <fstream>
 
 #include "header.h"
@@ -15,8 +16,8 @@ namespace scheduler {
                 i++;
             }
             file_rand_num.close();
-            std::cout 
-                << "Randum Number: " << line 
+            std::cout << std::setw(18)
+                << "Random Number: " << line 
                 << "\tRet: " << (1 + stoi(line) % u) 
                 << std::endl;
             cur_line++;
