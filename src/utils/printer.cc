@@ -19,6 +19,7 @@ namespace scheduler {
             << std::endl;
     }
 
+
     void print_process_one_line(Process p) {
         std::cout 
             << "ID: " << p.pid << '\t' 
@@ -40,9 +41,11 @@ namespace scheduler {
         for (Process p : v) { print_process_one_line(p); }
     }
 
+
     void print_process_vect_out(std::vector<Process> const &v) {
         for (Process p : v) { print_process_out(p); } 
     }
+
 
     void print_process_vect_simp(std::vector<Process> const &v, int cycle) {
         std::cout << "Before cycle " << std::setw(4) << cycle << ":";
@@ -58,18 +61,20 @@ namespace scheduler {
         std::cout << "." << std::endl;
     }
 
+
     void print_summary_data(std::vector<Process> const &v, int cycle, int cpu_used_time, int io_used_time) {
         std::cout << "Summary Data:" << "\n"
             << "\tFinishing time: " << cycle << "\n"
-            << "\tCPU Utilization: " << calc_cpu_utilization(cpu_used_time, cycle) << "\n"
-            << "\tI/O Utilization: " << calc_io_utilization(io_used_time, cycle) << "\n"
+            << "\tCPU Utilization: " << calc_cpu_util(cpu_used_time, cycle) << "\n"
+            << "\tI/O Utilization: " << calc_io_util(io_used_time, cycle) << "\n"
             << "\tThroughput: " 
-                << scheduler_throughput(v, cycle) 
+                << calc_throughput(v, cycle) 
                 << " processes per hundred cycles" << "\n"
-            << "\tAverage turnaround time: " << avg_turnaround_time(v) << "\n"
-            << "\tAverage waiting time: " << avg_wait_time(v) << "\n"
+            << "\tAverage turnaround time: " << calc_avg_turnaround_time(v) << "\n"
+            << "\tAverage waiting time: " << calc_avg_wait_time(v) << "\n"
             << std::endl;
     }
+    
 
     void print_cycle_info(Process* p, int size, int cycle_num) {
         std::cout << "Before cycle\t" << cycle_num << ":\t";

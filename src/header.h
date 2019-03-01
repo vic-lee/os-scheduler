@@ -53,13 +53,12 @@ namespace scheduler {
 
     /*      utils/util.cc        */
     std::vector<Process> read_file(std::string fname);
-    // process* generate_process_arr(int size);
     bool is_procs_terminated(std::vector<Process> const &vect);
-    float avg_wait_time(std::vector<Process> const &vect);
-    float avg_turnaround_time(std::vector<Process> const &vect);
-    float scheduler_throughput(std::vector<Process> const &vect, int cycle);
-    float calc_cpu_utilization(int cpu_used_time, int cycle);
-    float calc_io_utilization(int io_used_time, int cycle);
+    float calc_avg_wait_time(std::vector<Process> const &vect);
+    float calc_avg_turnaround_time(std::vector<Process> const &vect);
+    float calc_throughput(std::vector<Process> const &vect, int cycle);
+    float calc_cpu_util(int cpu_used_time, int cycle);
+    float calc_io_util(int io_used_time, int cycle);
 
 }
 

@@ -13,7 +13,6 @@ namespace scheduler {
         std::cout 
             << "Find burst when choosing ready process to run " << randnum
             << std::endl;
-        // interval = burst;
         remaining_cpu_burst = burst;
     }
 
@@ -24,7 +23,6 @@ namespace scheduler {
         std::cout 
             << "Find I/O burst when blocking a process " << randnum 
             << std::endl;
-        // interval = burst;
         blocked_time += burst;
         remaining_io_burst = burst;
     }

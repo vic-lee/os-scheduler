@@ -19,17 +19,18 @@ namespace scheduler {
         return false;
     }
 
+
     bool comp_proc_ptr(Process* a, Process* b) {
         if (a -> arrival_time < b -> arrival_time) return true;
         if (a -> arrival_time == b -> arrival_time) return a -> pid < b -> pid;
         return false;
     }
 
+
     void set_queue_first_to_running(std::queue<Process*> &q, RandNumAccessor &rnum) {
         if (q.size() == 0) {
             return;
         } else {
-            // print_process_one_line(*q.front());
             if (q.front() -> state == TERMINATED) q.pop();
             if (q.size() > 0 && q.front() -> state == READY) {
                 q.front() -> ready_to_run(rnum);
@@ -89,7 +90,6 @@ namespace scheduler {
         std::vector<Process*> &v
     ) {
         for (int i = 0; i < v.size(); i++) {
-            // print_process_one_line(*v[i]);
             if (v[i] -> remaining_io_burst == 0) {
                 if (! v[i] -> is_finished()) {
                     v[i] -> blocked_to_ready();

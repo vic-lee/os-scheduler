@@ -23,7 +23,6 @@ namespace scheduler {
         if (input_file.is_open()) {
             std::string val;
             input_file >> val;
-            // int pcount = stoi(val);
             int pctr = 0;
             Process temp_process;
             temp_process.state = UNSTARTED;
@@ -52,6 +51,7 @@ namespace scheduler {
         return procvect;
     }
 
+
     bool is_procs_terminated(std::vector<Process> const &vect) {
         for (int i = 0; i < vect.size(); i++) {
             if (vect[i].state != TERMINATED) return false;
@@ -59,7 +59,8 @@ namespace scheduler {
         return true;
     }
 
-    float avg_wait_time(std::vector<Process> const &vect) {
+
+    float calc_avg_wait_time(std::vector<Process> const &vect) {
         int total_wait = 0;
         for (int i = 0; i < vect.size(); i++) {
             total_wait += vect[i].waiting_time;
@@ -68,7 +69,8 @@ namespace scheduler {
         return avg;
     }
 
-    float avg_turnaround_time(std::vector<Process> const &vect) {
+
+    float calc_avg_turnaround_time(std::vector<Process> const &vect) {
         int total_turn = 0;
         for (int i = 0; i < vect.size(); i++) {
             total_turn += vect[i].turnaround_time;
@@ -77,17 +79,20 @@ namespace scheduler {
         return avg;
     }
 
-    float scheduler_throughput(std::vector<Process> const &vect, int cycle) {
+
+    float calc_throughput(std::vector<Process> const &vect, int cycle) {
         float throughput = (float) vect.size() / ((float) cycle / (float) 100);
         return throughput;
     }
 
-    float calc_cpu_utilization(int cpu_used_time, int cycle) {
+
+    float calc_cpu_util(int cpu_used_time, int cycle) {
         float u = (float) cpu_used_time / (float) cycle;
         return u;
     }
 
-    float calc_io_utilization(int io_used_time, int cycle) {
+
+    float calc_io_util(int io_used_time, int cycle) {
         float u = (float) io_used_time / (float) cycle;
         return u;
     }
