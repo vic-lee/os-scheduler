@@ -22,59 +22,6 @@ namespace scheduler {
         return -1;
     }
 
-    void fcfs_old(std::vector<Process> pv, RandNumAccessor rnum) {
-        /**
-         * Input:   pointer to sorted process array, array size, flag(s)
-         * Output:  print on screen. 
-         * Algorithm: 
-         *      1. Enqueue processes by their entry time, given a process array
-         *      2. While the queue is not empty:
-         *              Alternate between CPU and I/O bursts (blocked).
-         *              Blocked processes, when ready, join the end of the queue. 
-         */
-
-        int cycle = 0;
-        int size = pv.size();
-        int pvcur = 0;
-        std::queue<Process*> running_queue;  
-        std::vector<Process*> blocked_vect; 
-        std::cout << "------ STARTING FCFS ------" << std::endl;
-        int ctr = 0;
-        do {
-            while ((pvcur < size) && pv[pvcur].arrival_time == cycle) {
-                pv[pvcur].state = READY;
-                running_queue.push(&pv[pvcur]);
-                pvcur++;
-            }
-
-            std::cout << "Before cycle " << ctr << std::endl;
-            print_process_vect(pv);
-
-            if (running_queue.front() -> state == READY) 
-                running_queue.front() -> ready_to_run(rnum);
-            running_queue.front() -> decr_cpu_burst(rnum);
-            if (running_queue.front() -> state == BLOCKED) {
-                blocked_vect.push_back(running_queue.front());
-                running_queue.pop();
-            }
-            
-            for (int i = 0; i < blocked_vect.size(); i++) {
-                blocked_vect[i] -> decr_io_burst(rnum);
-                if (blocked_vect[i] -> state == READY) {
-                    running_queue.push(blocked_vect[i]);
-                    blocked_vect.erase(blocked_vect.begin() + i);
-                }
-            }
-
-            // if (cp -> cpu_time == 0 && cp -> io_time == 0) {
-            //     cp -> state = TERMINATED;
-            //     print_process(*cp);
-            // }
-            
-            ctr++;
-        } while (! s::is_procs_terminated(pv) && ctr < 10);
-
-    }
 
     void set_queue_first_to_running(std::queue<Process*> &q, RandNumAccessor rnum) {
         if (q.size() == 0) {
@@ -86,6 +33,7 @@ namespace scheduler {
         }
     }
 
+
     void do_arrival_process(std::vector<Process> &pv, std::queue<Process*> &q, int cycle) {
         for (int i = 0; i < pv.size(); i++) {
             if (pv[i].arrival_time == cycle) {
@@ -95,10 +43,22 @@ namespace scheduler {
         }
     }
 
+
     void do_running_process(std::queue<Process*> &q) {
         if (q.size() == 0) return;
         q.front() -> decr_cpu_burst();
     }
+
+
+    void finished_running_process_to_blocked(std::queue<Process*> &q, std::vector<Process*> &v, RandNumAccessor rnum) {
+        if (q.size() == 0) return;
+        if (q.front() -> remaining_cpu_burst == 0) {
+            q.front() -> running_to_blocked(rnum);
+            v.push_back(q.front());
+            q.pop();
+        }
+    }
+
 
     void fcfs(std::vector<Process> pv, RandNumAccessor rnum) {
         std::queue<Process*> running_queue;
@@ -108,15 +68,17 @@ namespace scheduler {
         while (!is_procs_terminated(pv) && cycle < 10) {
 
             print_process_vect_simp(pv, cycle);
+            
+            do_running_process(running_queue);
+            finished_running_process_to_blocked(running_queue, blocked_vect, rnum);            
 
             do_arrival_process(pv, running_queue, cycle);
             set_queue_first_to_running(running_queue, rnum);
 
-            do_running_process(running_queue)
-
             cycle++;
         }
     }
+
 
     void rr_scheduler() { }
 

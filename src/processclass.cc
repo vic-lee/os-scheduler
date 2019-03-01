@@ -11,6 +11,13 @@ namespace scheduler {
         remaining_cpu_burst = burst;
     }
 
+    void Process::running_to_blocked(RandNumAccessor rnum) {
+        state = BLOCKED;
+        int burst = rnum.randomOS(interval);
+        interval = burst;
+        remaining_io_burst = burst;
+    }
+
     void Process::decr_cpu_burst() {
         if (remaining_cpu_burst >= 1) remaining_cpu_burst--;
         if (cpu_time >= 1) cpu_time--;
