@@ -98,10 +98,6 @@ namespace scheduler {
         }
     }
 
-    void running_process_to_ready() {
-
-    }
-
 
     void do_blocked_process(std::vector<Process*> &v) {
         for (int i = 0; i < v.size(); i++) {
@@ -146,6 +142,16 @@ namespace scheduler {
     }
 
 
+    void add_pool_to_queue(std::queue<Process*> &q, std::vector<Process*> &pool) {
+        std::sort(pool.begin(), pool.end(), comp_proc_ptr);
+        for (int i = 0; i < pool.size(); i++) {
+            q.push(pool[i]);
+            pool.erase(pool.begin() + i); 
+            i--;
+        }
+    }
+
+
     void first_come_first_serve(
         std::vector<Process> pv, 
         bool should_preempt = false, 
@@ -154,11 +160,10 @@ namespace scheduler {
         RandNumAccessor rnum;
         std::queue<Process*> running_queue;
         std::vector<Process*> blocked_vect;
-        std::vector<Process*> join_queue_pool;
+        std::vector<Process*> queue_wait_pool;
         int cycle = 0;
         int io_used_time = 0;
         int cpu_used_time = 0;
-        std::cout << "--------------- FCFS ---------------\n" << std::endl;
         while (!is_procs_terminated(pv)) {
 
             print_process_vect_simp(pv, cycle, should_preempt);
@@ -166,14 +171,9 @@ namespace scheduler {
             do_blocked_process(blocked_vect);
             do_running_process(running_queue, quantum);
 
-            blocked_process_to_ready(running_queue, blocked_vect, join_queue_pool);
-            running_process_to_blocked(running_queue, blocked_vect, rnum, join_queue_pool, quantum);
-            std::sort(join_queue_pool.begin(), join_queue_pool.end(), comp_proc_ptr);
-            for (int i = 0; i < join_queue_pool.size(); i++) {
-                running_queue.push(join_queue_pool[i]);
-                join_queue_pool.erase(join_queue_pool.begin() + i);
-                i--;
-            }
+            blocked_process_to_ready(running_queue, blocked_vect, queue_wait_pool);
+            running_process_to_blocked(running_queue, blocked_vect, rnum, queue_wait_pool, quantum);
+            add_pool_to_queue(running_queue, queue_wait_pool);
 
             do_arrival_process(pv, running_queue, cycle);
             // terminating before setting queue allows terminating processes within queues 
@@ -227,8 +227,8 @@ int main(int argc, char** argv) {
     std::cout << "After sorting" << std::endl;
     s::print_process_vect(procvect);
 
-    s::first_come_first_serve(procvect);
-    // s::roundrobin(procvect);
+    // s::first_come_first_serve(procvect);
+    s::roundrobin(procvect);
     s::uniprogrammed();
     s::shortest_job_first();
 
