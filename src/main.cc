@@ -7,6 +7,7 @@
 #include <iomanip>
 #include <vector>
 #include <algorithm>
+#include <functional>
 #include "header.h"
 
 namespace s = scheduler;
@@ -28,6 +29,10 @@ namespace scheduler {
 
 
     bool comp_proc_id(Process a, Process b) { return a.pid < b.pid; }
+
+    std::function<bool(Process, Process)> cpid = [](Process a, Process b) -> bool {
+        return a.pid < b.pid;
+    };
 
 
     void set_queue_front_to_running(
@@ -153,7 +158,7 @@ namespace scheduler {
     ) {
         RandNumAccessor rnum;
         std::queue<Process*> running_queue;
-        std::vector<Process*> blocked_vect;
+        std::vector<Process*> blocked_pool;
         std::vector<Process*> queue_wait_pool;
         int cycle = 0;
         int io_used_time = 0;
@@ -162,12 +167,15 @@ namespace scheduler {
 
             print_process_vect_simp(pv, cycle, should_preempt);
 
-            do_blocked_process(blocked_vect);
+            do_blocked_process(blocked_pool);
             do_running_process(running_queue, quantum);
 
-            blocked_process_to_ready(running_queue, blocked_vect, queue_wait_pool);
-            running_process_to_blocked(running_queue, blocked_vect, rnum, queue_wait_pool, quantum);
-            add_pool_to_queue(running_queue, queue_wait_pool);
+            blocked_process_to_ready(   
+                running_queue, blocked_pool, queue_wait_pool);
+            running_process_to_blocked(
+                running_queue, blocked_pool, rnum, queue_wait_pool, quantum);
+            add_pool_to_queue(
+                running_queue, queue_wait_pool);
 
             do_arrival_process(pv, running_queue, cycle);
             // terminating before setting queue allows terminating processes within queues 
@@ -176,7 +184,7 @@ namespace scheduler {
             update_queue_waiting_time(pv);
             
             if (running_queue.size() > 0) cpu_used_time++;
-            if (blocked_vect.size() > 0) io_used_time++;
+            if (blocked_pool.size() > 0) io_used_time++;
 
             cycle++;
         }
@@ -207,25 +215,34 @@ namespace scheduler {
 
 
 int main(int argc, char** argv) {
-    std::string fname;
-    try {
-        fname = argv[1];
-    } catch (std::exception& e) {
-        std::cout << "Please provide a filename as an argument." << std::endl;
-        return 0;
-    }
-    std::vector<s::Process> procvect = s::read_file(fname);
+    std::string algo;
+    std::string fname = argv[1];
 
-    s::print_process_vect(procvect);
-    std::sort(procvect.begin(), procvect.end(), s::comp_proc);
+    // NOTE: REMOVE FOR FINAL PRODUCTION
+    if (argc > 2) algo = argv[2]; 
+    
+    std::vector<s::Process> pvect = s::read_file(fname);
+
+    s::print_process_vect(pvect);
+    std::sort(pvect.begin(), pvect.end(), s::comp_proc);
     std::cout << "After sorting" << std::endl;
-    s::print_process_vect(procvect);
+    s::print_process_vect(pvect);
 
-    // s::first_come_first_serve(procvect);
-    s::roundrobin(procvect);
-    s::uniprogrammed();
-    s::shortest_job_first();
 
+    if (algo == "--fcfs") {
+        s::first_come_first_serve(pvect);
+    } else if (algo == "--rr") {
+        s::roundrobin(pvect);
+    } else if (algo == "--uni") {
+        s::uniprogrammed();
+    } else if (algo == "--sjf") {
+        s::shortest_job_first();
+    } else {
+        s::first_come_first_serve(pvect);
+        s::roundrobin(pvect);
+        s::uniprogrammed();
+        s::shortest_job_first();
+    }
 
     return 0;
 }
