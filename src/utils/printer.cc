@@ -7,8 +7,8 @@
 
 namespace scheduler {
 
-    void print_process_out(Process p) {
-        std::cout << "Process " << p.pid  << ":" << std::endl;
+    void print_process_out(Process p, int index) {
+        std::cout << "Process " << index  << ":" << std::endl;
         std::printf("\t(A,B,C,IO) = (%d,%d,%d,%d)\n", 
             p.arrival_time, p.cpu_interval, p.cpu_time_assigned, p.io_interval);
         std::cout 
@@ -43,7 +43,9 @@ namespace scheduler {
 
 
     void print_process_vect_out(std::vector<Process> const &v) {
-        for (Process p : v) { print_process_out(p); } 
+        for (int i = 0; i < v.size(); i++) {
+            print_process_out(v[i], i);
+        }
     }
 
 

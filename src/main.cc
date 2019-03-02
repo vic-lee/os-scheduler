@@ -189,11 +189,12 @@ namespace scheduler {
         }
         cycle--;
 
-        std::string algo_name = should_preempt ? "Round Robin" : "First Come First Served";
+        std::string algo_name = should_preempt ? 
+            "Round Robin" : "First Come First Served";
         std::cout 
             << "The scheduling algorithm used was " << algo_name
             << std::endl;
-        std::sort(pv.begin(), pv.end(), comp_proc_id);
+
         print_process_vect_out(pv);
         print_summary_data(pv, cycle, cpu_used_time, io_used_time);
     }
