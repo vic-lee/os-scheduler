@@ -34,7 +34,10 @@ namespace scheduler {
                 switch (ctr) {
                     case 0: temp_process.arrival_time = stoi(val); break;
                     case 1: temp_process.cpu_interval = stoi(val); break;
-                    case 2: temp_process.cpu_time = stoi(val); break;
+                    case 2: 
+                        temp_process.cpu_time_assigned = stoi(val); 
+                        temp_process.cpu_time = temp_process.cpu_time_assigned;
+                        break;
                     case 3: temp_process.io_interval = stoi(val); break;
                     default: std::cout << "Error in parsing process." << std::endl; break;
                 }

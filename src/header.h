@@ -36,6 +36,7 @@ namespace scheduler {
             int turnaround_time; 
             int blocked_time = 0;   // time in the blocked state
             int waiting_time = 0;   // time in the ready state
+            int cpu_time_assigned;
             void set_state();
             void ready_to_run(RandNumAccessor &rnum, int quantum);
             void running_to_blocked(RandNumAccessor &rnum);

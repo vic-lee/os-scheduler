@@ -227,8 +227,8 @@ int main(int argc, char** argv) {
     std::cout << "After sorting" << std::endl;
     s::print_process_vect(procvect);
 
-    // s::first_come_first_serve(procvect);
-    s::roundrobin(procvect);
+    s::first_come_first_serve(procvect);
+    // s::roundrobin(procvect);
     s::uniprogrammed();
     s::shortest_job_first();
 

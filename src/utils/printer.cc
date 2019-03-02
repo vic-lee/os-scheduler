@@ -10,7 +10,7 @@ namespace scheduler {
     void print_process_out(Process p) {
         std::cout << "Process " << p.pid  << ":" << std::endl;
         std::printf("\t(A,B,C,IO) = (%d,%d,%d,%d)\n", 
-            p.arrival_time, p.cpu_interval, p.cpu_time, p.io_interval);
+            p.arrival_time, p.cpu_interval, p.cpu_time_assigned, p.io_interval);
         std::cout 
             << "\tFinishing time: " << p.terminated_time << "\n"
             << "\tTurnaround time: " << (p.terminated_time - p.arrival_time) << "\n"
