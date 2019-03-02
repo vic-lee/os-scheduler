@@ -86,7 +86,6 @@ namespace scheduler {
                     q.front() -> running_to_blocked(rnum);
                     v.push_back(q.front());
                 } else {
-                    std::cout << "QT: " << quantum << std::endl;
                     if (quantum != QT_UNDEF) {
                         q.front() -> run_to_ready();
                         queuepool.push_back(q.front());

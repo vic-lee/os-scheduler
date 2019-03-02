@@ -8,14 +8,14 @@
 namespace scheduler {
 
     void print_process_out(Process p, int index) {
-        std::cout << "Process " << index  << ":" << std::endl;
+        std::cout << "\nProcess " << index  << ":" << std::endl;
         std::printf("\t(A,B,C,IO) = (%d,%d,%d,%d)\n", 
             p.arrival_time, p.cpu_interval, p.cpu_time_assigned, p.io_interval);
         std::cout 
             << "\tFinishing time: " << p.terminated_time << "\n"
             << "\tTurnaround time: " << (p.terminated_time - p.arrival_time) << "\n"
             << "\tI/O time: " << p.blocked_time << "\n"
-            << "\tWaiting time: " << p.waiting_time << "\n"
+            << "\tWaiting time: " << p.waiting_time
             << std::endl;
     }
 
@@ -74,7 +74,7 @@ namespace scheduler {
         int cpu_used_time, 
         int io_used_time
     ) {
-        std::cout << "Summary Data:" << "\n"
+        std::cout << "\nSummary Data:" << "\n"
             << "\tFinishing time: " << cycle << "\n"
             << "\tCPU Utilization: " << calc_cpu_util(cpu_used_time, cycle) << "\n"
             << "\tI/O Utilization: " << calc_io_util(io_used_time, cycle) << "\n"
