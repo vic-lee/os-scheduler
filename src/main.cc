@@ -65,9 +65,6 @@ namespace scheduler {
         q.front() -> decr_cpu_burst();
         if (quantum != QT_UNDEF) {
             q.front() -> update_quantum_vars(quantum);
-            // if (q.front() -> should_preempt(quantum)) {
-            //     q.front() -> run_to_ready();
-            // }
         }
     }
 
@@ -89,9 +86,12 @@ namespace scheduler {
                     q.front() -> running_to_blocked(rnum);
                     v.push_back(q.front());
                 } else {
-                    q.front() -> run_to_ready();
+                    std::cout << "QT: " << quantum << std::endl;
+                    if (quantum != QT_UNDEF) {
+                        q.front() -> run_to_ready();
+                        queuepool.push_back(q.front());
+                    }
                     // q.push(q.front());
-                    queuepool.push_back(q.front());
                 }
             } 
             q.pop();
@@ -168,7 +168,7 @@ namespace scheduler {
             do_running_process(running_queue, quantum);
 
             blocked_process_to_ready(running_queue, blocked_vect, join_queue_pool);
-            running_process_to_blocked(running_queue, blocked_vect, rnum, join_queue_pool, should_preempt);
+            running_process_to_blocked(running_queue, blocked_vect, rnum, join_queue_pool, quantum);
             std::sort(join_queue_pool.begin(), join_queue_pool.end(), comp_proc_ptr);
             for (int i = 0; i < join_queue_pool.size(); i++) {
                 running_queue.push(join_queue_pool[i]);
