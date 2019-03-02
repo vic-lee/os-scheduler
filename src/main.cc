@@ -40,7 +40,7 @@ namespace scheduler {
         } else {
             if (q.front() -> state == TERMINATED) q.pop();
             if (q.size() > 0 && q.front() -> state == READY) {
-                q.front() -> ready_to_run(rnum, quantum);
+                q.front() -> ready_to_run(rnum);
             }
         }
     }

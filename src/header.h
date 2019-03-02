@@ -33,7 +33,7 @@ namespace scheduler {
             int blocked_time = 0;   // time in the blocked state
             int waiting_time = 0;   // time in the ready state
             void set_state();
-            void ready_to_run(RandNumAccessor &rnum, int quantum);
+            void ready_to_run(RandNumAccessor &rnum);
             void running_to_blocked(RandNumAccessor &rnum);
             void blocked_to_ready();
             void decr_cpu_burst();

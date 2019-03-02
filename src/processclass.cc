@@ -6,14 +6,13 @@
 
 namespace scheduler {
 
-    void Process::ready_to_run(RandNumAccessor &rnum, int quantum) {
+    void Process::ready_to_run(RandNumAccessor &rnum) {
         state = RUNNING;
         int burst, randnum;
         std::tie(burst, randnum) = rnum.randomOS(cpu_interval);
         std::cout 
             << "Find burst when choosing ready process to run " << randnum
             << std::endl;
-        if (quantum != QT_UNDEF && burst > quantum) burst = quantum; 
         remaining_cpu_burst = burst;
     }
 
