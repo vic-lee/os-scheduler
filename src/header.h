@@ -27,20 +27,29 @@ namespace scheduler {
             int cpu_time;
             int io_interval;
             int remaining_cpu_burst;
+            int assigned_cpu_burst;
+            int cpu_time_used;
+            int remaining_quantum = 0;
+            bool is_preempted = false;
             int remaining_io_burst;
             int terminated_time = 0;
             int turnaround_time; 
             int blocked_time = 0;   // time in the blocked state
             int waiting_time = 0;   // time in the ready state
             void set_state();
-            void ready_to_run(RandNumAccessor &rnum);
+            void ready_to_run(RandNumAccessor &rnum, int quantum);
             void running_to_blocked(RandNumAccessor &rnum);
             void blocked_to_ready();
+            void run_to_ready();
             void decr_cpu_burst();
             void decr_io_burst();
             bool is_finished();
             void terminate_process(int cycle);
             void calc_turnaround_time();
+            void incr_cpu_time_used();
+            void decr_remaining_quantum(int quantum);
+            void update_quantum_vars(int quantum);
+            int should_preempt(int quantum);
     };
 
 
@@ -48,7 +57,7 @@ namespace scheduler {
     void print_process_one_line(Process p);
     void print_process_vect(std::vector<Process> const &v);
     void print_process_vect_out(std::vector<Process> const &v);
-    void print_process_vect_simp(std::vector<Process> const &v, int cycle);
+    void print_process_vect_simp(std::vector<Process> const &v, int cycle, bool should_preempt);
     void print_summary_data(std::vector<Process> const &v, int cycle, int cpu_used_time, int io_used_time);
     void print_cycle_info(Process* p, int size, int cycle_num);
 

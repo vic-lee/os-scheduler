@@ -47,7 +47,7 @@ namespace scheduler {
     }
 
 
-    void print_process_vect_simp(std::vector<Process> const &v, int cycle) {
+    void print_process_vect_simp(std::vector<Process> const &v, int cycle, bool should_preempt) {
         std::cout << "Before cycle " << std::setw(4) << cycle << ":";
         for (Process p : v) {
             std::cout << std::setw(12) << p.state;
@@ -55,7 +55,11 @@ namespace scheduler {
                 std::cout << std::setw(3) << p.remaining_io_burst << std::flush;
             }
             else {
-                std::cout << std::setw(3) << p.remaining_cpu_burst << std::flush;
+                if (should_preempt) {
+                    std::cout << std::setw(3) << p.remaining_quantum << std::flush;
+                } else {
+                    std::cout << std::setw(3) << p.remaining_cpu_burst << std::flush;
+                }
             }
         }
         std::cout << "." << std::endl;

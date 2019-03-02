@@ -40,7 +40,7 @@ namespace scheduler {
         } else {
             if (q.front() -> state == TERMINATED) q.pop();
             if (q.size() > 0 && q.front() -> state == READY) {
-                q.front() -> ready_to_run(rnum);
+                q.front() -> ready_to_run(rnum, quantum);
             }
         }
     }
@@ -60,9 +60,15 @@ namespace scheduler {
     }
 
 
-    void do_running_process(std::queue<Process*> &q) {
+    void do_running_process(std::queue<Process*> &q, int quantum = QT_UNDEF) {
         if (q.size() == 0) return;
         q.front() -> decr_cpu_burst();
+        if (quantum != QT_UNDEF) {
+            q.front() -> update_quantum_vars(quantum);
+            // if (q.front() -> should_preempt(quantum)) {
+            //     q.front() -> run_to_ready();
+            // }
+        }
     }
 
 
@@ -70,19 +76,31 @@ namespace scheduler {
         std::queue<Process*> &q, 
         std::vector<Process*> &v, 
         RandNumAccessor &rnum,
-        bool should_preempt = false
+        std::vector<Process*> &queuepool, 
+        int quantum = QT_UNDEF
     ) {
         if (q.size() == 0) return;
-        if (q.front() -> state == RUNNING 
-            && q.front() -> remaining_cpu_burst == 0
+        if (q.front() -> state == RUNNING && 
+            (q.front() -> remaining_cpu_burst == 0 || 
+            (quantum != QT_UNDEF && q.front() -> should_preempt(quantum)))
         ) {
             if (!q.front() -> is_finished()) {
-                q.front() -> running_to_blocked(rnum);
-                v.push_back(q.front());
-            }
+                if (q.front() -> remaining_cpu_burst == 0) {
+                    q.front() -> running_to_blocked(rnum);
+                    v.push_back(q.front());
+                } else {
+                    q.front() -> run_to_ready();
+                    // q.push(q.front());
+                    queuepool.push_back(q.front());
+                }
+            } 
             q.pop();
             std::sort(v.begin(), v.end(), comp_proc_ptr);
         }
+    }
+
+    void running_process_to_ready() {
+
     }
 
 
@@ -93,15 +111,17 @@ namespace scheduler {
     }
 
 
-    void finished_blocked_process_to_ready(
+    void blocked_process_to_ready(
         std::queue<Process*> &q, 
-        std::vector<Process*> &v
+        std::vector<Process*> &v,
+        std::vector<Process*> &queuepool
     ) {
         for (int i = 0; i < v.size(); i++) {
             if (v[i] -> remaining_io_burst == 0) {
                 if (! v[i] -> is_finished()) {
                     v[i] -> blocked_to_ready();
-                    q.push(v[i]);
+                    // q.push(v[i]);
+                    queuepool.push_back(v[i]);
                 }
                 v.erase(v.begin() + i);
                 i--;
@@ -135,19 +155,26 @@ namespace scheduler {
         RandNumAccessor rnum;
         std::queue<Process*> running_queue;
         std::vector<Process*> blocked_vect;
+        std::vector<Process*> join_queue_pool;
         int cycle = 0;
         int io_used_time = 0;
         int cpu_used_time = 0;
         std::cout << "--------------- FCFS ---------------\n" << std::endl;
-        while (!is_procs_terminated(pv)) {
+        while (!is_procs_terminated(pv) && cycle < 100) {
 
-            print_process_vect_simp(pv, cycle);
+            print_process_vect_simp(pv, cycle, should_preempt);
 
             do_blocked_process(blocked_vect);
-            do_running_process(running_queue);
+            do_running_process(running_queue, quantum);
 
-            finished_blocked_process_to_ready(running_queue, blocked_vect);
-            running_process_to_blocked(running_queue, blocked_vect, rnum, should_preempt);
+            blocked_process_to_ready(running_queue, blocked_vect, join_queue_pool);
+            running_process_to_blocked(running_queue, blocked_vect, rnum, join_queue_pool, should_preempt);
+            std::sort(join_queue_pool.begin(), join_queue_pool.end(), comp_proc_ptr);
+            for (int i = 0; i < join_queue_pool.size(); i++) {
+                running_queue.push(join_queue_pool[i]);
+                join_queue_pool.erase(join_queue_pool.begin() + i);
+                i--;
+            }
 
             do_arrival_process(pv, running_queue, cycle);
             // terminating before setting queue allows terminating processes within queues 
