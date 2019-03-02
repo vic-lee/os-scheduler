@@ -14,7 +14,7 @@ namespace s = scheduler;
 namespace scheduler {
 
     bool comp_proc(Process a, Process b) {
-        if (a.arrival_time < b.arrival_time) return true;
+        if (a.arrival_time < b.arrival_time) return true; 
         if (a.arrival_time == b.arrival_time) return a.pid < b.pid;
         return false;
     }
@@ -27,13 +27,17 @@ namespace scheduler {
     }
 
 
-    void set_queue_first_to_running(std::queue<Process*> &q, RandNumAccessor &rnum) {
+    void set_queue_front_to_running(
+        std::queue<Process*> &q, 
+        RandNumAccessor &rnum, 
+        int quantum = QT_UNDEF
+    ) {
         if (q.size() == 0) {
             return;
         } else {
             if (q.front() -> state == TERMINATED) q.pop();
             if (q.size() > 0 && q.front() -> state == READY) {
-                q.front() -> ready_to_run(rnum);
+                q.front() -> ready_to_run(rnum, quantum);
             }
         }
     }
@@ -63,7 +67,7 @@ namespace scheduler {
         std::queue<Process*> &q, 
         std::vector<Process*> &v, 
         RandNumAccessor &rnum,
-        bool should_preempt
+        bool should_preempt = false
     ) {
         if (q.size() == 0) return;
         if (q.front() -> state == RUNNING 
@@ -120,7 +124,11 @@ namespace scheduler {
     }
 
 
-    void first_come_first_serve(std::vector<Process> pv) {
+    void first_come_first_serve(
+        std::vector<Process> pv, 
+        bool should_preempt = false, 
+        int quantum = QT_UNDEF
+    ) {
         RandNumAccessor rnum;
         std::queue<Process*> running_queue;
         std::vector<Process*> blocked_vect;
@@ -136,12 +144,12 @@ namespace scheduler {
             do_running_process(running_queue);
 
             finished_blocked_process_to_ready(running_queue, blocked_vect);
-            running_process_to_blocked(running_queue, blocked_vect, rnum, false);
+            running_process_to_blocked(running_queue, blocked_vect, rnum, should_preempt);
 
             do_arrival_process(pv, running_queue, cycle);
             // terminating before setting queue allows terminating processes within queues 
             terminate_finished_processes(pv, cycle); 
-            set_queue_first_to_running(running_queue, rnum);
+            set_queue_front_to_running(running_queue, rnum, quantum);
             update_queue_waiting_time(pv);
             
             if (running_queue.size() > 0) cpu_used_time++;
@@ -160,19 +168,8 @@ namespace scheduler {
 
 
     void roundrobin(std::vector<Process> pv) {
-        RandNumAccessor rnum;
-        std::queue<Process*> running_queue;
-        std::vector<Process*> blocked_vect;
-        int cycle = 0;
-        int cpu_used_time = 0;
-        int io_used_time = 0;
-        std::cout << "--------------- RR ---------------\n" << std::endl;
-        while (!is_procs_terminated(pv)) {
-            
-            if (running_queue.size() > 0) cpu_used_time++;
-            if (blocked_vect.size() > 0) io_used_time++;
-            cycle++;
-        }
+        int quantum = 2;
+        first_come_first_serve(pv, true, quantum);
     }
 
     void uniprogrammed() { }
@@ -198,7 +195,7 @@ int main(int argc, char** argv) {
     std::cout << "After sorting" << std::endl;
     s::print_process_vect(procvect);
 
-    s::first_come_first_serve(procvect);
+    // s::first_come_first_serve(procvect);
     s::roundrobin(procvect);
     s::uniprogrammed();
     s::shortest_job_first();

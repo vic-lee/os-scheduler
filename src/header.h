@@ -3,6 +3,7 @@
 
 #define EOPROCESS 3
 #define RAND_NUM_FILE_SIZE 100000
+#define QT_UNDEF -1
 #define UNSTARTED "unstarted"
 #define READY "ready"
 #define RUNNING "running"
@@ -32,7 +33,7 @@ namespace scheduler {
             int blocked_time = 0;   // time in the blocked state
             int waiting_time = 0;   // time in the ready state
             void set_state();
-            void ready_to_run(RandNumAccessor &rnum);
+            void ready_to_run(RandNumAccessor &rnum, int quantum);
             void running_to_blocked(RandNumAccessor &rnum);
             void blocked_to_ready();
             void decr_cpu_burst();
