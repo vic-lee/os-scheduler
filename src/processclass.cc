@@ -72,6 +72,7 @@ namespace scheduler {
         state = TERMINATED;
         remaining_cpu_burst = 0;
         remaining_io_burst = 0;
+        remaining_quantum = 0;
         terminated_time = cycle;
     }
 

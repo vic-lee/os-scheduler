@@ -39,9 +39,8 @@ namespace scheduler {
             return;
         } else {
             if (q.front() -> state == TERMINATED) q.pop();
-            if (q.size() > 0 && q.front() -> state == READY) {
+            if (q.size() > 0 && q.front() -> state == READY) 
                 q.front() -> ready_to_run(rnum, quantum);
-            }
         }
     }
 
@@ -63,9 +62,7 @@ namespace scheduler {
     void do_running_process(std::queue<Process*> &q, int quantum = QT_UNDEF) {
         if (q.size() == 0) return;
         q.front() -> decr_cpu_burst();
-        if (quantum != QT_UNDEF) {
-            q.front() -> update_quantum_vars(quantum);
-        }
+        if (quantum != QT_UNDEF) q.front() -> update_quantum_vars(quantum);
     }
 
 
@@ -90,7 +87,6 @@ namespace scheduler {
                         q.front() -> run_to_ready();
                         queuepool.push_back(q.front());
                     }
-                    // q.push(q.front());
                 }
             } 
             q.pop();
@@ -115,7 +111,6 @@ namespace scheduler {
             if (v[i] -> remaining_io_burst == 0) {
                 if (! v[i] -> is_finished()) {
                     v[i] -> blocked_to_ready();
-                    // q.push(v[i]);
                     queuepool.push_back(v[i]);
                 }
                 v.erase(v.begin() + i);
@@ -146,8 +141,7 @@ namespace scheduler {
         std::sort(pool.begin(), pool.end(), comp_proc_ptr);
         for (int i = 0; i < pool.size(); i++) {
             q.push(pool[i]);
-            pool.erase(pool.begin() + i); 
-            i--;
+            pool.erase(pool.begin() + i); i--;
         }
     }
 
