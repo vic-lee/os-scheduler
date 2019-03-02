@@ -160,7 +160,7 @@ namespace scheduler {
         int io_used_time = 0;
         int cpu_used_time = 0;
         std::cout << "--------------- FCFS ---------------\n" << std::endl;
-        while (!is_procs_terminated(pv) && cycle < 100) {
+        while (!is_procs_terminated(pv)) {
 
             print_process_vect_simp(pv, cycle, should_preempt);
 
@@ -228,8 +228,8 @@ int main(int argc, char** argv) {
     std::cout << "After sorting" << std::endl;
     s::print_process_vect(procvect);
 
-    s::first_come_first_serve(procvect);
-    // s::roundrobin(procvect);
+    // s::first_come_first_serve(procvect);
+    s::roundrobin(procvect);
     s::uniprogrammed();
     s::shortest_job_first();
 
