@@ -27,6 +27,9 @@ namespace scheduler {
     }
 
 
+    bool comp_proc_id(Process a, Process b) { return a.pid < b.pid; }
+
+
     void set_queue_front_to_running(
         std::queue<Process*> &q, 
         RandNumAccessor &rnum, 
@@ -158,10 +161,12 @@ namespace scheduler {
             cycle++;
         }
         cycle--;
+
+        std::string algo_name = should_preempt ? "Round Robin" : "First Come First Served";
         std::cout 
-            << "The scheduling algorithm used was First Come First Served" 
+            << "The scheduling algorithm used was " << algo_name
             << std::endl;
-        std::sort(pv.begin(), pv.end(), comp_proc);
+        std::sort(pv.begin(), pv.end(), comp_proc_id);
         print_process_vect_out(pv);
         print_summary_data(pv, cycle, cpu_used_time, io_used_time);
     }
