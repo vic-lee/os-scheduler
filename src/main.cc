@@ -240,12 +240,12 @@ namespace scheduler {
 
     void uni_alternate_run_blocked(std::queue<Process*> &q, RandNumAccessor &rnum) {
         if (q.size() == 0) return;
+        bool is_run_finished = q.front() -> state == RUNNING && q.front() -> remaining_cpu_burst == 0;
+        bool is_block_finished = q.front() -> state == BLOCKED && q.front() -> remaining_io_burst == 0;
         if (!q.front() -> is_finished()) {
-            if (q.front() -> state == RUNNING && q.front() -> remaining_cpu_burst == 0) 
+            if (is_run_finished) {
                 q.front() -> running_to_blocked(rnum);
-            else if (q.front() -> state == READY || (
-                q.front() -> state == BLOCKED && q.front() -> remaining_io_burst == 0
-            )) {
+            } else if (q.front() -> state == READY || is_block_finished) {
                 q.front() -> blocked_to_ready();
                 q.front() -> ready_to_run(rnum); 
             }
