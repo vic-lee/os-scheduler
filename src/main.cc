@@ -233,7 +233,9 @@ namespace scheduler {
         if (!q.front() -> is_finished()) {
             if (q.front() -> state == RUNNING && q.front() -> remaining_cpu_burst == 0) 
                 q.front() -> running_to_blocked(rnum);
-            else if (q.front() -> state == BLOCKED && q.front() -> remaining_io_burst == 0) {
+            else if (q.front() -> state == READY || (
+                q.front() -> state == BLOCKED && q.front() -> remaining_io_burst == 0
+            )) {
                 q.front() -> blocked_to_ready();
                 q.front() -> ready_to_run(rnum); 
             }
@@ -248,13 +250,14 @@ namespace scheduler {
 
         while (!is_procs_terminated(pv) && cycle < 20) {
             print_process_vect_simp(pv, cycle);
-            print_process_vect(pv);
+            // print_process_vect(pv);
             do_arrival_process(pv, uniq, cycle);
             uni_do_queue_front_proc(uniq, rnum);
             uni_pop_finished_queue_front(uniq, cycle);
             uni_alternate_run_blocked(uniq, rnum);
             cycle++;
         }
+        std::cout << "The scheduling algorithm used was Uniprocessor" << std::endl;
     }
 
     void shortest_job_first(std::vector<Process> pv) { }
