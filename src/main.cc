@@ -208,9 +208,44 @@ namespace scheduler {
         first_come_first_serve(pv, quantum);
     }
 
+
+    void uni_do_queue_front_proc(std::queue<Process*> &q) {
+        if (q.size() == 0) return;
+        if (q.front() -> state == BLOCKED) q.front() -> decr_io_burst();
+        else if (q.front() -> state == RUNNING) q.front() -> decr_cpu_burst();
+    }
+
+
+    void uni_pop_finished_queue_front(std::queue<Process*> &q) {
+        if (q.size() == 0) return;
+        if (q.front() -> is_finished()) q.pop(); 
+    }
+
+
+    void uni_alternate_run_blocked(std::queue<Process*> &q, RandNumAccessor rnum) {
+        if (q.size() == 0) return;
+        if (!q.front() -> is_finished()) {
+            if (q.front() -> remaining_cpu_burst == 0) 
+                q.front() -> running_to_blocked(rnum);
+            else if (q.front() -> remaining_io_burst == 0) 
+                q.front() -> blocked_to_ready();
+                q.front() -> ready_to_run(rnum); 
+        }
+    }
+
+
     void uniprogrammed(std::vector<Process> pv) {
-        bool is_uni = true;
-        first_come_first_serve(pv, QT_UNDEF);
+        RandNumAccessor rnum;
+        std::queue<Process*> uniq;
+        int cycle = 0;
+
+        while (!is_procs_terminated(pv)) {
+            print_process_vect_simp(pv, cycle);
+            uni_do_queue_front_proc(uniq);
+            uni_pop_finished_queue_front(uniq);
+            uni_alternate_run_blocked(uniq, rnum);
+            do_arrival_process(pv, uniq, cycle);
+        }
     }
 
     void shortest_job_first(std::vector<Process> pv) { }

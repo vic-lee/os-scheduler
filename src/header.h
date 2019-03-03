@@ -38,7 +38,7 @@ namespace scheduler {
             int waiting_time = 0;   // time in the ready state
             int cpu_time_assigned;
             void set_state();
-            void ready_to_run(RandNumAccessor &rnum, int quantum);
+            void ready_to_run(RandNumAccessor &rnum, int quantum = QT_UNDEF);
             void running_to_blocked(RandNumAccessor &rnum);
             void blocked_to_ready();
             void run_to_ready();
@@ -58,7 +58,7 @@ namespace scheduler {
     void print_process_one_line(Process p);
     void print_process_vect(std::vector<Process> const &v);
     void print_process_vect_out(std::vector<Process> const &v);
-    void print_process_vect_simp(std::vector<Process> const &v, int cycle, int quantum);
+    void print_process_vect_simp(std::vector<Process> const &v, int cycle, int quantum = QT_UNDEF);
     void print_summary_data(std::vector<Process> const &v, int cycle, int cpu_used_time, int io_used_time);
     void print_cycle_info(Process* p, int size, int cycle_num);
 
