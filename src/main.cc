@@ -209,12 +209,21 @@ namespace scheduler {
     }
 
 
-    void uni_do_queue_front_proc(std::queue<Process*> &q, RandNumAccessor rnum) {
+    void uni_do_queue_front_proc(
+        std::queue<Process*> &q, 
+        RandNumAccessor &rnum, 
+        int &cpu_used_time,
+        int &io_used_time
+    ) {
         if (q.size() == 0) return;
-        if (q.front() -> state == READY) q.front() -> ready_to_run(rnum);
-        else {
-            if (q.front() -> state == BLOCKED) q.front() -> decr_io_burst();
-            else if (q.front() -> state == RUNNING) q.front() -> decr_cpu_burst();
+        if (q.front() -> state == READY) {
+            q.front() -> ready_to_run(rnum);
+        } else {
+            if (q.front() -> state == BLOCKED) {
+                q.front() -> decr_io_burst(); io_used_time++;
+            } else if (q.front() -> state == RUNNING) {
+                q.front() -> decr_cpu_burst(); cpu_used_time++;
+            }
         }
     }
 
@@ -247,17 +256,21 @@ namespace scheduler {
         RandNumAccessor rnum;
         std::queue<Process*> uniq;
         int cycle = 0;
-
-        while (!is_procs_terminated(pv) && cycle < 20) {
+        int io_used_time = 0;
+        int cpu_used_time = 0;
+        while (!is_procs_terminated(pv) && cycle < 30) {
             print_process_vect_simp(pv, cycle);
             // print_process_vect(pv);
             do_arrival_process(pv, uniq, cycle);
-            uni_do_queue_front_proc(uniq, rnum);
+            uni_do_queue_front_proc(uniq, rnum, cpu_used_time, io_used_time);
             uni_pop_finished_queue_front(uniq, cycle);
             uni_alternate_run_blocked(uniq, rnum);
             cycle++;
         }
         std::cout << "The scheduling algorithm used was Uniprocessor" << std::endl;
+        cycle--;
+        print_process_vect_out(pv);
+        print_summary_data(pv, cycle, cpu_used_time, io_used_time);
     }
 
     void shortest_job_first(std::vector<Process> pv) { }
