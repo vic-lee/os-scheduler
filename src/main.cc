@@ -153,7 +153,6 @@ namespace scheduler {
 
     void first_come_first_serve(
         std::vector<Process> pv, 
-        bool should_preempt = false, 
         int quantum = QT_UNDEF
     ) {
         RandNumAccessor rnum;
@@ -163,10 +162,11 @@ namespace scheduler {
         int cycle = 0;
         int io_used_time = 0;
         int cpu_used_time = 0;
+
         while (!is_procs_terminated(pv)) {
 
-            print_process_vect_simp(pv, cycle, should_preempt);
-
+            print_process_vect_simp(pv, cycle, quantum);
+            
             do_blocked_process(blocked_pool);
             do_running_process(running_queue, quantum);
 
@@ -178,9 +178,11 @@ namespace scheduler {
                 running_queue, queue_wait_pool);
 
             do_arrival_process(pv, running_queue, cycle);
-            // terminating before setting queue allows terminating processes within queues 
+
             terminate_finished_processes(pv, cycle); 
+
             set_queue_front_to_running(running_queue, rnum, quantum);
+
             update_queue_waiting_time(pv);
             
             if (running_queue.size() > 0) cpu_used_time++;
@@ -190,7 +192,7 @@ namespace scheduler {
         }
         cycle--;
 
-        std::string algo_name = should_preempt ? 
+        std::string algo_name = quantum != QT_UNDEF ? 
             "Round Robin" : "First Come First Served";
         std::cout 
             << "The scheduling algorithm used was " << algo_name
@@ -203,12 +205,15 @@ namespace scheduler {
 
     void roundrobin(std::vector<Process> pv) {
         int quantum = 2;
-        first_come_first_serve(pv, true, quantum);
+        first_come_first_serve(pv, quantum);
     }
 
-    void uniprogrammed() { }
+    void uniprogrammed(std::vector<Process> pv) {
+        bool is_uni = true;
+        first_come_first_serve(pv, QT_UNDEF);
+    }
 
-    void shortest_job_first() { }
+    void shortest_job_first(std::vector<Process> pv) { }
 
 
 }
@@ -234,14 +239,14 @@ int main(int argc, char** argv) {
     } else if (algo == "--rr") {
         s::roundrobin(pvect);
     } else if (algo == "--uni") {
-        s::uniprogrammed();
+        s::uniprogrammed(pvect);
     } else if (algo == "--sjf") {
-        s::shortest_job_first();
+        s::shortest_job_first(pvect);
     } else {
         s::first_come_first_serve(pvect);
         s::roundrobin(pvect);
-        s::uniprogrammed();
-        s::shortest_job_first();
+        s::uniprogrammed(pvect);
+        s::shortest_job_first(pvect);
     }
 
     return 0;

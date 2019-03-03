@@ -58,7 +58,7 @@ namespace scheduler {
     void print_process_one_line(Process p);
     void print_process_vect(std::vector<Process> const &v);
     void print_process_vect_out(std::vector<Process> const &v);
-    void print_process_vect_simp(std::vector<Process> const &v, int cycle, bool should_preempt);
+    void print_process_vect_simp(std::vector<Process> const &v, int cycle, int quantum);
     void print_summary_data(std::vector<Process> const &v, int cycle, int cpu_used_time, int io_used_time);
     void print_cycle_info(Process* p, int size, int cycle_num);
 
