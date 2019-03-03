@@ -232,6 +232,7 @@ namespace scheduler {
         if (q.size() == 0) return;
         if (q.front() -> is_finished()) {
             q.front() -> terminate_process(cycle);
+            q.front() -> calc_turnaround_time();
             q.pop(); 
         }
     }

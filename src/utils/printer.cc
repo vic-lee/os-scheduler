@@ -13,7 +13,7 @@ namespace scheduler {
             p.arrival_time, p.cpu_interval, p.cpu_time_assigned, p.io_interval);
         std::cout 
             << "\tFinishing time: " << p.terminated_time << "\n"
-            << "\tTurnaround time: " << (p.terminated_time - p.arrival_time) << "\n"
+            << "\tTurnaround time: " << p.turnaround_time << "\n"
             << "\tI/O time: " << p.blocked_time << "\n"
             << "\tWaiting time: " << p.waiting_time
             << std::endl;
