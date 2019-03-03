@@ -259,13 +259,13 @@ namespace scheduler {
         int cycle = 0;
         int io_used_time = 0;
         int cpu_used_time = 0;
-        while (!is_procs_terminated(pv) && cycle < 30) {
+        while (!is_procs_terminated(pv)) {
             print_process_vect_simp(pv, cycle);
-            // print_process_vect(pv);
             do_arrival_process(pv, uniq, cycle);
             uni_do_queue_front_proc(uniq, rnum, cpu_used_time, io_used_time);
             uni_pop_finished_queue_front(uniq, cycle);
             uni_alternate_run_blocked(uniq, rnum);
+            update_queue_waiting_time(pv);
             cycle++;
         }
         std::cout << "The scheduling algorithm used was Uniprocessor" << std::endl;
