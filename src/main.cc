@@ -209,14 +209,17 @@ namespace scheduler {
     }
 
 
-    void uni_do_queue_front_proc(std::queue<Process*> &q) {
+    void uni_do_queue_front_proc(std::queue<Process*> &q, RandNumAccessor rnum) {
         if (q.size() == 0) return;
-        if (q.front() -> state == BLOCKED) q.front() -> decr_io_burst();
-        else if (q.front() -> state == RUNNING) q.front() -> decr_cpu_burst();
+        if (q.front() -> state == READY) q.front() -> ready_to_run(rnum);
+        else {
+            if (q.front() -> state == BLOCKED) q.front() -> decr_io_burst();
+            else if (q.front() -> state == RUNNING) q.front() -> decr_cpu_burst();
+        }
     }
 
 
-    void uni_pop_finished_queue_front(std::queue<Process*> &q, int cycle) {
+    void uni_pop_finished_queue_front(std::queue<Process*> &q, const int cycle) {
         if (q.size() == 0) return;
         if (q.front() -> is_finished()) {
             q.front() -> terminate_process(cycle);
@@ -225,14 +228,15 @@ namespace scheduler {
     }
 
 
-    void uni_alternate_run_blocked(std::queue<Process*> &q, RandNumAccessor rnum) {
+    void uni_alternate_run_blocked(std::queue<Process*> &q, RandNumAccessor &rnum) {
         if (q.size() == 0) return;
         if (!q.front() -> is_finished()) {
-            if (q.front() -> remaining_cpu_burst == 0) 
+            if (q.front() -> state == RUNNING && q.front() -> remaining_cpu_burst == 0) 
                 q.front() -> running_to_blocked(rnum);
-            else if (q.front() -> remaining_io_burst == 0) 
+            else if (q.front() -> state == BLOCKED && q.front() -> remaining_io_burst == 0) {
                 q.front() -> blocked_to_ready();
                 q.front() -> ready_to_run(rnum); 
+            }
         }
     }
 
@@ -242,12 +246,13 @@ namespace scheduler {
         std::queue<Process*> uniq;
         int cycle = 0;
 
-        while (!is_procs_terminated(pv)) {
+        while (!is_procs_terminated(pv) && cycle < 20) {
             print_process_vect_simp(pv, cycle);
-            uni_do_queue_front_proc(uniq);
+            print_process_vect(pv);
+            do_arrival_process(pv, uniq, cycle);
+            uni_do_queue_front_proc(uniq, rnum);
             uni_pop_finished_queue_front(uniq, cycle);
             uni_alternate_run_blocked(uniq, rnum);
-            do_arrival_process(pv, uniq, cycle);
             cycle++;
         }
     }
