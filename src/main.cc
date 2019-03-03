@@ -216,9 +216,12 @@ namespace scheduler {
     }
 
 
-    void uni_pop_finished_queue_front(std::queue<Process*> &q) {
+    void uni_pop_finished_queue_front(std::queue<Process*> &q, int cycle) {
         if (q.size() == 0) return;
-        if (q.front() -> is_finished()) q.pop(); 
+        if (q.front() -> is_finished()) {
+            q.front() -> terminate_process(cycle);
+            q.pop(); 
+        }
     }
 
 
@@ -242,9 +245,10 @@ namespace scheduler {
         while (!is_procs_terminated(pv)) {
             print_process_vect_simp(pv, cycle);
             uni_do_queue_front_proc(uniq);
-            uni_pop_finished_queue_front(uniq);
+            uni_pop_finished_queue_front(uniq, cycle);
             uni_alternate_run_blocked(uniq, rnum);
             do_arrival_process(pv, uniq, cycle);
+            cycle++;
         }
     }
 
