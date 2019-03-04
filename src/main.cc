@@ -294,27 +294,41 @@ namespace scheduler {
     }
 
 
-    void sjf_ready_to_run(Process* &runproc, std::vector<Process*> &readypool, RandNumAccessor &rnum) {
-        if (runproc == nullptr && readypool.size() > 0) {
-            runproc = readypool[0];
-            runproc -> ready_to_run(rnum);
-            readypool.erase(readypool.begin(), readypool.begin());
-        } 
+    void sjf_ready_to_run(std::vector<Process*> &runproc, std::vector<Process*> &readypool, RandNumAccessor &rnum) {
+        // if (runproc == nullptr && readypool.size() > 0) {
+        //     runproc = readypool[0];
+        //     runproc -> ready_to_run(rnum);
+        //     readypool.erase(readypool.begin());
+        // } 
+        if (runproc.size() == 0 && readypool.size() > 0) {  
+            runproc.push_back(readypool[0]);
+            runproc[0] -> ready_to_run(rnum);
+            readypool.erase(readypool.begin());
+        }
     }
 
 
-    void sjf_do_running_process(Process* &runproc, std::vector<Process*> &readypool, RandNumAccessor &rnum) {
-        if (runproc == nullptr || runproc -> state == TERMINATED) return; 
-        runproc -> decr_cpu_burst();
+    void sjf_do_running_process(std::vector<Process*> &runproc) {
+        // if (runproc == nullptr || runproc -> state == TERMINATED) return; 
+        // runproc -> decr_cpu_burst();
+        if (runproc.size() > 0) {
+            runproc[0] -> decr_cpu_burst();
+        }
     }
 
 
-    void sjf_running_to_blocked(Process* &runproc, std::vector<Process*> &blocked_pool, RandNumAccessor &rnum) {
-        if (runproc == nullptr) return;
-        if (runproc -> remaining_cpu_burst == 0) {
-            runproc -> running_to_blocked(rnum); 
-            blocked_pool.push_back(runproc);
-            runproc = nullptr;
+    void sjf_running_to_blocked(std::vector<Process*> &runproc, std::vector<Process*> &blocked_pool, RandNumAccessor &rnum) {
+        // if (runproc == nullptr) return;
+        // if (runproc -> remaining_cpu_burst == 0) {
+        //     runproc -> running_to_blocked(rnum); 
+        //     blocked_pool.push_back(runproc);
+        //     runproc = nullptr;
+        // }
+        if (runproc.size() == 0) return;
+        if (runproc[0] -> is_cpu_burst_finished()) {
+            runproc[0] -> running_to_blocked(rnum);
+            blocked_pool.push_back(runproc[0]);
+            runproc.erase(runproc.begin());
         }
     }
 
@@ -334,7 +348,8 @@ namespace scheduler {
 
     void shortest_job_first(std::vector<Process> pv) {
         RandNumAccessor rnum;
-        Process* running_proc;
+        // Process* running_proc;
+        std::vector<Process*> running_proc;
         std::vector<Process*> ready_pool;
         std::vector<Process*> blocked_pool;
         int cycle = 0; 
@@ -342,19 +357,35 @@ namespace scheduler {
         int cpu_used_time = 0;
         while (!is_procs_terminated(pv) && cycle < 20) {
             print_process_vect_simp(pv, cycle);
-            print_process_vect(pv);
+            // print_process_vect(pv);
 
             do_blocked_process(blocked_pool);
-            sjf_do_running_process(running_proc, ready_pool, rnum);
+            // print_process_vect(pv);
 
-            sjf_blocked_to_ready(blocked_pool, ready_pool);
+            sjf_do_running_process(running_proc);
+            // print_process_vect(pv);
+
             sjf_running_to_blocked(running_proc, blocked_pool, rnum);
+            sjf_blocked_to_ready(blocked_pool, ready_pool);
+            // print_process_vect(pv);
 
             sjf_do_arrival_process(pv, ready_pool, cycle);
+            // print_process_vect(pv);
+
             sjf_ready_to_run(running_proc, ready_pool, rnum);
+            // print_process_vect(pv);
+
+
+            for (int i = 0; i < ready_pool.size(); i++) {
+                if (ready_pool[i] -> state != READY) {
+                    std::cout << "Warning: non-ready process in ready pool. " 
+                    << "PID: " << ready_pool[i] -> pid << std::endl;
+                }
+            }
+
 
             terminate_finished_processes(pv, cycle); 
-            if (running_proc != nullptr) cpu_used_time++;
+            if (running_proc.size() > 0) cpu_used_time++;
             if (blocked_pool.size() > 0) io_used_time++;
             cycle++;
         }
