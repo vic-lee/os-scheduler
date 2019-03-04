@@ -38,11 +38,6 @@ namespace scheduler {
     }
 
 
-    std::function<bool(Process, Process)> cpid = [](Process a, Process b) -> bool {
-        return a.pid < b.pid;
-    };
-
-
     void set_queue_front_to_running(
         std::queue<Process*> &q, 
         RandNumAccessor &rnum, 
@@ -428,11 +423,22 @@ namespace scheduler {
 
 
 int main(int argc, char** argv) {
-    std::string algo;
-    std::string fname = argv[1];
+    const std::string VERBOSE = "--verbose";
+    const std::string SHOWRAND = "--show-random";
+    std::string algo = "";
+    std::string outmode;
+    std::string fname;
+
+    if (argc > 3) algo = argv[3];
+    if (argc > 2) {
+        outmode = argv[1];
+        fname = argv[2];
+    } else {
+        fname = argv[1];
+    }
 
     // NOTE: REMOVE FOR FINAL PRODUCTION
-    if (argc > 2) algo = argv[2]; 
+    // if (argc > 2) algo = argv[2]; 
     
     std::vector<s::Process> pvect = s::read_file(fname);
 
