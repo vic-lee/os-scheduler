@@ -30,6 +30,14 @@ namespace scheduler {
 
     bool comp_proc_id(Process a, Process b) { return a.pid < b.pid; }
 
+
+    bool sjf_sort(Process* a, Process* b) {
+        if (a -> cpu_time < b -> cpu_time) return true;
+        else if (a -> cpu_time == b -> cpu_time) return a -> pid < b -> pid;
+        return false;
+    }
+
+
     std::function<bool(Process, Process)> cpid = [](Process a, Process b) -> bool {
         return a.pid < b.pid;
     };
@@ -274,7 +282,81 @@ namespace scheduler {
         print_summary_data(pv, cycle, cpu_used_time, io_used_time);
     }
 
-    void shortest_job_first(std::vector<Process> pv) { }
+
+    void sjf_do_arrival_process(std::vector<Process> &pv, std::vector<Process*> &ready_pool, int cycle ) {
+        for (int i = 0; i < pv.size(); i++) {
+            if ( pv[i].arrival_time == cycle ) {
+                pv[i].state = READY;
+                ready_pool.push_back(&pv[i]);
+            }
+        }
+    }
+
+
+    void sjf_ready_to_run(Process* &runproc, std::vector<Process*> &readypool, RandNumAccessor &rnum) {
+        if (runproc == nullptr && readypool.size() > 0) {
+            runproc = readypool[0];
+            runproc -> ready_to_run(rnum);
+            readypool.erase(readypool.begin(), readypool.begin());
+        } 
+    }
+
+
+    void sjf_do_running_process(Process* &runproc, std::vector<Process*> &readypool, RandNumAccessor &rnum) {
+        if (runproc == nullptr) return; 
+        runproc -> decr_cpu_burst();
+    }
+
+
+    void sjf_running_to_blocked(Process* &runproc, std::vector<Process*> &blocked_pool, RandNumAccessor &rnum) {
+        if (runproc == nullptr) return;
+        if (runproc -> remaining_cpu_burst == 0) {
+            runproc -> running_to_blocked(rnum); 
+            blocked_pool.push_back(runproc);
+            runproc = nullptr;
+        }
+    }
+
+
+    void sjf_blocked_to_ready(std::vector<Process*> &blockedpool, std::vector<Process*> &readypool) {
+        for (int i = 0; i < blockedpool.size(); i++) {
+            if (blockedpool[i] -> is_io_burst_finished()) {
+                blockedpool[i] -> blocked_to_ready();
+                readypool.push_back(blockedpool[i]);
+                blockedpool.erase(blockedpool.begin() + i); 
+                i--;
+            }
+        }
+    }
+
+
+    void shortest_job_first(std::vector<Process> pv) {
+        RandNumAccessor rnum;
+        Process* running_proc;
+        std::vector<Process*> ready_pool;
+        std::vector<Process*> blocked_pool;
+        int cycle = 0; 
+        int io_used_time = 0;
+        int cpu_used_time = 0;
+        while (!is_procs_terminated(pv)) {
+            print_process_vect_simp(pv, cycle);
+            sjf_do_arrival_process(pv, ready_pool, cycle);
+            sjf_blocked_to_ready(blocked_pool, ready_pool);
+            std::sort(ready_pool.begin(), ready_pool.end(), sjf_sort);
+            sjf_running_to_blocked(running_proc, blocked_pool, rnum);
+            sjf_ready_to_run(running_proc, ready_pool, rnum);
+            sjf_do_running_process(running_proc, ready_pool, rnum);
+            do_blocked_process(blocked_pool);
+            terminate_finished_processes(pv, cycle); 
+            if (running_proc != nullptr) cpu_used_time++;
+            if (blocked_pool.size() > 0) io_used_time++;
+            cycle++;
+        }
+        cycle--;
+        std::cout << "The scheduling algorithm used was Shortest Job First" << std::endl;
+        print_process_vect_out(pv);
+        print_summary_data(pv, cycle, cpu_used_time, io_used_time);
+    }
 
 
 }
