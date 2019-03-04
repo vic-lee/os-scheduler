@@ -137,7 +137,6 @@ namespace scheduler {
         std::cout << "Cycle: " << cycle << std::endl; 
         for (int i = 0; i < pv.size(); i++) {
             if (pv[i].state != TERMINATED && pv[i].is_finished()) {
-                // std::cout << "Terminating PID " << pv[i].pid << " with state " << pv[i].state << std::endl;
                 pv[i].terminate_process(cycle); 
                 pv[i].calc_turnaround_time();
             }
@@ -379,7 +378,6 @@ namespace scheduler {
 
     void shortest_job_first(std::vector<Process> pv) {
         RandNumAccessor rnum;
-        // Process* running_proc;
         std::vector<Process*> running_proc;
         std::vector<Process*> ready_pool;
         std::vector<Process*> blocked_pool;
@@ -388,28 +386,18 @@ namespace scheduler {
         int cpu_used_time = 0;
         while (!is_procs_terminated(pv) && cycle < 2000) {
             print_process_vect_simp(pv, cycle);
-            // print_process_vect(pv);
 
             do_blocked_process(blocked_pool);
-            // print_process_vect(pv);
-            // print_proc_ptr(running_proc, "RUNNING");
-            // print_proc_ptr(blocked_pool, "BLOCKED");
 
             sjf_do_running_process(running_proc);
-            // print_process_vect(pv);
 
             sjf_running_to_blocked(running_proc, blocked_pool, rnum);
-            // print_proc_ptr(running_proc, "RUNNING");
-            // print_proc_ptr(blocked_pool, "BLOCKED");
-            // print_proc_ptr(ready_pool, "READY");
+
             sjf_blocked_to_ready(blocked_pool, ready_pool);
-            // print_process_vect(pv);
 
             sjf_do_arrival_process(pv, ready_pool, cycle);
-            // print_process_vect(pv);
 
             sjf_ready_to_run(running_proc, ready_pool, rnum);
-            // print_process_vect(pv);
 
             for (int i = 0; i < ready_pool.size(); i++) {
                 if (ready_pool[i] -> state != READY) {
@@ -420,7 +408,6 @@ namespace scheduler {
 
             sjf_update_ready_time(ready_pool);
             terminate_finished_processes(pv, cycle); 
-            // sjf_clear_terminated_processes(running_proc, blocked_pool, ready_pool);
             if (running_proc.size() > 0) cpu_used_time++;
             if (blocked_pool.size() > 0) io_used_time++;
             cycle++;

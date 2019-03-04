@@ -85,9 +85,7 @@ namespace scheduler {
     }
 
     void Process::calc_turnaround_time() {
-        // std::cout << "Terminated time: " << terminated_time << "; arrival time: " << arrival_time << std::endl;
         turnaround_time = terminated_time - arrival_time;
-        // std::cout << "Turnaround time is: " << turnaround_time << std::endl;
     }
 
     void Process::incr_cpu_time_used() { 
