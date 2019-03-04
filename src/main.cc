@@ -134,9 +134,11 @@ namespace scheduler {
 
 
     void terminate_finished_processes(std::vector<Process> &pv, int cycle) {
+        std::cout << "Cycle: " << cycle << std::endl; 
         for (int i = 0; i < pv.size(); i++) {
             if (pv[i].state != TERMINATED && pv[i].is_finished()) {
-                pv[i].terminate_process(cycle);
+                // std::cout << "Terminating PID " << pv[i].pid << " with state " << pv[i].state << std::endl;
+                pv[i].terminate_process(cycle); 
                 pv[i].calc_turnaround_time();
             }
         }
@@ -313,6 +315,7 @@ namespace scheduler {
         // runproc -> decr_cpu_burst();
         if (runproc.size() > 0) {
             runproc[0] -> decr_cpu_burst();
+            if (runproc[0] -> is_finished()) runproc.erase(runproc.begin());
         }
     }
 
@@ -325,7 +328,7 @@ namespace scheduler {
         //     runproc = nullptr;
         // }
         if (runproc.size() == 0) return;
-        if (runproc[0] -> is_cpu_burst_finished()) {
+        if (!runproc[0] -> is_finished() && runproc[0] -> is_cpu_burst_finished()) {
             runproc[0] -> running_to_blocked(rnum);
             blocked_pool.push_back(runproc[0]);
             runproc.erase(runproc.begin());
@@ -346,6 +349,40 @@ namespace scheduler {
     }
 
 
+    void print_proc_ptr(std::vector<Process*> p, std::string name) {
+        if (p.size() > 0)
+            std::cout << "Printing " << name << std::endl;
+        for (int i = 0; i < p.size(); i++) {
+            std::cout << "PID: " << p[i] -> pid
+            << "\tCPU TIME: " << p[i] -> cpu_time
+            << "\tSTATE: " << p[i] -> state
+            << "\tR C BURST: " << p[i] -> remaining_cpu_burst
+            << "\tR IO BURST: " << p[i] -> remaining_io_burst
+            << std::endl;
+        }
+    }
+
+    void sjf_rm_terminated_from_vect(std::vector<Process*> &v) {
+        for (int i = 0; i < v.size(); i++) {
+            if (v[i] -> state == TERMINATED) {
+                v.erase(v.begin() + i);
+                i--;
+            }
+        }
+    }
+
+
+    void sjf_clear_terminated_processes(
+        std::vector<Process*> &runningproc, 
+        std::vector<Process*> &blockedpool, 
+        std::vector<Process*> &readypool
+    ) {
+        sjf_rm_terminated_from_vect(runningproc);
+        sjf_rm_terminated_from_vect(blockedpool);
+        sjf_rm_terminated_from_vect(readypool);
+    }
+
+
     void shortest_job_first(std::vector<Process> pv) {
         RandNumAccessor rnum;
         // Process* running_proc;
@@ -361,11 +398,16 @@ namespace scheduler {
 
             do_blocked_process(blocked_pool);
             // print_process_vect(pv);
+            // print_proc_ptr(running_proc, "RUNNING");
+            // print_proc_ptr(blocked_pool, "BLOCKED");
 
             sjf_do_running_process(running_proc);
             // print_process_vect(pv);
 
             sjf_running_to_blocked(running_proc, blocked_pool, rnum);
+            // print_proc_ptr(running_proc, "RUNNING");
+            // print_proc_ptr(blocked_pool, "BLOCKED");
+            // print_proc_ptr(ready_pool, "READY");
             sjf_blocked_to_ready(blocked_pool, ready_pool);
             // print_process_vect(pv);
 
@@ -375,6 +417,11 @@ namespace scheduler {
             sjf_ready_to_run(running_proc, ready_pool, rnum);
             // print_process_vect(pv);
 
+            // for (int i = 0; i < pv.size(); i++) {
+            //     std::cout << "PID: " << pv[i].pid 
+            //     << "CPU Time: " <<  pv[i].cpu_time
+            //     << "Is Finished: " << pv[i].is_finished() << std::endl;
+            // }
 
             for (int i = 0; i < ready_pool.size(); i++) {
                 if (ready_pool[i] -> state != READY) {
@@ -385,6 +432,7 @@ namespace scheduler {
 
 
             terminate_finished_processes(pv, cycle); 
+            // sjf_clear_terminated_processes(running_proc, blocked_pool, ready_pool);
             if (running_proc.size() > 0) cpu_used_time++;
             if (blocked_pool.size() > 0) io_used_time++;
             cycle++;
