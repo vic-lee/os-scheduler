@@ -155,7 +155,7 @@ namespace scheduler {
     }
 
 
-    void fcfs(std::vector<Process> pv, std::string outmode, int quantum = QT_UNDEF) {
+    void fcfs(std::vector<Process> pv, int quantum = QT_UNDEF) {
         RandNumAccessor rnum;
         std::queue<Process*> running_queue;
         std::vector<Process*> blocked_pool;
@@ -204,14 +204,14 @@ namespace scheduler {
     }
 
 
-    void first_come_first_served(std::vector<Process> pv, std::string outmode) {
-        fcfs(pv, outmode);
+    void first_come_first_served(std::vector<Process> pv) {
+        fcfs(pv);
     }
 
 
-    void roundrobin(std::vector<Process> pv, std::string outmode) {
+    void roundrobin(std::vector<Process> pv) {
         int quantum = 2;
-        fcfs(pv, outmode, quantum);
+        fcfs(pv, quantum);
     }
 
 
@@ -259,7 +259,7 @@ namespace scheduler {
     }
 
 
-    void uniprogrammed(std::vector<Process> pv, std::string outmode) {
+    void uniprogrammed(std::vector<Process> pv) {
         RandNumAccessor rnum;
         std::queue<Process*> uniq;
         int cycle = 0;
@@ -388,7 +388,7 @@ namespace scheduler {
     }
 
 
-    void shortest_job_first(std::vector<Process> pv, std::string outmode) {
+    void shortest_job_first(std::vector<Process> pv) {
         RandNumAccessor rnum;
         std::vector<Process*> running_proc;
         std::vector<Process*> ready_pool;
@@ -427,12 +427,11 @@ namespace scheduler {
 int main(int argc, char** argv) {
 
     std::string algo = "";
-    std::string outmode = s::DFTOUT;
     std::string fname;
-
+    s::OUT_MODE = s::DFTOUT;
     if (argc > 3) algo = argv[3];
     if (argc > 2) {
-        outmode = argv[1];
+        s::OUT_MODE = argv[1];
         fname = argv[2];
     } else {
         fname = argv[1];
@@ -450,18 +449,18 @@ int main(int argc, char** argv) {
 
 
     if (algo == "--fcfs") {
-        s::first_come_first_served(pvect, outmode);
+        s::first_come_first_served(pvect);
     } else if (algo == "--rr") {
-        s::roundrobin(pvect, outmode);
+        s::roundrobin(pvect);
     } else if (algo == "--uni") {
-        s::uniprogrammed(pvect, outmode);
+        s::uniprogrammed(pvect);
     } else if (algo == "--sjf") {
-        s::shortest_job_first(pvect, outmode);
+        s::shortest_job_first(pvect);
     } else {
-        s::first_come_first_served(pvect, outmode);
-        s::roundrobin(pvect, outmode);
-        s::uniprogrammed(pvect, outmode);
-        s::shortest_job_first(pvect, outmode);
+        s::first_come_first_served(pvect);
+        s::roundrobin(pvect);
+        s::uniprogrammed(pvect);
+        s::shortest_job_first(pvect);
     }
 
     return 0;

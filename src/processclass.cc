@@ -11,9 +11,13 @@ namespace scheduler {
         if (remaining_cpu_burst == 0) {
             int burst, randnum;
             std::tie(burst, randnum) = rnum.randomOS(cpu_interval);
-            std::cout 
-                << "Find burst when choosing ready process to run " << randnum
-                << std::endl;
+
+            if (scheduler::OUT_MODE == SHOWRAND) {
+                std::cout 
+                    << "Find burst when choosing ready process to run " << randnum
+                    << std::endl;
+            }
+
             remaining_cpu_burst = burst;
             assigned_cpu_burst = burst;
 
@@ -34,9 +38,13 @@ namespace scheduler {
         state = BLOCKED;
         int burst, randnum;
         std::tie(burst, randnum) = rnum.randomOS(io_interval);
-        std::cout 
-            << "Find I/O burst when blocking a process " << randnum 
-            << std::endl;
+
+        if (scheduler::OUT_MODE == SHOWRAND) {
+            std::cout 
+                << "Find I/O burst when blocking a process " << randnum 
+                << std::endl;
+        }
+
         blocked_time += burst;
         remaining_io_burst = burst;
         assigned_cpu_burst = 0;

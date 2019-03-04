@@ -15,6 +15,7 @@ namespace scheduler {
     const std::string VERBOSE = "--verbose";
     const std::string SHOWRAND = "--show-random";
     const std::string DFTOUT = "--default";
+    static std::string OUT_MODE; 
 
     class RandNumAccessor {
         public: 
