@@ -129,7 +129,6 @@ namespace scheduler {
 
 
     void terminate_finished_processes(std::vector<Process> &pv, int cycle) {
-        std::cout << "Cycle: " << cycle << std::endl; 
         for (int i = 0; i < pv.size(); i++) {
             if (pv[i].state != TERMINATED && pv[i].is_finished()) {
                 pv[i].terminate_process(cycle); 
@@ -165,8 +164,8 @@ namespace scheduler {
         int cpu_used_time = 0;
 
         while (!is_procs_terminated(pv)) {
-
-            print_process_vect_simp(pv, cycle, quantum);
+            if (OUT_MODE == SHOWRAND || OUT_MODE == VERBOSE)            
+                print_process_vect_simp(pv, cycle, quantum);
             
             do_blocked_process(blocked_pool);
             do_running_process(running_queue, quantum);
@@ -266,7 +265,8 @@ namespace scheduler {
         int io_used_time = 0;
         int cpu_used_time = 0;
         while (!is_procs_terminated(pv)) {
-            print_process_vect_simp(pv, cycle);
+            if (OUT_MODE == SHOWRAND || OUT_MODE == VERBOSE)
+                print_process_vect_simp(pv, cycle);
             do_arrival_process(pv, uniq, cycle);
             uni_do_queue_front_proc(uniq, rnum, cpu_used_time, io_used_time);
             uni_pop_finished_queue_front(uniq, cycle);
@@ -360,6 +360,7 @@ namespace scheduler {
         }
     }
 
+
     void sjf_rm_terminated_from_vect(std::vector<Process*> &v) {
         for (int i = 0; i < v.size(); i++) {
             if (v[i] -> state == TERMINATED) {
@@ -397,7 +398,9 @@ namespace scheduler {
         int io_used_time = 0;
         int cpu_used_time = 0;
         while (!is_procs_terminated(pv) && cycle < 2000) {
-            print_process_vect_simp(pv, cycle);
+
+            if (OUT_MODE == SHOWRAND || OUT_MODE == VERBOSE)
+                print_process_vect_simp(pv, cycle);
 
             do_blocked_process(blocked_pool);
             sjf_do_running_process(running_proc);
@@ -429,24 +432,25 @@ int main(int argc, char** argv) {
     std::string algo = "";
     std::string fname;
     s::OUT_MODE = s::DFTOUT;
+
     if (argc > 3) algo = argv[3];
     if (argc > 2) {
-        s::OUT_MODE = argv[1];
-        fname = argv[2];
+        std::string readin = argv[1];
+        if (readin == s::VERBOSE || readin == s::SHOWRAND) {
+            s::OUT_MODE = readin;
+            fname = argv[2];
+        } else {
+            fname = argv[1];
+            algo = argv[2]; 
+        }
     } else {
         fname = argv[1];
-    }
-
-    // NOTE: REMOVE FOR FINAL PRODUCTION
-    // if (argc > 2) algo = argv[2]; 
+    } 
     
     std::vector<s::Process> pvect = s::read_file(fname);
-
-    s::print_process_vect(pvect);
+    s::input_out(pvect, false);
     std::sort(pvect.begin(), pvect.end(), s::comp_proc);
-    std::cout << "After sorting" << std::endl;
-    s::print_process_vect(pvect);
-
+    s::input_out(pvect, true);
 
     if (algo == "--fcfs") {
         s::first_come_first_served(pvect);

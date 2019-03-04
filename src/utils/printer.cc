@@ -7,6 +7,18 @@
 
 namespace scheduler {
 
+    void input_out(std::vector<Process> const pv, bool sorted) {
+        if (!sorted) std::cout << "The original input was: ";
+        else std::cout << "The (sorted) input is:  ";
+        std::cout << pv.size() << " " << std::flush;
+        for (int i = 0; i < pv.size(); i++) {
+            std::printf(" %d %d %d %d ", 
+                pv[i].arrival_time, pv[i].cpu_interval, 
+                pv[i].cpu_time_assigned, pv[i].io_interval);
+        }
+        std::cout << std::endl;
+    }
+
     void print_process_out(Process p, int index) {
         std::cout << "\nProcess " << index  << ":" << std::endl;
         std::printf("\t(A,B,C,IO) = (%d,%d,%d,%d)\n", 

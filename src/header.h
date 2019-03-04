@@ -62,6 +62,7 @@ namespace scheduler {
 
 
     /*      utils/printer.cc        */
+    void input_out(std::vector<Process> const pv, bool sorted);
     void print_process_one_line(Process p);
     void print_process_vect(std::vector<Process> const &v);
     void print_process_vect_out(std::vector<Process> const &v);
