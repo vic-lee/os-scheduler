@@ -45,6 +45,8 @@ namespace scheduler {
             void decr_cpu_burst();
             void decr_io_burst();
             bool is_finished();
+            bool is_cpu_burst_finished();
+            bool is_io_burst_finished();
             void terminate_process(int cycle);
             void calc_turnaround_time();
             void incr_cpu_time_used();

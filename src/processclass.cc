@@ -68,6 +68,14 @@ namespace scheduler {
         return cpu_time == 0;
     }
 
+    bool Process::is_cpu_burst_finished() {
+        return remaining_cpu_burst == 0;
+    }
+
+    bool Process::is_io_burst_finished() {
+        return remaining_io_burst == 0;
+    }
+
     void Process::terminate_process(int cycle) {
         state = TERMINATED;
         remaining_cpu_burst = 0;
