@@ -284,7 +284,11 @@ namespace scheduler {
     }
 
 
-    void sjf_do_arrival_process(std::vector<Process> &pv, std::vector<Process*> &readypool, int cycle ) {
+    void sjf_do_arrival_process(
+        std::vector<Process> &pv, 
+        std::vector<Process*> &readypool, 
+        int cycle 
+    ) {
         for (int i = 0; i < pv.size(); i++) {
             if ( pv[i].arrival_time == cycle ) {
                 pv[i].state = READY;
@@ -295,7 +299,11 @@ namespace scheduler {
     }
 
 
-    void sjf_ready_to_run(std::vector<Process*> &runproc, std::vector<Process*> &readypool, RandNumAccessor &rnum) {
+    void sjf_ready_to_run(
+        std::vector<Process*> &runproc, 
+        std::vector<Process*> &readypool, 
+        RandNumAccessor &rnum
+    ) {
         if (runproc.size() == 0 && readypool.size() > 0) {  
             runproc.push_back(readypool[0]);
             runproc[0] -> ready_to_run(rnum);
@@ -312,7 +320,11 @@ namespace scheduler {
     }
 
 
-    void sjf_running_to_blocked(std::vector<Process*> &runproc, std::vector<Process*> &blocked_pool, RandNumAccessor &rnum) {
+    void sjf_running_to_blocked(
+        std::vector<Process*> &runproc, 
+        std::vector<Process*> &blocked_pool, 
+        RandNumAccessor &rnum
+    ) {
         if (runproc.size() == 0) return;
         if (!runproc[0] -> is_finished() && runproc[0] -> is_cpu_burst_finished()) {
             runproc[0] -> running_to_blocked(rnum);
@@ -322,7 +334,10 @@ namespace scheduler {
     }
 
 
-    void sjf_blocked_to_ready(std::vector<Process*> &blockedpool, std::vector<Process*> &readypool) {
+    void sjf_blocked_to_ready(
+        std::vector<Process*> &blockedpool, 
+        std::vector<Process*> &readypool
+    ) {
         for (int i = 0; i < blockedpool.size(); i++) {
             if (blockedpool[i] -> is_io_burst_finished()) {
                 blockedpool[i] -> blocked_to_ready();
@@ -388,23 +403,13 @@ namespace scheduler {
             print_process_vect_simp(pv, cycle);
 
             do_blocked_process(blocked_pool);
-
             sjf_do_running_process(running_proc);
 
             sjf_running_to_blocked(running_proc, blocked_pool, rnum);
-
             sjf_blocked_to_ready(blocked_pool, ready_pool);
 
             sjf_do_arrival_process(pv, ready_pool, cycle);
-
             sjf_ready_to_run(running_proc, ready_pool, rnum);
-
-            for (int i = 0; i < ready_pool.size(); i++) {
-                if (ready_pool[i] -> state != READY) {
-                    std::cout << "Warning: non-ready process in ready pool. " 
-                    << "PID: " << ready_pool[i] -> pid << std::endl;
-                }
-            }
 
             sjf_update_ready_time(ready_pool);
             terminate_finished_processes(pv, cycle); 
