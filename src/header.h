@@ -12,6 +12,10 @@
 
 namespace scheduler {
 
+    const std::string VERBOSE = "--verbose";
+    const std::string SHOWRAND = "--show-random";
+    const std::string DFTOUT = "--default";
+
     class RandNumAccessor {
         public: 
             int cur_line = 1;

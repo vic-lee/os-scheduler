@@ -157,6 +157,7 @@ namespace scheduler {
 
     void first_come_first_serve(
         std::vector<Process> pv, 
+        std::string outmode,
         int quantum = QT_UNDEF
     ) {
         RandNumAccessor rnum;
@@ -207,9 +208,9 @@ namespace scheduler {
     }
 
 
-    void roundrobin(std::vector<Process> pv) {
+    void roundrobin(std::vector<Process> pv, std::string outmode) {
         int quantum = 2;
-        first_come_first_serve(pv, quantum);
+        first_come_first_serve(pv, outmode, quantum);
     }
 
 
@@ -257,7 +258,7 @@ namespace scheduler {
     }
 
 
-    void uniprogrammed(std::vector<Process> pv) {
+    void uniprogrammed(std::vector<Process> pv, std::string outmode) {
         RandNumAccessor rnum;
         std::queue<Process*> uniq;
         int cycle = 0;
@@ -386,7 +387,7 @@ namespace scheduler {
     }
 
 
-    void shortest_job_first(std::vector<Process> pv) {
+    void shortest_job_first(std::vector<Process> pv, std::string outmode) {
         RandNumAccessor rnum;
         std::vector<Process*> running_proc;
         std::vector<Process*> ready_pool;
@@ -423,10 +424,9 @@ namespace scheduler {
 
 
 int main(int argc, char** argv) {
-    const std::string VERBOSE = "--verbose";
-    const std::string SHOWRAND = "--show-random";
+
     std::string algo = "";
-    std::string outmode;
+    std::string outmode = s::DFTOUT;
     std::string fname;
 
     if (argc > 3) algo = argv[3];
@@ -449,18 +449,18 @@ int main(int argc, char** argv) {
 
 
     if (algo == "--fcfs") {
-        s::first_come_first_serve(pvect);
+        s::first_come_first_serve(pvect, outmode);
     } else if (algo == "--rr") {
-        s::roundrobin(pvect);
+        s::roundrobin(pvect, outmode);
     } else if (algo == "--uni") {
-        s::uniprogrammed(pvect);
+        s::uniprogrammed(pvect, outmode);
     } else if (algo == "--sjf") {
-        s::shortest_job_first(pvect);
+        s::shortest_job_first(pvect, outmode);
     } else {
-        s::first_come_first_serve(pvect);
-        s::roundrobin(pvect);
-        s::uniprogrammed(pvect);
-        s::shortest_job_first(pvect);
+        s::first_come_first_serve(pvect, outmode);
+        s::roundrobin(pvect, outmode);
+        s::uniprogrammed(pvect, outmode);
+        s::shortest_job_first(pvect, outmode);
     }
 
     return 0;
