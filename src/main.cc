@@ -370,6 +370,13 @@ namespace scheduler {
     }
 
 
+    void sjf_update_ready_time(std::vector<Process*> &readypool) {
+        for (int i = 0; i < readypool.size(); i++) {
+            readypool[i] -> waiting_time++;
+        }
+    }
+
+
     void shortest_job_first(std::vector<Process> pv) {
         RandNumAccessor rnum;
         // Process* running_proc;
@@ -379,7 +386,7 @@ namespace scheduler {
         int cycle = 0; 
         int io_used_time = 0;
         int cpu_used_time = 0;
-        while (!is_procs_terminated(pv) && cycle < 20) {
+        while (!is_procs_terminated(pv) && cycle < 2000) {
             print_process_vect_simp(pv, cycle);
             // print_process_vect(pv);
 
@@ -411,7 +418,7 @@ namespace scheduler {
                 }
             }
 
-
+            sjf_update_ready_time(ready_pool);
             terminate_finished_processes(pv, cycle); 
             // sjf_clear_terminated_processes(running_proc, blocked_pool, ready_pool);
             if (running_proc.size() > 0) cpu_used_time++;
