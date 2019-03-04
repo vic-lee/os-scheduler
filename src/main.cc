@@ -297,11 +297,6 @@ namespace scheduler {
 
 
     void sjf_ready_to_run(std::vector<Process*> &runproc, std::vector<Process*> &readypool, RandNumAccessor &rnum) {
-        // if (runproc == nullptr && readypool.size() > 0) {
-        //     runproc = readypool[0];
-        //     runproc -> ready_to_run(rnum);
-        //     readypool.erase(readypool.begin());
-        // } 
         if (runproc.size() == 0 && readypool.size() > 0) {  
             runproc.push_back(readypool[0]);
             runproc[0] -> ready_to_run(rnum);
@@ -311,8 +306,6 @@ namespace scheduler {
 
 
     void sjf_do_running_process(std::vector<Process*> &runproc) {
-        // if (runproc == nullptr || runproc -> state == TERMINATED) return; 
-        // runproc -> decr_cpu_burst();
         if (runproc.size() > 0) {
             runproc[0] -> decr_cpu_burst();
             if (runproc[0] -> is_finished()) runproc.erase(runproc.begin());
@@ -321,12 +314,6 @@ namespace scheduler {
 
 
     void sjf_running_to_blocked(std::vector<Process*> &runproc, std::vector<Process*> &blocked_pool, RandNumAccessor &rnum) {
-        // if (runproc == nullptr) return;
-        // if (runproc -> remaining_cpu_burst == 0) {
-        //     runproc -> running_to_blocked(rnum); 
-        //     blocked_pool.push_back(runproc);
-        //     runproc = nullptr;
-        // }
         if (runproc.size() == 0) return;
         if (!runproc[0] -> is_finished() && runproc[0] -> is_cpu_burst_finished()) {
             runproc[0] -> running_to_blocked(rnum);
@@ -416,12 +403,6 @@ namespace scheduler {
 
             sjf_ready_to_run(running_proc, ready_pool, rnum);
             // print_process_vect(pv);
-
-            // for (int i = 0; i < pv.size(); i++) {
-            //     std::cout << "PID: " << pv[i].pid 
-            //     << "CPU Time: " <<  pv[i].cpu_time
-            //     << "Is Finished: " << pv[i].is_finished() << std::endl;
-            // }
 
             for (int i = 0; i < ready_pool.size(); i++) {
                 if (ready_pool[i] -> state != READY) {
