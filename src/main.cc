@@ -155,11 +155,7 @@ namespace scheduler {
     }
 
 
-    void first_come_first_serve(
-        std::vector<Process> pv, 
-        std::string outmode,
-        int quantum = QT_UNDEF
-    ) {
+    void fcfs(std::vector<Process> pv, std::string outmode, int quantum = QT_UNDEF) {
         RandNumAccessor rnum;
         std::queue<Process*> running_queue;
         std::vector<Process*> blocked_pool;
@@ -208,9 +204,14 @@ namespace scheduler {
     }
 
 
+    void first_come_first_served(std::vector<Process> pv, std::string outmode) {
+        fcfs(pv, outmode);
+    }
+
+
     void roundrobin(std::vector<Process> pv, std::string outmode) {
         int quantum = 2;
-        first_come_first_serve(pv, outmode, quantum);
+        fcfs(pv, outmode, quantum);
     }
 
 
@@ -449,7 +450,7 @@ int main(int argc, char** argv) {
 
 
     if (algo == "--fcfs") {
-        s::first_come_first_serve(pvect, outmode);
+        s::first_come_first_served(pvect, outmode);
     } else if (algo == "--rr") {
         s::roundrobin(pvect, outmode);
     } else if (algo == "--uni") {
@@ -457,7 +458,7 @@ int main(int argc, char** argv) {
     } else if (algo == "--sjf") {
         s::shortest_job_first(pvect, outmode);
     } else {
-        s::first_come_first_serve(pvect, outmode);
+        s::first_come_first_served(pvect, outmode);
         s::roundrobin(pvect, outmode);
         s::uniprogrammed(pvect, outmode);
         s::shortest_job_first(pvect, outmode);
