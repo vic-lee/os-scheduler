@@ -86,14 +86,4 @@ namespace scheduler {
             << std::endl;
     }
 
-
-    void print_cycle_info(Process* p, int size, int cycle_num) {
-        std::cout << "Before cycle\t" << cycle_num << ":\t";
-        for (int i = 0; i < size; i++) {
-            std::cout << std::setw(11) << (p + i) -> state 
-                << std::setw(3) << (p + i) -> remaining_cpu_burst;
-        }
-        std::cout << std::endl;
-    }
-
 }

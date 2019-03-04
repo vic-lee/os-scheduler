@@ -62,7 +62,6 @@ namespace scheduler {
     void print_process_vect_out(std::vector<Process> const &v);
     void print_process_vect_simp(std::vector<Process> const &v, int cycle, int quantum = QT_UNDEF);
     void print_summary_data(std::vector<Process> const &v, int cycle, int cpu_used_time, int io_used_time);
-    void print_cycle_info(Process* p, int size, int cycle_num);
 
     /*      utils/util.cc        */
     std::vector<Process> read_file(std::string fname);
