@@ -163,6 +163,11 @@ namespace scheduler {
         int io_used_time = 0;
         int cpu_used_time = 0;
 
+        std::cout << std::endl;
+
+        if (OUT_MODE == SHOWRAND || OUT_MODE == VERBOSE)
+            std::cout << "This detailed printout gives the state and remaining burst for each process\n" << std::endl;
+
         while (!is_procs_terminated(pv)) {
             if (OUT_MODE == SHOWRAND || OUT_MODE == VERBOSE)            
                 print_process_vect_simp(pv, cycle, quantum);
@@ -264,6 +269,12 @@ namespace scheduler {
         int cycle = 0;
         int io_used_time = 0;
         int cpu_used_time = 0;
+
+        std::cout << std::endl;
+
+        if (OUT_MODE == SHOWRAND || OUT_MODE == VERBOSE)
+            std::cout << "This detailed printout gives the state and remaining burst for each process\n" << std::endl;
+
         while (!is_procs_terminated(pv)) {
             if (OUT_MODE == SHOWRAND || OUT_MODE == VERBOSE)
                 print_process_vect_simp(pv, cycle);
@@ -397,6 +408,12 @@ namespace scheduler {
         int cycle = 0; 
         int io_used_time = 0;
         int cpu_used_time = 0;
+
+        std::cout << std::endl;
+
+        if (OUT_MODE == SHOWRAND || OUT_MODE == VERBOSE)
+            std::cout << "This detailed printout gives the state and remaining burst for each process\n" << std::endl;
+
         while (!is_procs_terminated(pv) && cycle < 2000) {
 
             if (OUT_MODE == SHOWRAND || OUT_MODE == VERBOSE)
@@ -451,6 +468,7 @@ int main(int argc, char** argv) {
     s::input_out(pvect, false);
     std::sort(pvect.begin(), pvect.end(), s::comp_proc);
     s::input_out(pvect, true);
+    // std::cout << std::endl;
 
     if (algo == "--fcfs") {
         s::first_come_first_served(pvect);
