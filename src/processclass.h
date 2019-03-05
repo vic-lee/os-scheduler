@@ -2,6 +2,8 @@
 #define PROCESS_CLASS_HEADER
 
 #include <string>
+#include "header.h"
+#include "randnumclass.h"
 
 namespace scheduler {
     class Process {
