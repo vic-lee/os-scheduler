@@ -1,21 +1,11 @@
-#include <iostream>
-// #include <fstream>
-#include <queue>
-#include <locale>
-#include <tuple>
-#include <string>
-#include <iomanip>
-#include <vector>
-#include <algorithm>
-#include <functional>
-#include "header.h"
+#include "scheduler.h"
 
 namespace scheduler {
 
     void set_queue_front_to_running(
         std::queue<Process*> &q, 
         RandNumAccessor &rnum, 
-        int quantum = QT_UNDEF
+        int quantum
     ) {
         if (q.size() == 0) {
             return;
@@ -41,7 +31,7 @@ namespace scheduler {
     }
 
 
-    void do_running_process(std::queue<Process*> &q, int quantum = QT_UNDEF) {
+    void do_running_process(std::queue<Process*> &q, int quantum) {
         if (q.size() == 0) return;
         q.front() -> decr_cpu_burst();
         if (quantum != QT_UNDEF) q.front() -> update_quantum_vars(quantum);
@@ -53,7 +43,7 @@ namespace scheduler {
         std::vector<Process*> &v, 
         RandNumAccessor &rnum,
         std::vector<Process*> &queuepool, 
-        int quantum = QT_UNDEF
+        int quantum
     ) {
         if (q.size() == 0) return;
         if (q.front() -> state == RUNNING && 

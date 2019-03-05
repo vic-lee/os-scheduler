@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <functional>
 #include "header.h"
+#include "scheduler.h"
 
 namespace s = scheduler;
 

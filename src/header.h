@@ -10,6 +10,8 @@
 #define BLOCKED "blocked"
 #define TERMINATED "terminated"
 
+#include <string>
+
 namespace scheduler {
 
     const std::string VERBOSE = "--verbose";
