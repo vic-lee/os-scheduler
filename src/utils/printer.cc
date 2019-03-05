@@ -17,7 +17,7 @@ namespace scheduler {
         if (!sorted) std::cout << "The original input was: ";
         else std::cout << "The (sorted) input is:  ";
         std::cout << pv.size() << " " << std::flush;
-        for (int i = 0; i < pv.size(); i++) {
+        for (unsigned int i = 0; i < pv.size(); i++) {
             std::printf(" %d %d %d %d ", 
                 pv[i].arrival_time, pv[i].cpu_interval, 
                 pv[i].cpu_time_assigned, pv[i].io_interval);
@@ -56,12 +56,14 @@ namespace scheduler {
 
 
     void print_process_vect(std::vector<Process> const &v) {
-        for (Process p : v) { print_process_one_line(p); }
+        for (unsigned int i = 0; i < v.size(); i++) { 
+            print_process_one_line(v[i]); 
+        }
     }
 
 
     void print_process_vect_out(std::vector<Process> const &v) {
-        for (int i = 0; i < v.size(); i++) {
+        for (unsigned int i = 0; i < v.size(); i++) {
             print_process_out(v[i], i);
         }
     }
@@ -69,16 +71,16 @@ namespace scheduler {
 
     void print_process_vect_simp(std::vector<Process> const &v, int cycle, int quantum) {
         std::cout << "Before cycle " << std::setw(4) << cycle << ":";
-        for (Process p : v) {
-            std::cout << std::setw(12) << p.state;
-            if (p.state == BLOCKED) {
-                std::cout << std::setw(3) << p.remaining_io_burst << std::flush;
+        for (unsigned int i = 0; i < v.size(); i++) {
+            std::cout << std::setw(12) << v[i].state;
+            if (v[i].state == BLOCKED) {
+                std::cout << std::setw(3) << v[i].remaining_io_burst << std::flush;
             }
             else {
                 if (quantum != QT_UNDEF) {
-                    std::cout << std::setw(3) << p.remaining_quantum << std::flush;
+                    std::cout << std::setw(3) << v[i].remaining_quantum << std::flush;
                 } else {
-                    std::cout << std::setw(3) << p.remaining_cpu_burst << std::flush;
+                    std::cout << std::setw(3) << v[i].remaining_cpu_burst << std::flush;
                 }
             }
         }

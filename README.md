@@ -13,6 +13,13 @@ g++ -Wall -std=c++11 *.cc utils/*
 ./a.out ../test/in/input-x
 ```
 
+## Getting started --server
+```
+unzip lab2.zip
+cd lab2/src
+make
+```
+
 ## Notes on lab2 
 - Altering b/t CPU bursts and IO bursts
 - B is used to calculate the next CPU burst time

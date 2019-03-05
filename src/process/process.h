@@ -22,8 +22,8 @@ namespace scheduler {
             int remaining_io_burst;
             int terminated_time;
             int turnaround_time; 
-            int blocked_time;   // time in the blocked state
-            int waiting_time;   // time in the ready state
+            int blocked_time;       // time in the blocked state
+            int waiting_time;       // time in the ready state
             int cpu_time_assigned;
             void set_state();
             void ready_to_run(RandNumAccessor &rnum, int quantum = QT_UNDEF);
