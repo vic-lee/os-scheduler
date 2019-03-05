@@ -16,6 +16,8 @@ namespace s = scheduler;
 
 namespace scheduler {
 
+    std::string OUT_MODE;
+
     void fcfs(std::vector<Process> pv, int quantum = QT_UNDEF) {
         RandNumAccessor rnum;
         std::queue<Process*> running_queue;
@@ -156,6 +158,7 @@ namespace scheduler {
 
 int main(int argc, char** argv) {
 
+
     std::string algo = "";
     std::string fname;
     s::OUT_MODE = s::DFTOUT;
@@ -166,6 +169,10 @@ int main(int argc, char** argv) {
         if (readin == s::VERBOSE || readin == s::SHOWRAND) {
             s::OUT_MODE = readin;
             fname = argv[2];
+            // std::cout << s::OUT_MODE << std::endl;
+            // std::cout << s::SHOWRAND << std::endl;
+            // std::cout << (s::OUT_MODE == s::SHOWRAND) << std::endl;            
+            // std::cout << (s::OUT_MODE.compare(s::SHOWRAND) == 0) << std::endl;            
         } else {
             fname = argv[1];
             algo = argv[2]; 

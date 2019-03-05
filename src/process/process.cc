@@ -8,15 +8,13 @@
 
 namespace scheduler {
 
-    
-
     void Process::ready_to_run(RandNumAccessor &rnum, int quantum) {
         state = RUNNING;
         if (remaining_cpu_burst == 0) {
             int burst, randnum;
             std::tie(burst, randnum) = rnum.randomOS(cpu_interval);
 
-            if (scheduler::OUT_MODE == SHOWRAND) {
+            if (OUT_MODE == SHOWRAND) {
                 std::cout 
                     << "Find burst when choosing ready process to run " << randnum
                     << std::endl;
@@ -42,8 +40,7 @@ namespace scheduler {
         state = BLOCKED;
         int burst, randnum;
         std::tie(burst, randnum) = rnum.randomOS(io_interval);
-
-        if (scheduler::OUT_MODE == SHOWRAND) {
+        if (OUT_MODE.compare(SHOWRAND) == 0) {
             std::cout 
                 << "Find I/O burst when blocking a process " << randnum 
                 << std::endl;
