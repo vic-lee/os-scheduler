@@ -1,6 +1,7 @@
 
 CXX = g++
 CXXFLAGS = -Wall -std=c++11
+MODULES = process utils/ utils/randnum scheduler process
 
 exec: main.o compproc.o printer.o process.o randnum.o scheduler.o statcalc.o util.o 
 	$(CXX) $(CXXFLAGS) ../bin/*.o -o ../bin/exec 
