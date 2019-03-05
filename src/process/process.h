@@ -17,13 +17,13 @@ namespace scheduler {
             int remaining_cpu_burst;
             int assigned_cpu_burst;
             int cpu_time_used;
-            int remaining_quantum = 0;
-            bool is_preempted = false;
+            int remaining_quantum;
+            bool is_preempted;
             int remaining_io_burst;
-            int terminated_time = 0;
+            int terminated_time;
             int turnaround_time; 
-            int blocked_time = 0;   // time in the blocked state
-            int waiting_time = 0;   // time in the ready state
+            int blocked_time;   // time in the blocked state
+            int waiting_time;   // time in the ready state
             int cpu_time_assigned;
             void set_state();
             void ready_to_run(RandNumAccessor &rnum, int quantum = QT_UNDEF);
@@ -41,6 +41,14 @@ namespace scheduler {
             void decr_remaining_quantum(int quantum);
             void update_quantum_vars(int quantum);
             int should_preempt(int quantum);
+
+            Process() {
+                remaining_quantum = 0;
+                is_preempted = false;
+                terminated_time = 0;
+                blocked_time = 0;
+                waiting_time = 0; 
+            }
     };
 }
 

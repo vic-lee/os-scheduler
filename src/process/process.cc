@@ -8,6 +8,8 @@
 
 namespace scheduler {
 
+    
+
     void Process::ready_to_run(RandNumAccessor &rnum, int quantum) {
         state = RUNNING;
         if (remaining_cpu_burst == 0) {
