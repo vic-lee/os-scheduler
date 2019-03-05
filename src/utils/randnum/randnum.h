@@ -6,7 +6,7 @@
 namespace scheduler {
     class RandNumAccessor {
         public: 
-            int cur_line = 1;
+            static int cur_line;
             std::tuple<int, int> randomOS(int u);
     };
 }

@@ -7,6 +7,8 @@
 
 namespace scheduler {
 
+    int RandNumAccessor::cur_line = 1;
+
     std::tuple<int, int> RandNumAccessor::randomOS(int u) {
         std::ifstream file_rand_num("../src/random-numbers.txt");
         if (file_rand_num) {
