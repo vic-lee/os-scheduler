@@ -61,6 +61,11 @@ namespace scheduler {
     };
 
 
+    /*      utils/calcproc.cc       */
+    bool comp_proc(Process a, Process b);
+    bool comp_proc_ptr(Process* a, Process* b);
+    bool comp_proc_id(Process a, Process b);
+
     /*      utils/printer.cc        */
     void input_out(std::vector<Process> const pv, bool sorted);
     void print_process_one_line(Process p);
