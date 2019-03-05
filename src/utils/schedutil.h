@@ -2,7 +2,7 @@
 #define SCHED_UTIL_HEADER
 
 #include <vector>
-#include "../processclass.h"
+#include "../process/process.h"
 
 namespace scheduler {
     /*      utils/calcproc.cc       */
