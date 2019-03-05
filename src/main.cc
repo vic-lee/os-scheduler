@@ -175,22 +175,33 @@ int main(int argc, char** argv) {
     } 
     
     std::vector<s::Process> pvect = s::read_file(fname);
-    s::input_out(pvect, false);
+    std::vector<s::Process> originalpvect = pvect;
+
     std::sort(pvect.begin(), pvect.end(), s::comp_proc);
-    s::input_out(pvect, true);
 
     if (algo == "--fcfs") {
+        s::unsorted_sorted_print(originalpvect, pvect);
         s::first_come_first_served(pvect);
     } else if (algo == "--rr") {
+        s::unsorted_sorted_print(originalpvect, pvect);
         s::roundrobin(pvect);
     } else if (algo == "--uni") {
+        s::unsorted_sorted_print(originalpvect, pvect);
         s::uniprogrammed(pvect);
     } else if (algo == "--sjf") {
+        s::unsorted_sorted_print(originalpvect, pvect);
         s::shortest_job_first(pvect);
     } else {
+        s::unsorted_sorted_print(originalpvect, pvect);
         s::first_come_first_served(pvect);
+
+        s::unsorted_sorted_print(originalpvect, pvect);
         s::roundrobin(pvect);
+
+        s::unsorted_sorted_print(originalpvect, pvect);
         s::uniprogrammed(pvect);
+
+        s::unsorted_sorted_print(originalpvect, pvect);
         s::shortest_job_first(pvect);
     }
 

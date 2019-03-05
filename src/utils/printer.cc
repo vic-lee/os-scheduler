@@ -8,6 +8,11 @@
 
 namespace scheduler {
 
+    void unsorted_sorted_print(std::vector<Process> unsorted, std::vector<Process> sorted) {
+        input_out(unsorted, false);
+        input_out(sorted, true);
+    }
+
     void input_out(std::vector<Process> const pv, bool sorted) {
         if (!sorted) std::cout << "The original input was: ";
         else std::cout << "The (sorted) input is:  ";

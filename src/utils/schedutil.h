@@ -12,6 +12,7 @@ namespace scheduler {
     bool comp_proc_id(Process a, Process b);
 
     /*      utils/printer.cc        */
+    void unsorted_sorted_print(std::vector<Process> unsorted, std::vector<Process> sorted);
     void input_out(std::vector<Process> const pv, bool sorted);
     void print_process_one_line(Process p);
     void print_process_vect(std::vector<Process> const &v);
