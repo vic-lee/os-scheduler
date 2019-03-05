@@ -14,10 +14,17 @@ g++ -Wall -std=c++11 *.cc utils/*
 ```
 
 ## Getting started --server
+
+To compile the program, do:
 ```
-unzip lab2.zip
-cd lab2/src
+cd _lab2/src
 make
+```
+Then, to run the program, do:
+```
+../bin/exec ../test/in/input-x    // where x is the input number
+../bin/exec --verbose ../test/in/input-x      // display detailed output
+../bin/exec --show-random ../test/in/input-x      // display randomOS() output
 ```
 
 ## Notes on lab2 
