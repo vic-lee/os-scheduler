@@ -57,7 +57,7 @@ namespace scheduler {
 
 
     bool is_procs_terminated(std::vector<Process> const &vect) {
-        for (int i = 0; i < vect.size(); i++) {
+        for (unsigned int i = 0; i < vect.size(); i++) {
             if (vect[i].state != TERMINATED) return false;
         }
         return true;

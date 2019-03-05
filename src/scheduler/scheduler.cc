@@ -23,7 +23,7 @@ namespace scheduler {
         std::queue<Process*> &q, 
         int cycle
     ) {
-        for (int i = 0; i < pv.size(); i++) {
+        for (unsigned int i = 0; i < pv.size(); i++) {
             if (pv[i].arrival_time == cycle) {
                 pv[i].state = READY;
                 q.push(&pv[i]);
@@ -69,7 +69,7 @@ namespace scheduler {
 
 
     void do_blocked_process(std::vector<Process*> &v) {
-        for (int i = 0; i < v.size(); i++) {
+        for (unsigned int i = 0; i < v.size(); i++) {
             v[i] -> decr_io_burst();
         }
     }
@@ -80,7 +80,7 @@ namespace scheduler {
         std::vector<Process*> &v,
         std::vector<Process*> &queuepool
     ) {
-        for (int i = 0; i < v.size(); i++) {
+        for (unsigned int i = 0; i < v.size(); i++) {
             if (v[i] -> remaining_io_burst == 0) {
                 if (! v[i] -> is_finished()) {
                     v[i] -> blocked_to_ready();
@@ -94,7 +94,7 @@ namespace scheduler {
 
 
     void terminate_finished_processes(std::vector<Process> &pv, int cycle) {
-        for (int i = 0; i < pv.size(); i++) {
+        for (unsigned int i = 0; i < pv.size(); i++) {
             if (pv[i].state != TERMINATED && pv[i].is_finished()) {
                 pv[i].terminate_process(cycle); 
                 pv[i].calc_turnaround_time();
@@ -104,7 +104,7 @@ namespace scheduler {
 
 
     void update_queue_waiting_time(std::vector<Process> &pv) {
-        for (int i = 0; i < pv.size(); i++) {
+        for (unsigned int i = 0; i < pv.size(); i++) {
             if (pv[i].state == READY) pv[i].waiting_time++;
         }
     }
@@ -112,7 +112,7 @@ namespace scheduler {
 
     void add_pool_to_queue(std::queue<Process*> &q, std::vector<Process*> &pool) {
         std::sort(pool.begin(), pool.end(), comp_proc_ptr);
-        for (int i = 0; i < pool.size(); i++) {
+        for (unsigned int i = 0; i < pool.size(); i++) {
             q.push(pool[i]);
             pool.erase(pool.begin() + i); i--;
         }
@@ -181,7 +181,7 @@ namespace scheduler {
         std::vector<Process*> &readypool, 
         int cycle 
     ) {
-        for (int i = 0; i < pv.size(); i++) {
+        for (unsigned int i = 0; i < pv.size(); i++) {
             if ( pv[i].arrival_time == cycle ) {
                 pv[i].state = READY;
                 readypool.push_back(&pv[i]);
@@ -230,7 +230,7 @@ namespace scheduler {
         std::vector<Process*> &blockedpool, 
         std::vector<Process*> &readypool
     ) {
-        for (int i = 0; i < blockedpool.size(); i++) {
+        for (unsigned int i = 0; i < blockedpool.size(); i++) {
             if (blockedpool[i] -> is_io_burst_finished()) {
                 blockedpool[i] -> blocked_to_ready();
                 readypool.push_back(blockedpool[i]);
@@ -243,7 +243,7 @@ namespace scheduler {
 
 
     void sjf_rm_terminated_from_vect(std::vector<Process*> &v) {
-        for (int i = 0; i < v.size(); i++) {
+        for (unsigned int i = 0; i < v.size(); i++) {
             if (v[i] -> state == TERMINATED) {
                 v.erase(v.begin() + i);
                 i--;
@@ -264,7 +264,7 @@ namespace scheduler {
 
 
     void sjf_update_ready_time(std::vector<Process*> &readypool) {
-        for (int i = 0; i < readypool.size(); i++) {
+        for (unsigned int i = 0; i < readypool.size(); i++) {
             readypool[i] -> waiting_time++;
         }
     }
