@@ -94,6 +94,8 @@ namespace scheduler {
         int cpu_used_time, 
         int io_used_time
     ) {
+        std::cout << std::fixed;
+        std::cout << std::setprecision(6);
         std::cout << "\nSummary Data:" << "\n"
             << "\tFinishing time: " << cycle << "\n"
             << "\tCPU Utilization: " << calc_cpu_util(cpu_used_time, cycle) << "\n"
