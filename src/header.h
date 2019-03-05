@@ -11,6 +11,7 @@
 #define TERMINATED "terminated"
 
 #include <string>
+#include "utils/printer.h"
 
 namespace scheduler {
 
