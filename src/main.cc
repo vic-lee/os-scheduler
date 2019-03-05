@@ -28,7 +28,7 @@ namespace scheduler {
         std::cout << std::endl;
 
         if (OUT_MODE == SHOWRAND || OUT_MODE == VERBOSE)
-            std::cout << "This detailed printout gives the state and remaining burst for each process\n" << std::endl;
+            std::cout << PRINT_START_MSG << std::endl;
 
         while (!is_procs_terminated(pv)) {
             if (OUT_MODE == SHOWRAND || OUT_MODE == VERBOSE)            
@@ -91,7 +91,7 @@ namespace scheduler {
         std::cout << std::endl;
 
         if (OUT_MODE == SHOWRAND || OUT_MODE == VERBOSE)
-            std::cout << "This detailed printout gives the state and remaining burst for each process\n" << std::endl;
+            std::cout << PRINT_START_MSG << std::endl;
 
         while (!is_procs_terminated(pv)) {
             if (OUT_MODE == SHOWRAND || OUT_MODE == VERBOSE)
@@ -122,7 +122,7 @@ namespace scheduler {
         std::cout << std::endl;
 
         if (OUT_MODE == SHOWRAND || OUT_MODE == VERBOSE)
-            std::cout << "This detailed printout gives the state and remaining burst for each process\n" << std::endl;
+            std::cout << PRINT_START_MSG << std::endl;
 
         while (!is_procs_terminated(pv) && cycle < 2000) {
 

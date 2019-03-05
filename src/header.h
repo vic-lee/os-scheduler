@@ -19,6 +19,8 @@ namespace scheduler {
     const std::string DFTOUT = "--default";
     static std::string OUT_MODE; 
 
+    const std::string PRINT_START_MSG = "This detailed printout gives the state and remaining burst for each process\n";
+
 }
 
 #endif
