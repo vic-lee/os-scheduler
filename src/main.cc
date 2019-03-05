@@ -16,7 +16,6 @@ namespace s = scheduler;
 
 namespace scheduler {
 
-
     void fcfs(std::vector<Process> pv, int quantum = QT_UNDEF) {
         RandNumAccessor rnum;
         std::queue<Process*> running_queue;

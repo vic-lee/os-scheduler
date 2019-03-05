@@ -8,7 +8,7 @@
 namespace scheduler {
 
     std::tuple<int, int> RandNumAccessor::randomOS(int u) {
-        std::ifstream file_rand_num("random-numbers.txt");
+        std::ifstream file_rand_num("../src/random-numbers.txt");
         if (file_rand_num) {
             int i = 0;
             std::string line; 
@@ -23,7 +23,7 @@ namespace scheduler {
             return std::make_tuple(ret, randnum);
         } else {
             std::cout 
-                << "Could not open random-numbers.txt. Terminating..." 
+                << "ERROR: Could not open random-numbers.txt. Terminating..." 
                 << std::endl;
             return std::make_tuple(-1, -1);
         }

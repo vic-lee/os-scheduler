@@ -2,8 +2,8 @@
 CXX = g++
 CXXFLAGS = -Wall -std=c++11
 
-output: main.o compproc.o printer.o process.o randnum.o scheduler.o statcalc.o util.o 
-	$(CXX) $(CXXFLAGS) ../bin/*.o -o ../bin/output 
+exec: main.o compproc.o printer.o process.o randnum.o scheduler.o statcalc.o util.o 
+	$(CXX) $(CXXFLAGS) ../bin/*.o -o ../bin/exec 
 
 process.o: process/process.cc process/process.h
 	$(CXX) $(CXXFLAGS) -c process/process.cc -o ../bin/process.o
