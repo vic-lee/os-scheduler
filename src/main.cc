@@ -6,10 +6,8 @@
 #include <string>
 #include <iomanip>
 #include <vector>
-#include <algorithm>
-#include <functional>
 #include "header.h"
-#include "scheduler.h"
+#include "scheduler/scheduler.h"
 
 namespace s = scheduler;
 
