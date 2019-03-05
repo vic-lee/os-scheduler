@@ -3,7 +3,7 @@
 
 #include <string>
 #include "../header.h"
-#include "randnumclass.h"
+#include "../utils/randnum/randnum.h"
 
 namespace scheduler {
     class Process {

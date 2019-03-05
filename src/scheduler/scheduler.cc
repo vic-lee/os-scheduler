@@ -1,3 +1,4 @@
+#include "../utils/schedutil.h"
 #include "scheduler.h"
 
 namespace scheduler {

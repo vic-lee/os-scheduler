@@ -3,6 +3,8 @@
 #include <vector>
 #include <tuple>
 #include "../header.h"
+#include "../utils/randnum/randnum.h"
+#include "process.h"
 
 namespace scheduler {
 

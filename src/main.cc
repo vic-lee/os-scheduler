@@ -7,6 +7,9 @@
 #include <iomanip>
 #include <vector>
 #include "header.h"
+#include "process/process.h"
+#include "utils/schedutil.h"
+#include "utils/randnum/randnum.h"
 #include "scheduler/scheduler.h"
 
 namespace s = scheduler;

@@ -5,6 +5,7 @@
 #include "../process/process.h"
 
 namespace scheduler {
+    
     /*      utils/calcproc.cc       */
     bool comp_proc(Process a, Process b);
     bool comp_proc_ptr(Process* a, Process* b);
