@@ -1,6 +1,9 @@
 #ifndef SCHED_UTIL_HEADER
 #define SCHED_UTIL_HEADER
 
+#include <vector>
+#include "../processclass.h"
+
 namespace scheduler {
     /*      utils/calcproc.cc       */
     bool comp_proc(Process a, Process b);
