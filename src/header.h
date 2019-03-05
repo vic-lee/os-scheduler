@@ -20,13 +20,6 @@ namespace scheduler {
     const std::string DFTOUT = "--default";
     static std::string OUT_MODE; 
 
-    class RandNumAccessor {
-        public: 
-            int cur_line = 1;
-            std::tuple<int, int> randomOS(int u);
-    };
-
-
     /*      utils/calcproc.cc       */
     bool comp_proc(Process a, Process b);
     bool comp_proc_ptr(Process* a, Process* b);
