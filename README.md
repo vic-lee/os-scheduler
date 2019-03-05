@@ -22,8 +22,8 @@ make
 ```
 Then, to run the program, do:
 ```
-../bin/exec ../test/in/input-x    // where x is the input number
-../bin/exec --verbose ../test/in/input-x      // display detailed output
+../bin/exec ../test/in/input-x                    // where x is the input number
+../bin/exec --verbose ../test/in/input-x          // display detailed output
 ../bin/exec --show-random ../test/in/input-x      // display randomOS() output
 ```
 
