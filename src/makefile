@@ -31,4 +31,4 @@ main.o: main.cc header.h
 	$(CXX) $(CXXFLAGS) -c main.cc -o ../bin/main.o
 
 clean:
-	rm ../bin/*o ../bin/output
+	rm ../bin/*o ../bin/exec
