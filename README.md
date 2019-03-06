@@ -9,7 +9,7 @@
 
 To compile the program, do:
 ```
-cd _lab2/src
+cd src
 make
 ```
 Then, to run the program, do:
