@@ -126,7 +126,7 @@ namespace scheduler {
         if (OUT_MODE == SHOWRAND || OUT_MODE == VERBOSE)
             std::cout << PRINT_START_MSG << std::endl;
 
-        while (!is_procs_terminated(pv) && cycle < 2000) {
+        while (!is_procs_terminated(pv) && cycle < 3000) {
 
             if (OUT_MODE == SHOWRAND || OUT_MODE == VERBOSE)
                 print_process_vect_simp(pv, cycle);

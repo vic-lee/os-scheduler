@@ -6,8 +6,11 @@
 namespace scheduler {
     class RandNumAccessor {
         public: 
-            static int cur_line;
+            int cur_line;
             std::tuple<int, int> randomOS(int u);
+            RandNumAccessor() {
+                cur_line = 1;
+            }
     };
 }
 
