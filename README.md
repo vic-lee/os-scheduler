@@ -21,7 +21,7 @@ Then, to run the program, do:
 
 ## Project architecture
 
-The project is in the `/src` folder. The project starting point is `main.cc`, and compiled by `makefile`. All symbols are stored under namespace `Scheduler`. 
+The project is in the `/src` folder. The project starting point is `main.cc`, and compiled by `makefile`. All symbols are stored under namespace `Scheduler`. Scheduling algorithms, in `/scheduler`, manipulates processes of class `Process` defined in `/process`.
 
 ```
 .
