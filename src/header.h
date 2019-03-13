@@ -12,15 +12,16 @@
 
 #include <string>
 
-namespace scheduler {
+namespace scheduler
+{
 
-    const std::string VERBOSE = "--verbose";
-    const std::string SHOWRAND = "--show-random";
-    const std::string DFTOUT = "--default";
-    extern std::string OUT_MODE; 
+const std::string VERBOSE = "--verbose";
+const std::string SHOWRAND = "--show-random";
+const std::string DFTOUT = "--default";
+extern std::string OUT_MODE;
 
-    const std::string PRINT_START_MSG = "This detailed printout gives the state and remaining burst for each process\n";
+const std::string PRINT_START_MSG = "This detailed printout gives the state and remaining burst for each process\n";
 
-}
+} // namespace scheduler
 
 #endif
